@@ -1,134 +1,74 @@
 """
-Source citations display component.
+Source citations — redesigned Perplexity-style cards.
 """
 import streamlit as st
-from frontend.config import config
 
 
-def render_sources(sources: list, message_idx: int):
-    """
-    Render source citations for a response.
-    
-    Args:
-        sources: List of source documents
-        message_idx: Index of the message (for unique keys)
-    """
-    
+_DOMAIN_BADGE = {
+    "tax": '<span class="lf-badge domain-tax">TAX</span>',
+    "finance": '<span class="lf-badge domain-finance">FINANCE</span>',
+    "legal": '<span class="lf-badge domain-legal">LEGAL</span>',
+}
+
+_ORIGIN_BADGE = {
+    "system": '<span class="lf-badge system">SYSTEM</span>',
+    "user":   '<span class="lf-badge user">YOUR FILE</span>',
+}
+
+_DOMAIN_ICON = {"tax": "💰", "finance": "🏦", "legal": "📜", "user_upload": "📎"}
+
+
+def render_sources(sources: list, key_prefix: str = "src"):
+    """Render collapsible source panel beneath an answer."""
     if not sources:
         return
-    
-    with st.expander(
-        f"📚 Sources ({len(sources)} documents)",
-        expanded=config.DEFAULT_EXPANDED_SOURCES
-    ):
-        for idx, source in enumerate(sources):
-            render_source_card(source, message_idx, idx)
+
+    # Inline citation chips
+    chips_html = '<div style="margin-top:0.6rem; display:flex; flex-wrap:wrap; gap:0.3rem;">'
+    for s in sources:
+        ref = s.get("reference_id", "?")
+        name = s.get("source", "Unknown")
+        short = name[:24] + "…" if len(name) > 24 else name
+        chips_html += (
+            f'<span class="lf-source-inline">[{ref}] {short}</span>'
+        )
+    chips_html += "</div>"
+    st.markdown(chips_html, unsafe_allow_html=True)
+
+    # Expandable full cards
+    with st.expander(f"📚 {len(sources)} source{'s' if len(sources) > 1 else ''}", expanded=False):
+        for s in sources:
+            _render_card(s)
 
 
-def render_source_card(source: dict, message_idx: int, source_idx: int):
-    """Render a single source card."""
-    
-    reference_id = source.get("reference_id", source_idx + 1)
-    source_name = source.get("source", "Unknown")
+def _render_card(source: dict):
+    ref = source.get("reference_id", "?")
+    name = source.get("source", "Unknown")
     domain = source.get("domain", "unknown")
     origin = source.get("origin", "system")
-    score = source.get("relevance_score", 0)
+    score = float(source.get("relevance_score") or source.get("rerank_score") or 0)
     excerpt = source.get("excerpt", "")
-    
-    # Origin label and color
-    origin_label = "System" if origin == "system" else "User Upload"
-    origin_color = "#6c757d" if origin == "system" else "#007bff"
-    
-    # Domain emoji
-    domain_emoji = {
-        "tax": "💰",
-        "finance": "🏦",
-        "legal": "📜"
-    }.get(domain, "📄")
-    
-    # Score color
-    if score >= 0.8:
-        score_color = "green"
-    elif score >= 0.5:
-        score_color = "orange"
-    else:
-        score_color = "red"
-    
-    # Render card
+
+    icon = _DOMAIN_ICON.get(domain, "📄")
+    domain_badge = _DOMAIN_BADGE.get(domain, f'<span class="lf-badge">{domain.upper()}</span>')
+    origin_badge = _ORIGIN_BADGE.get(origin, _ORIGIN_BADGE["system"])
+
+    score_class = "high" if score >= 0.65 else ("mid" if score >= 0.35 else "low")
+    score_pct = min(int(score * 100), 100)
+
     st.markdown(
-        f"""
-        <div style="
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            background-color: #fafafa;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <strong>[{reference_id}] {domain_emoji} {source_name}</strong>
-                <span style="
-                    background-color: {score_color};
-                    color: white;
-                    padding: 2px 8px;
-                    border-radius: 4px;
-                    font-size: 0.8rem;
-                ">
-                    Score: {score:.2f}
-                </span>
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 0.5rem; align-items: center;">
-                <span style="
-                    background-color: {origin_color};
-                    color: white;
-                    padding: 1px 6px;
-                    border-radius: 3px;
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                ">
-                    {origin_label.upper()}
-                </span>
-                <span style="color: #666; font-size: 0.85rem;">
-                    Domain: {domain.upper()}
-                </span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+        f"""<div class="lf-source-card">
+          <div class="lf-source-card-header">
+            <div class="lf-source-title">[{ref}] {icon} {name}</div>
+            <div style="display:flex;gap:0.35rem;">{domain_badge}{origin_badge}</div>
+          </div>
+          <div class="lf-score-bar">
+            <div class="lf-score-fill {score_class}" style="width:{score_pct}%"></div>
+          </div>
+          <div class="lf-source-meta">
+            <span>Score: {score:.3f}</span>
+          </div>
+          {'<div class="lf-source-excerpt">'+excerpt[:300]+('…' if len(excerpt)>300 else '')+'</div>' if excerpt else ''}
+        </div>""",
+        unsafe_allow_html=True,
     )
-    
-    # Show excerpt if available
-    if excerpt:
-        with st.container():
-            st.caption("Excerpt:")
-            st.markdown(
-                f"""
-                <div style="
-                    background-color: #f5f5f5;
-                    padding: 0.75rem;
-                    border-radius: 4px;
-                    font-size: 0.85rem;
-                    color: #333;
-                    border-left: 3px solid #007bff;
-                ">
-                    {excerpt[:500]}{'...' if len(excerpt) > 500 else ''}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-    
-    st.markdown("<div style='margin-bottom: 1rem;'></div>", unsafe_allow_html=True)
-
-
-def render_sources_summary(sources: list):
-    """Render a compact summary of sources."""
-    
-    if not sources:
-        return
-    
-    source_names = [s.get("source", "Unknown") for s in sources[:3]]
-    summary = ", ".join(source_names)
-    
-    if len(sources) > 3:
-        summary += f" (+{len(sources) - 3} more)"
-    
-    st.caption(f"📚 Sources: {summary}")

@@ -1,180 +1,127 @@
 """
-Sidebar component with stats, settings, and actions.
+Collapsible sidebar — system stats, doc stats, chat controls.
 """
 import streamlit as st
-from frontend.utils.api_client import api_client
-from frontend.utils.state import clear_messages
+import requests
 from frontend.config import config
+from frontend.utils.state import (
+    clear_messages, get_uploaded_files, reset_session,
+)
+
+
+def _get_stats():
+    if st.session_state.get("stats"):
+        return st.session_state.stats
+    try:
+        r = requests.get(f"{config.API_BASE_URL}/api/v1/documents/stats", timeout=5)
+        if r.status_code == 200:
+            st.session_state.stats = r.json()
+            return st.session_state.stats
+    except Exception:
+        pass
+    return None
 
 
 def render_sidebar():
-    """Render the sidebar."""
-    
     with st.sidebar:
-        st.markdown("## ⚙️ Settings")
-        
-        # Display settings
-        render_display_settings()
-        
-        st.divider()
-        
-        # System status
-        render_system_status()
-        
-        st.divider()
-        
-        # Document stats
-        render_document_stats()
-        
-        st.divider()
-        
-        # Actions
-        render_actions()
-        
-        st.divider()
-        
-        # About
-        render_about()
+        st.markdown("---")
 
-
-def render_display_settings():
-    """Render display settings."""
-    
-    st.markdown("### 📺 Display")
-    
-    # Show sources toggle
-    st.session_state.show_sources = st.toggle(
-        "Show source documents",
-        value=st.session_state.get("show_sources", True),
-        help="Display source citations with each answer"
-    )
-    
-    # Show metadata toggle
-    st.session_state.show_metadata = st.toggle(
-        "Show query metadata",
-        value=st.session_state.get("show_metadata", False),
-        help="Display timing and token usage information"
-    )
-
-
-def render_system_status():
-    """Render system status indicators."""
-    
-    st.markdown("### 🔌 System Status")
-    
-    # Check API health
-    try:
-        health = api_client.health_check()
-        
-        if health.get("status") == "healthy":
-            st.success("✅ API Connected")
-        elif health.get("status") == "degraded":
-            st.warning("⚠️ API Degraded")
-        else:
-            st.error("❌ API Unhealthy")
-        
-        # Component status
-        components = health.get("components", {})
-        
-        with st.expander("Component Details"):
-            for component, status in components.items():
-                icon = "✅" if status else "❌"
-                st.markdown(f"{icon} {component.replace('_', ' ').title()}")
-    
-    except Exception as e:
-        st.error("❌ API Unreachable")
-        st.caption(f"Error: {str(e)[:50]}")
-
-
-def render_document_stats():
-    """Render document statistics."""
-    
-    st.markdown("### 📊 Document Stats")
-    
-    try:
-        stats = api_client.get_stats()
-        
-        if stats.get("index_status") == "ready":
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.metric("Total Chunks", stats.get("total_chunks", 0))
-            
-            with col2:
-                st.metric("Documents", stats.get("total_documents", 0))
-            
-            # Per-domain breakdown
-            domains = stats.get("domains", {})
-            if domains:
-                st.markdown("**By Domain:**")
-                for domain, count in domains.items():
-                    emoji = {"tax": "💰", "finance": "🏦", "legal": "📜"}.get(domain, "📄")
-                    st.caption(f"{emoji} {domain.title()}: {count} chunks")
-        
-        elif stats.get("index_status") == "empty":
-            st.warning("No documents indexed")
-            st.caption("Use 'Ingest Documents' to add documents")
-        
-        else:
-            st.error("Index status unknown")
-    
-    except Exception as e:
-        st.error("Could not fetch stats")
-
-
-def render_actions():
-    """Render action buttons."""
-    
-    st.markdown("### 🔧 Actions")
-    
-    # Clear chat history
-    if st.button("🗑️ Clear Chat History", use_container_width=True):
-        clear_messages()
-        st.success("Chat history cleared!")
-        st.rerun()
-    
-    # Ingest documents
-    with st.expander("📥 Ingest Documents"):
-        st.caption("Load documents from data/raw/ into the system")
-        
-        clear_existing = st.checkbox(
-            "Clear existing documents first",
-            value=False,
-            help="Remove all existing documents before ingesting"
+        # ── SYSTEM STATUS ──────────────────────────────────────────────
+        st.markdown(
+            '<div class="lf-sidebar-section-title">System Status</div>',
+            unsafe_allow_html=True,
         )
-        
-        if st.button("Start Ingestion", use_container_width=True):
-            with st.spinner("Ingesting documents..."):
-                result = api_client.trigger_ingestion(clear_existing=clear_existing)
-            
-            if result.get("success"):
-                st.success(
-                    f"✅ Ingested {result.get('documents_loaded', 0)} documents "
-                    f"({result.get('chunks_created', 0)} chunks)"
+        healthy = st.session_state.get("api_healthy")
+
+        def _dot(ok): return "🟢" if ok else "🔴"
+
+        st.markdown(
+            f"""<div class="lf-indicator">{_dot(healthy)} FastAPI Backend</div>
+            <div class="lf-indicator">{_dot(healthy)} Vector Database</div>
+            <div class="lf-indicator">{_dot(healthy)} LLM Connected</div>""",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("---")
+
+        # ── DOCUMENT STATS ─────────────────────────────────────────────
+        st.markdown(
+            '<div class="lf-sidebar-section-title">Document Stats</div>',
+            unsafe_allow_html=True,
+        )
+        stats = _get_stats()
+        if stats:
+            col1, col2 = st.columns(2)
+            col1.metric("Chunks", stats.get("total_chunks", "—"))
+            domains = stats.get("domains", {})
+            col2.metric("Domains", len(domains))
+            for dom, cnt in domains.items():
+                icon = {"tax": "💰", "finance": "🏦", "legal": "📜"}.get(dom, "📄")
+                st.markdown(
+                    f'<div class="lf-stat-row">{icon} {dom.title()} <strong>{cnt}</strong></div>',
+                    unsafe_allow_html=True,
                 )
-            else:
-                st.error(f"❌ Ingestion failed: {result.get('error', 'Unknown error')}")
+        else:
+            st.caption("Stats unavailable — ingest documents first.")
+
+        if st.button("🔄 Refresh Stats", use_container_width=True, key="refresh_stats"):
+            st.session_state.stats = None
+            st.rerun()
+
+        st.markdown("---")
+
+        # ── UPLOADED FILES ────────────────────────────────────────────
+        uploads = get_uploaded_files()
+        if uploads:
+            st.markdown(
+                '<div class="lf-sidebar-section-title">Your Files</div>',
+                unsafe_allow_html=True,
+            )
+            for f in uploads:
+                st.markdown(
+                    f'<div class="lf-stat-row">📄 {f.filename} <strong>{f.chunks}ck</strong></div>',
+                    unsafe_allow_html=True,
+                )
+            if st.button("🗑️ Clear Files", use_container_width=True, key="clear_files_sidebar"):
+                _clear_user_files()
+            st.markdown("---")
+
+        # ── CHAT CONTROLS ─────────────────────────────────────────────
+        st.markdown(
+            '<div class="lf-sidebar-section-title">Chat Controls</div>',
+            unsafe_allow_html=True,
+        )
+        st.session_state.show_sources = st.toggle(
+            "Show sources", value=st.session_state.get("show_sources", True), key="toggle_sources"
+        )
+        st.session_state.show_metadata = st.toggle(
+            "Show metadata", value=st.session_state.get("show_metadata", False), key="toggle_meta"
+        )
+
+        st.markdown("---")
+        if st.button("🆕 New Conversation", use_container_width=True, key="new_chat"):
+            reset_session()
+            st.rerun()
+
+        if st.button("🗑️ Clear Chat Only", use_container_width=True, key="clear_chat"):
+            clear_messages()
+            st.rerun()
+
+        # ── SESSION INFO ──────────────────────────────────────────────
+        st.markdown("---")
+        sid = st.session_state.get("session_id", "")
+        st.caption(f"Session: `{sid[:8]}…`")
 
 
-def render_about():
-    """Render about section."""
-    
-    st.markdown("### ℹ️ About")
-    
-    st.markdown(
-        """
-        **LegalFinance RAG** v0.1.0
-        
-        An AI-powered assistant for Indian:
-        - 💰 Tax Laws
-        - 🏦 Financial Regulations  
-        - 📜 Legal Provisions
-        
-        Built with:
-        - 🦙 Llama 3.1 (via Groq)
-        - 🔍 Hybrid Search (Vector + BM25)
-        - ⚡ FastAPI + Streamlit
-        """
-    )
-    
-    st.caption("⚠️ For educational purposes only. Not legal/financial advice.")
+def _clear_user_files():
+    """Delete user collection from ChromaDB and reset local state."""
+    sid = st.session_state.get("session_id", "")
+    try:
+        requests.delete(
+            f"{config.API_BASE_URL}/api/v1/user/documents/{sid}", timeout=5
+        )
+    except Exception:
+        pass
+    st.session_state.uploaded_files = []
+    st.session_state.last_uploaded_name = None
+    st.rerun()

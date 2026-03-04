@@ -1,78 +1,67 @@
 """
-LegalFinance RAG - Streamlit Frontend Application
+LegalFinance AI — Streamlit frontend entry point.
+Modern redesign: dark mode, chat-centric, multi-source RAG.
 
-Run with: streamlit run frontend/app.py
+Run with:
+    streamlit run frontend/app.py
 """
-import streamlit as st
 import sys
 import os
 from pathlib import Path
 
-# Add project root to path so 'frontend' package can be found
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Allow `from frontend.xxx import ...` from repo root
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# Import components
+import streamlit as st
+
+from frontend.config import config
+from frontend.utils.state import init_session_state
 from frontend.components import (
-    render_header,
-    render_domain_tabs,
+    render_navbar,
+    render_sidebar,
     render_chat_history,
     render_chat_input,
-    render_sidebar,
-    render_upload_section
+    render_file_upload,
 )
-from frontend.utils.state import init_session_state
-from frontend.config import config
 
 
-def load_css():
-    """Load custom CSS styles."""
-    css_file = Path(__file__).parent / "styles" / "custom.css"
-    
-    if css_file.exists():
-        with open(css_file) as f:
+def _load_css():
+    css_path = Path(__file__).parent / "styles" / "modern.css"
+    if css_path.exists():
+        with open(css_path, encoding="utf-8") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 def main():
-    """Main application entry point."""
-    
-    # Page configuration
+    # ── Page config (must be first Streamlit call) ─────────────────────────────
     st.set_page_config(
-        page_title=config.PAGE_TITLE,
-        page_icon=config.PAGE_ICON,
-        layout=config.LAYOUT,
-        initial_sidebar_state="expanded"
+        page_title="LegalFinance AI",
+        page_icon="⚖️",
+        layout="wide",
+        initial_sidebar_state="expanded",
     )
-    
-    # Load custom CSS
-    load_css()
-    
-    # Initialize session state
+
+    # ── CSS & state ───────────────────────────────────────────────────────────
+    _load_css()
     init_session_state()
-    
-    # Render sidebar
+
+    # ── Sidebar ───────────────────────────────────────────────────────────────
     render_sidebar()
-    render_upload_section()
-    
-    # Main content area
-    main_container = st.container()
-    
-    with main_container:
-        # Header
-        render_header()
-        
-        # Domain tabs
-        render_domain_tabs()
-        
-        # Chat interface
-        chat_container = st.container()
-        
-        with chat_container:
-            # Chat history
-            render_chat_history()
-        
-        # Chat input (always at bottom)
-        render_chat_input()
+
+    # ── Navbar ────────────────────────────────────────────────────────────────
+    render_navbar()
+
+    # ── Uploaded files badge bar ──────────────────────────────────────────────
+    render_file_upload()
+
+    # ── Chat area ─────────────────────────────────────────────────────────────
+    # Use a container that fills the remaining viewport height with scroll
+    chat_area = st.container()
+    with chat_area:
+        render_chat_history()
+
+    # ── Input row (pinned visually at bottom via CSS) ─────────────────────────
+    render_chat_input()
 
 
 if __name__ == "__main__":

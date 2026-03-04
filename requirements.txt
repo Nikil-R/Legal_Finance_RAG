@@ -16,3 +16,4 @@ httpx
 streamlit
 requests
 python-docx
+python-multipart

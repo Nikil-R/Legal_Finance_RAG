@@ -90,6 +90,11 @@ class HybridRetriever:
         all_vector = vector_results + user_vector_results
         all_bm25 = bm25_results + user_bm25_results
 
+        # Sort merged lists by their own scores before RRF
+        # This prevents the appended user results from being penalized by their position
+        all_vector.sort(key=lambda x: x.get("score", 0), reverse=True)
+        all_bm25.sort(key=lambda x: x.get("score", 0), reverse=True)
+
         fused = self._rrf.fuse(all_vector, all_bm25)
         top_results = fused[:k]
 
