@@ -18,10 +18,10 @@ def _api_ok() -> bool:
 
 
 def _domain_pill(label: str, icon: str, value: str, current: str):
-    is_active = (value == current)
+    is_active = value == current
     # Use a leading dot or emoji to show active state
     display_label = f"● {icon}  {label}" if is_active else f"　 {icon}  {label}"
-    
+
     if st.button(
         display_label,
         key=f"dom_{value}",
@@ -81,7 +81,7 @@ def render_sidebar():
         ok = _api_ok()
         status_txt = "API connected" if ok else "API offline"
         st.caption(status_txt)
-        
+
         sid = get_session_id()
         st.caption(f"Session: {sid[:8]}…")
 

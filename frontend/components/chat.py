@@ -79,7 +79,10 @@ def render_welcome():
         cols = st.columns(2)
         for i, (tag, title, full_q) in enumerate(_EXAMPLES):
             with cols[i % 2]:
-                st.markdown(f'<p style="font-size:0.65rem; color:#6366f1; font-weight:800; margin-bottom:0.4rem; margin-left:0.5rem; text-transform:uppercase;">{tag}</p>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<p style="font-size:0.65rem; color:#6366f1; font-weight:800; margin-bottom:0.4rem; margin-left:0.5rem; text-transform:uppercase;">{tag}</p>',
+                    unsafe_allow_html=True,
+                )
                 if st.button(
                     title,
                     key=f"ex_btn_{i}",

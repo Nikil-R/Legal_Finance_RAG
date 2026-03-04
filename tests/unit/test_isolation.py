@@ -89,13 +89,11 @@ def test_isolation(tmp_path):
     # 5. Verify Session A cannot see Session B's data
     col_a = client.get_collection("user_docs_session_A")
     col_b = client.get_collection("user_docs_session_B")
-    
+
     a_docs = col_a.get()["documents"]
     b_docs = col_b.get()["documents"]
-    
+
     assert all(
         "balance sheet" not in d for d in a_docs
     ), "Session A saw Session B's data!"
-    assert all(
-        "commission" not in d for d in b_docs
-    ), "Session B saw Session A's data!"
+    assert all("commission" not in d for d in b_docs), "Session B saw Session A's data!"
