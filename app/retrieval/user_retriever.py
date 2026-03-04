@@ -3,9 +3,10 @@ User Document Retriever — retrieves chunks from session-isolated collections.
 """
 
 import chromadb
-from app.retrieval.vector_search import VectorRetriever
-from app.retrieval.bm25_search import BM25Retriever
+
 from app.config import get_settings
+from app.retrieval.bm25_search import BM25Retriever
+from app.retrieval.vector_search import VectorRetriever
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -34,23 +35,25 @@ class UserDocumentRetriever:
         Returns empty list if collection doesn't exist.
         """
         collection_name = f"user_docs_{session_id}"
-        
+
         if not self._collection_exists(collection_name):
-            logger.debug("Session collection '%s' not found; skipping user search.", collection_name)
+            logger.debug(
+                "Session collection '%s' not found; skipping user search.",
+                collection_name,
+            )
             return []
 
         # Vector Search
         vector_retriever = VectorRetriever(
             persist_dir=self.persist_dir,
             embedding_model=self.embedding_model,
-            collection_name=collection_name
+            collection_name=collection_name,
         )
         vector_results = vector_retriever.search(query, top_k=top_k)
 
         # BM25 Search
         bm25_retriever = BM25Retriever(
-            persist_dir=self.persist_dir,
-            collection_name=collection_name
+            persist_dir=self.persist_dir, collection_name=collection_name
         )
         bm25_results = bm25_retriever.search(query, top_k=top_k)
 

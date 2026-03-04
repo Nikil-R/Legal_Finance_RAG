@@ -18,7 +18,12 @@ VALID_DOMAINS = {"tax", "finance", "legal"}
 class VectorRetriever:
     """Dense retriever: embeds a query and fetches nearest neighbours from ChromaDB."""
 
-    def __init__(self, persist_dir: str, embedding_model: str, collection_name: str = COLLECTION_NAME) -> None:
+    def __init__(
+        self,
+        persist_dir: str,
+        embedding_model: str,
+        collection_name: str = COLLECTION_NAME,
+    ) -> None:
         logger.info("VectorRetriever: loading embedding model '%s' …", embedding_model)
         self._encoder = SentenceTransformer(embedding_model)
 
@@ -28,12 +33,12 @@ class VectorRetriever:
 
         try:
             self._collection = client.get_collection(name=self.collection_name)
-        except Exception:
+        except Exception as e:
             raise RuntimeError(
                 f"ChromaDB collection '{self.collection_name}' not found. "
                 "Please run the ingestion pipeline first:\n"
                 "  python -m app.ingestion.cli"
-            )
+            ) from e
 
         logger.info(
             "VectorRetriever ready (%d chunks indexed in '%s').",
@@ -93,7 +98,9 @@ class VectorRetriever:
         distances = raw["distances"][0]
 
         results: list[dict] = []
-        for chunk_id, content, metadata, distance in zip(ids, documents, metadatas, distances):
+        for chunk_id, content, metadata, distance in zip(
+            ids, documents, metadatas, distances, strict=False
+        ):
             # Convert chromadb cosine distance [0, 2] → similarity score (0, 1]
             score = float(1.0 / (1.0 + distance))
             results.append(

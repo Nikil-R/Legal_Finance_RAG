@@ -4,7 +4,6 @@ RAG Pipeline — Top-level orchestrator for the entire system.
 
 from __future__ import annotations
 
-import datetime
 import time
 
 from app.generation.generator import RAGGenerator
@@ -99,7 +98,9 @@ class RAGPipeline:
                 "prompt_version": gen_result["prompt_version"],
                 "token_usage": gen_result["usage"],
                 "retrieval_time_ms": retrieval_result["total_time_ms"],
-                "generation_time_ms": gen_result["usage"].get("duration_ms", 0.0),  # Not always standard in older req
+                "generation_time_ms": gen_result["usage"].get(
+                    "duration_ms", 0.0
+                ),  # Not always standard in older req
                 "total_time_ms": total_time_ms,
             },
             "timestamp": gen_result["timestamp"],

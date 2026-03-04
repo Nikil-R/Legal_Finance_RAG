@@ -12,7 +12,6 @@ Each returned document dict has the shape:
     }
 """
 
-import os
 from pathlib import Path
 
 from app.utils.logger import get_logger

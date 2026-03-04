@@ -27,19 +27,21 @@ _MIN_TOKEN_LEN = 2
 class BM25Retriever:
     """Sparse retriever: builds a BM25 index over ChromaDB chunks and scores them."""
 
-    def __init__(self, persist_dir: str, collection_name: str = COLLECTION_NAME) -> None:
+    def __init__(
+        self, persist_dir: str, collection_name: str = COLLECTION_NAME
+    ) -> None:
         logger.info("BM25Retriever: connecting to ChromaDB at '%s' …", persist_dir)
         client = chromadb.PersistentClient(path=persist_dir)
         self.collection_name = collection_name
 
         try:
             self._collection = client.get_collection(name=self.collection_name)
-        except Exception:
+        except Exception as e:
             raise RuntimeError(
                 f"ChromaDB collection '{self.collection_name}' not found. "
                 "Please run the ingestion pipeline first:\n"
                 "  python -m app.ingestion.cli"
-            )
+            ) from e
 
         logger.info(
             "BM25Retriever ready (%d chunks available in '%s').",
@@ -89,7 +91,10 @@ class BM25Retriever:
         metadatas: list[dict] = raw["metadatas"]
 
         if not texts:
-            logger.warning("BM25Retriever: no documents found in collection (filter=%s).", domain_filter)
+            logger.warning(
+                "BM25Retriever: no documents found in collection (filter=%s).",
+                domain_filter,
+            )
             self._corpus_tokens = []
             self._corpus_ids = []
             self._corpus_texts = []

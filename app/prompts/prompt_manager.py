@@ -4,7 +4,6 @@ Prompt Manager — handles loading, caching, and formatting of versioned YAML pr
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import yaml

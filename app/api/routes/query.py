@@ -1,20 +1,23 @@
 """
 Query endpoints for the RAG system.
 """
-from fastapi import APIRouter, Depends
+
 from datetime import datetime, timezone
+
+from fastapi import APIRouter, Depends
+
+from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
 from app.api.models import (
+    ErrorResponse,
+    QueryMetadata,
     QueryRequest,
     QueryResponse,
     RetrievalOnlyRequest,
     RetrievalResponse,
     SourceDocument,
-    ValidationResult,
     TokenUsage,
-    QueryMetadata,
-    ErrorResponse
+    ValidationResult,
 )
-from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
 from app.generation import RAGPipeline
 from app.reranking import RetrievalPipeline
 from app.utils.logger import get_logger
@@ -29,7 +32,7 @@ logger = get_logger(__name__)
     responses={
         200: {"description": "Successful query response"},
         400: {"model": ErrorResponse, "description": "Invalid request"},
-        500: {"model": ErrorResponse, "description": "Internal server error"}
+        500: {"model": ErrorResponse, "description": "Internal server error"},
     },
     summary="Ask a question to the RAG system",
     description="""
@@ -42,47 +45,51 @@ logger = get_logger(__name__)
     4. Include citations and a legal disclaimer
     
     You can filter by domain (tax, finance, legal) or search all domains.
-    """
+    """,
 )
 async def query(
-    request: QueryRequest,
-    pipeline: RAGPipeline = Depends(get_rag_pipeline)
+    request: QueryRequest, pipeline: RAGPipeline = Depends(get_rag_pipeline)
 ) -> QueryResponse:
     """
     Main RAG query endpoint.
     """
-    logger.info("Query received: '%s...' | Domain: %s", request.question[:50], request.domain)
-    
+    logger.info(
+        "Query received: '%s...' | Domain: %s", request.question[:50], request.domain
+    )
+
     try:
         # Run the RAG pipeline
-        result = pipeline.run(
-            question=request.question,
-            domain=request.domain.value
-        )
-        
+        result = pipeline.run(question=request.question, domain=request.domain.value)
+
         # Build response
         if result["success"]:
             # Build sources list
             sources = []
             if request.include_sources:
                 for src in result.get("sources", []):
-                    sources.append(SourceDocument(
-                        reference_id=src["reference_id"],
-                        source=src["source"],
-                        domain=src["domain"],
-                        relevance_score=src.get("relevance_score", src.get("rerank_score", 0.0)),
-                        excerpt=src.get("excerpt", src.get("content", "")[:200] + "...")
-                    ))
-            
+                    sources.append(
+                        SourceDocument(
+                            reference_id=src["reference_id"],
+                            source=src["source"],
+                            domain=src["domain"],
+                            relevance_score=src.get(
+                                "relevance_score", src.get("rerank_score", 0.0)
+                            ),
+                            excerpt=src.get(
+                                "excerpt", src.get("content", "")[:200] + "..."
+                            ),
+                        )
+                    )
+
             # Build validation result
             val = result.get("validation", {})
             validation = ValidationResult(
                 overall_valid=val.get("overall_valid", True),
                 has_citations=val.get("citations", {}).get("has_citations", False),
                 has_disclaimer=val.get("disclaimer", {}).get("has_disclaimer", False),
-                issues=val.get("issues", [])
+                issues=val.get("issues", []),
             )
-            
+
             # Build metadata
             meta = result.get("metadata", {})
             token_usage = meta.get("token_usage", {})
@@ -95,13 +102,13 @@ async def query(
                 token_usage=TokenUsage(
                     prompt_tokens=token_usage.get("prompt_tokens", 0),
                     completion_tokens=token_usage.get("completion_tokens", 0),
-                    total_tokens=token_usage.get("total_tokens", 0)
+                    total_tokens=token_usage.get("total_tokens", 0),
                 ),
                 retrieval_time_ms=meta.get("retrieval_time_ms", 0),
                 generation_time_ms=meta.get("generation_time_ms", 0),
-                total_time_ms=meta.get("total_time_ms", 0)
+                total_time_ms=meta.get("total_time_ms", 0),
             )
-            
+
             response = QueryResponse(
                 success=True,
                 question=request.question,
@@ -110,12 +117,16 @@ async def query(
                 sources=sources,
                 validation=validation,
                 metadata=metadata,
-                timestamp=datetime.now(timezone.utc)
+                timestamp=datetime.now(timezone.utc),
             )
-            
-            logger.info("Query successful | Time: %.0fms | Tokens: %d", meta.get('total_time_ms', 0), token_usage.get('total_tokens', 0))
+
+            logger.info(
+                "Query successful | Time: %.0fms | Tokens: %d",
+                meta.get("total_time_ms", 0),
+                token_usage.get("total_tokens", 0),
+            )
             return response
-        
+
         else:
             # Query failed (no results, etc.)
             return QueryResponse(
@@ -123,9 +134,9 @@ async def query(
                 question=request.question,
                 domain=request.domain.value,
                 error=result.get("error", "Unknown error occurred"),
-                timestamp=datetime.now(timezone.utc)
+                timestamp=datetime.now(timezone.utc),
             )
-    
+
     except Exception as e:
         logger.error("Query error: %s", str(e), exc_info=True)
         return QueryResponse(
@@ -133,7 +144,7 @@ async def query(
             question=request.question,
             domain=request.domain.value,
             error=str(e),
-            timestamp=datetime.now(timezone.utc)
+            timestamp=datetime.now(timezone.utc),
         )
 
 
@@ -141,44 +152,46 @@ async def query(
     "/retrieve",
     response_model=RetrievalResponse,
     summary="Retrieve relevant chunks without LLM generation",
-    description="Returns the most relevant document chunks for a query, without generating an LLM response. Useful for debugging or custom processing."
+    description="Returns the most relevant document chunks for a query, without generating an LLM response. Useful for debugging or custom processing.",
 )
 async def retrieve_only(
     request: RetrievalOnlyRequest,
-    pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline)
+    pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """
     Retrieval-only endpoint (no LLM generation).
     """
     logger.info("Retrieval request: '%s...'", request.question[:50])
-    
+
     try:
         result = pipeline.run(
             query=request.question,
             domain=request.domain.value,
-            rerank_top_k=request.top_k
+            rerank_top_k=request.top_k,
         )
-        
+
         if result["success"]:
             # Format chunks for response
             chunks = []
             for src in result.get("sources", []):
-                chunks.append({
-                    "reference_id": src["reference_id"],
-                    "chunk_id": src.get("chunk_id", ""),
-                    "source": src["source"],
-                    "domain": src["domain"],
-                    "relevance_score": src.get("rerank_score", 0.0),
-                    "content": src.get("content", "")[:500]
-                })
-            
+                chunks.append(
+                    {
+                        "reference_id": src["reference_id"],
+                        "chunk_id": src.get("chunk_id", ""),
+                        "source": src["source"],
+                        "domain": src["domain"],
+                        "relevance_score": src.get("rerank_score", 0.0),
+                        "content": src.get("content", "")[:500],
+                    }
+                )
+
             return RetrievalResponse(
                 success=True,
                 question=request.question,
                 domain=request.domain.value,
                 chunks=chunks,
                 total_found=result.get("candidates_found", 0),
-                retrieval_time_ms=result.get("total_time_ms", 0)
+                retrieval_time_ms=result.get("total_time_ms", 0),
             )
         else:
             return RetrievalResponse(
@@ -188,9 +201,9 @@ async def retrieve_only(
                 chunks=[],
                 total_found=0,
                 retrieval_time_ms=0,
-                error=result.get("error", "Retrieval failed")
+                error=result.get("error", "Retrieval failed"),
             )
-    
+
     except Exception as e:
         logger.error("Retrieval error: %s", str(e), exc_info=True)
         return RetrievalResponse(
@@ -200,5 +213,5 @@ async def retrieve_only(
             chunks=[],
             total_found=0,
             retrieval_time_ms=0,
-            error=str(e)
+            error=str(e),
         )

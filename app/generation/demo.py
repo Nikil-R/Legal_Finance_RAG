@@ -24,7 +24,10 @@ def main() -> None:
     pipeline = RAGPipeline()
 
     test_queries = [
-        ("What deductions are available under Section 80C of the Income Tax Act?", "tax"),
+        (
+            "What deductions are available under Section 80C of the Income Tax Act?",
+            "tax",
+        ),
         ("What are the KYC requirements mandated by RBI for banks?", "finance"),
         ("What constitutes free consent under the Indian Contract Act?", "legal"),
         ("What are the penalties for non-compliance?", "all"),
@@ -50,11 +53,15 @@ def main() -> None:
                     score_str = f"{score:.4f}"
                 else:
                     score_str = str(score)
-                print(f"  [{src['reference_id']}] {src['source']} ({src['domain']}) — score: {score_str}")
+                print(
+                    f"  [{src['reference_id']}] {src['source']} ({src['domain']}) — score: {score_str}"
+                )
             print(f"\n{'─'*50}")
             print("METADATA:")
             meta = result["metadata"]
-            print(f"  Retrieval: {meta['retrieval_candidates']} candidates -> {meta['reranked_chunks']} chunks")
+            print(
+                f"  Retrieval: {meta['retrieval_candidates']} candidates -> {meta['reranked_chunks']} chunks"
+            )
             print(f"  Top relevance score: {meta['top_relevance_score']:.4f}")
             print(f"  Model: {meta['model']}")
             print(f"  Tokens: {meta['token_usage']}")

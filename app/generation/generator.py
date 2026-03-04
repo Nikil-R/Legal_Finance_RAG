@@ -22,7 +22,9 @@ class RAGGenerator:
         self.prompt_manager = PromptManager()
         self.groq_client = GroqClient()
         self.validator = ResponseValidator()
-        logger.info("RAGGenerator initialized with prompt version: %s", self.prompt_version)
+        logger.info(
+            "RAGGenerator initialized with prompt version: %s", self.prompt_version
+        )
 
     def generate(self, question: str, context: str, sources: list[dict]) -> dict:
         """
@@ -87,7 +89,9 @@ class RAGGenerator:
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
         }
 
-    def generate_with_retrieval(self, question: str, domain: str = "all", session_id: str | None = None) -> dict:
+    def generate_with_retrieval(
+        self, question: str, domain: str = "all", session_id: str | None = None
+    ) -> dict:
         """
         End-to-end: retrieval + generation.
         """

@@ -5,13 +5,11 @@ Tests for the generation subsystem (PromptManager, ResponseValidator, RAGPipelin
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
 import pytest
 
 from app.generation.response_validator import ResponseValidator
 from app.prompts.prompt_manager import PromptManager
-
 
 # ── PromptManager Tests ───────────────────────────────────────────────────────
 

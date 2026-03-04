@@ -58,7 +58,9 @@ class ResponseValidator:
         return {
             "valid": valid,
             "has_disclaimer": valid,
-            "message": "" if valid else "Mandatory disclaimer is missing or incomplete.",
+            "message": (
+                "" if valid else "Mandatory disclaimer is missing or incomplete."
+            ),
         }
 
     def validate_refusal(self, response: str) -> dict:

@@ -15,7 +15,9 @@ from app.utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def _error_result(error: str, query: str, domain: str, candidates_found: int = 0, **extra) -> dict:
+def _error_result(
+    error: str, query: str, domain: str, candidates_found: int = 0, **extra
+) -> dict:
     """Build a standardised failure result dict."""
     return {
         "success": False,
@@ -70,14 +72,13 @@ class RetrievalPipeline:
         # ── 2. Retrieval ──────────────────────────────────────────────
         retrieval_start = time.perf_counter()
         candidates = self._retriever.retrieve(
-            query, 
-            domain=domain, 
-            top_k=retrieval_top_k, 
-            session_id=session_id
+            query, domain=domain, top_k=retrieval_top_k, session_id=session_id
         )
         retrieval_ms = (time.perf_counter() - retrieval_start) * 1_000
 
-        logger.info("Retrieved %d candidates in %.1f ms.", len(candidates), retrieval_ms)
+        logger.info(
+            "Retrieved %d candidates in %.1f ms.", len(candidates), retrieval_ms
+        )
 
         if not candidates:
             return _error_result(

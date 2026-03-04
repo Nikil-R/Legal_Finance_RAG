@@ -67,26 +67,28 @@ class TestVectorSearch:
 
     def test_vector_search_with_domain_filter(self, vector_retriever: VectorRetriever):
         """Results with domain_filter='tax' should all have domain='tax' in metadata."""
-        results = vector_retriever.search("tax deductions", top_k=10, domain_filter="tax")
+        results = vector_retriever.search(
+            "tax deductions", top_k=10, domain_filter="tax"
+        )
 
         assert len(results) > 0
         for r in results:
-            assert r["metadata"]["domain"] == "tax", (
-                f"Expected domain='tax', got '{r['metadata']['domain']}'"
-            )
+            assert (
+                r["metadata"]["domain"] == "tax"
+            ), f"Expected domain='tax', got '{r['metadata']['domain']}'"
 
     def test_vector_search_empty_query(self, vector_retriever: VectorRetriever):
         """Empty query string should return an empty list without crashing."""
         results = vector_retriever.search("", top_k=5)
         assert results == []
 
-    def test_vector_search_scores_are_plain_floats(self, vector_retriever: VectorRetriever):
+    def test_vector_search_scores_are_plain_floats(
+        self, vector_retriever: VectorRetriever
+    ):
         """Scores must be Python floats, not numpy floats (for JSON serialisability)."""
         results = vector_retriever.search("contract law", top_k=3)
         for r in results:
-            assert type(r["score"]) is float, (
-                f"Expected float, got {type(r['score'])}"
-            )
+            assert type(r["score"]) is float, f"Expected float, got {type(r['score'])}"
 
 
 # ── BM25 Search Tests ─────────────────────────────────────────────────────────
@@ -118,9 +120,9 @@ class TestBM25Search:
 
         assert len(results) > 0
         for r in results:
-            assert r["metadata"]["domain"] == "finance", (
-                f"Expected domain='finance', got '{r['metadata']['domain']}'"
-            )
+            assert (
+                r["metadata"]["domain"] == "finance"
+            ), f"Expected domain='finance', got '{r['metadata']['domain']}'"
 
     def test_bm25_empty_query(self, bm25_retriever: BM25Retriever):
         """Empty query should return an empty list without crashing."""
@@ -131,9 +133,7 @@ class TestBM25Search:
         """BM25 scores must be Python floats (numpy types break JSON serialisation)."""
         results = bm25_retriever.search("provident fund", top_k=5)
         for r in results:
-            assert type(r["score"]) is float, (
-                f"Expected float, got {type(r['score'])}"
-            )
+            assert type(r["score"]) is float, f"Expected float, got {type(r['score'])}"
 
 
 # ── RRF Fusion Tests ──────────────────────────────────────────────────────────
@@ -148,17 +148,53 @@ class TestRRFusion:
     @pytest.fixture()
     def mock_vector_results(self) -> list[dict]:
         return [
-            {"chunk_id": "a", "content": "alpha", "metadata": {}, "score": 0.9, "source": "vector"},
-            {"chunk_id": "b", "content": "beta",  "metadata": {}, "score": 0.8, "source": "vector"},
-            {"chunk_id": "c", "content": "gamma", "metadata": {}, "score": 0.7, "source": "vector"},
+            {
+                "chunk_id": "a",
+                "content": "alpha",
+                "metadata": {},
+                "score": 0.9,
+                "source": "vector",
+            },
+            {
+                "chunk_id": "b",
+                "content": "beta",
+                "metadata": {},
+                "score": 0.8,
+                "source": "vector",
+            },
+            {
+                "chunk_id": "c",
+                "content": "gamma",
+                "metadata": {},
+                "score": 0.7,
+                "source": "vector",
+            },
         ]
 
     @pytest.fixture()
     def mock_bm25_results(self) -> list[dict]:
         return [
-            {"chunk_id": "b", "content": "beta",  "metadata": {}, "score": 15.0, "source": "bm25"},
-            {"chunk_id": "d", "content": "delta", "metadata": {}, "score": 12.0, "source": "bm25"},
-            {"chunk_id": "a", "content": "alpha", "metadata": {}, "score": 10.0, "source": "bm25"},
+            {
+                "chunk_id": "b",
+                "content": "beta",
+                "metadata": {},
+                "score": 15.0,
+                "source": "bm25",
+            },
+            {
+                "chunk_id": "d",
+                "content": "delta",
+                "metadata": {},
+                "score": 12.0,
+                "source": "bm25",
+            },
+            {
+                "chunk_id": "a",
+                "content": "alpha",
+                "metadata": {},
+                "score": 10.0,
+                "source": "bm25",
+            },
         ]
 
     # RRF scores (k=60, 1-based rank):
@@ -170,16 +206,16 @@ class TestRRFusion:
     def test_rrf_b_ranked_highest(self, mock_vector_results, mock_bm25_results):
         """'b' appears at rank 2 (vector) and rank 1 (BM25) → should be #1 overall."""
         fused = RRFusion(k=60).fuse(mock_vector_results, mock_bm25_results)
-        assert fused[0]["chunk_id"] == "b", (
-            f"Expected 'b' at rank 1, got '{fused[0]['chunk_id']}'"
-        )
+        assert (
+            fused[0]["chunk_id"] == "b"
+        ), f"Expected 'b' at rank 1, got '{fused[0]['chunk_id']}'"
 
     def test_rrf_a_ranked_second(self, mock_vector_results, mock_bm25_results):
         """'a' appears at rank 1 (vector) and rank 3 (BM25) → should be #2 overall."""
         fused = RRFusion(k=60).fuse(mock_vector_results, mock_bm25_results)
-        assert fused[1]["chunk_id"] == "a", (
-            f"Expected 'a' at rank 2, got '{fused[1]['chunk_id']}'"
-        )
+        assert (
+            fused[1]["chunk_id"] == "a"
+        ), f"Expected 'a' at rank 2, got '{fused[1]['chunk_id']}'"
 
     def test_rrf_found_by_both(self, mock_vector_results, mock_bm25_results):
         """Documents 'a' and 'b' appear in both lists → found_by='both'."""
@@ -252,19 +288,21 @@ class TestHybridRetriever:
 
         assert len(results) > 0
         top_domains = [r["metadata"].get("domain") for r in results[:3]]
-        assert "tax" in top_domains, (
-            f"Expected 'tax' in top-3 domains, got: {top_domains}"
-        )
+        assert (
+            "tax" in top_domains
+        ), f"Expected 'tax' in top-3 domains, got: {top_domains}"
 
     def test_hybrid_retriever_domain_filter(self, retriever):
         """retrieve(domain='legal') should return only legal-domain chunks."""
-        results = retriever.retrieve("contract agreement parties", domain="legal", top_k=5)
+        results = retriever.retrieve(
+            "contract agreement parties", domain="legal", top_k=5
+        )
 
         assert len(results) > 0
         for r in results:
-            assert r["metadata"]["domain"] == "legal", (
-                f"Expected domain='legal', got '{r['metadata']['domain']}'"
-            )
+            assert (
+                r["metadata"]["domain"] == "legal"
+            ), f"Expected domain='legal', got '{r['metadata']['domain']}'"
 
     def test_hybrid_retriever_invalid_domain(self, retriever):
         """An invalid domain should not crash — should fall back to 'all'."""

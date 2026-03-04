@@ -1,17 +1,17 @@
 """
 Source citations — Perplexity-style inline chips + expandable cards.
 """
+
 import streamlit as st
 
-
 _DOMAIN_BADGE = {
-    "tax":     '<span class="lf-badge tax">TAX</span>',
+    "tax": '<span class="lf-badge tax">TAX</span>',
     "finance": '<span class="lf-badge fin">FINANCE</span>',
-    "legal":   '<span class="lf-badge leg">LEGAL</span>',
+    "legal": '<span class="lf-badge leg">LEGAL</span>',
 }
 _ORIGIN_BADGE = {
     "system": '<span class="lf-badge sys">SYSTEM</span>',
-    "user":   '<span class="lf-badge usr">YOUR FILE</span>',
+    "user": '<span class="lf-badge usr">YOUR FILE</span>',
 }
 _ICON = {"tax": "💰", "finance": "🏦", "legal": "📜", "user_upload": "📎"}
 
@@ -49,7 +49,9 @@ def _card(s: dict):
     excerpt = s.get("excerpt", "")
 
     icon = _ICON.get(domain, "📄")
-    dbadge = _DOMAIN_BADGE.get(domain, f'<span class="lf-badge">{domain.upper()}</span>')
+    dbadge = _DOMAIN_BADGE.get(
+        domain, f'<span class="lf-badge">{domain.upper()}</span>'
+    )
     obadge = _ORIGIN_BADGE.get(origin, _ORIGIN_BADGE["system"])
 
     sc = "hi" if score >= 0.65 else ("md" if score >= 0.35 else "lo")

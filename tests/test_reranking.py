@@ -92,7 +92,9 @@ class TestCrossEncoderReranker:
         assert reranker.model_name == settings.CROSS_ENCODER_MODEL
         assert reranker._model is not None
 
-    def test_rerank_basic_returns_top_k(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_basic_returns_top_k(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """rerank() should return exactly top_k results."""
         results = reranker.rerank(
             "What are Section 80C tax deductions?",
@@ -101,7 +103,9 @@ class TestCrossEncoderReranker:
         )
         assert len(results) == 2
 
-    def test_rerank_weather_chunk_not_in_top2(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_weather_chunk_not_in_top2(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """The weather chunk should lose to on-topic tax chunks."""
         results = reranker.rerank(
             "What are Section 80C tax deductions?",
@@ -114,22 +118,28 @@ class TestCrossEncoderReranker:
             f"got top ids: {top_ids}"
         )
 
-    def test_rerank_results_sorted_descending(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_results_sorted_descending(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """Results must be strictly sorted by rerank_score descending."""
         results = reranker.rerank("Section 80C tax deductions", tax_candidates, top_k=3)
         scores = [r["rerank_score"] for r in results]
         assert scores == sorted(scores, reverse=True), f"Scores not sorted: {scores}"
 
-    def test_rerank_score_field_present(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_score_field_present(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """Every result must carry a rerank_score that is a plain Python float."""
         results = reranker.rerank("tax deductions", tax_candidates, top_k=3)
         for r in results:
             assert "rerank_score" in r
-            assert type(r["rerank_score"]) is float, (
-                f"Expected float, got {type(r['rerank_score'])}"
-            )
+            assert (
+                type(r["rerank_score"]) is float
+            ), f"Expected float, got {type(r['rerank_score'])}"
 
-    def test_rerank_original_fields_preserved(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_original_fields_preserved(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """Reranking must not drop any existing fields (chunk_id, metadata, etc.)."""
         results = reranker.rerank("tax deductions", tax_candidates, top_k=3)
         for r in results:
@@ -144,7 +154,9 @@ class TestCrossEncoderReranker:
         results = reranker.rerank("any query", [], top_k=5)
         assert results == []
 
-    def test_rerank_fewer_candidates_than_top_k(self, reranker: CrossEncoderReranker, tax_candidates):
+    def test_rerank_fewer_candidates_than_top_k(
+        self, reranker: CrossEncoderReranker, tax_candidates
+    ):
         """When candidates < top_k all candidates should be returned."""
         results = reranker.rerank("tax deductions", tax_candidates, top_k=100)
         assert len(results) == len(tax_candidates)
@@ -165,9 +177,9 @@ class TestCrossEncoderReranker:
         )
         ids_returned = {r["chunk_id"] for r in results}
         # Tax chunks must be present; weather may or may not pass 0.0
-        assert "1" in ids_returned or "3" in ids_returned, (
-            "At least one tax chunk should pass threshold"
-        )
+        assert (
+            "1" in ids_returned or "3" in ids_returned
+        ), "At least one tax chunk should pass threshold"
 
     def test_rerank_with_threshold_high_cutoff(
         self, reranker: CrossEncoderReranker, tax_candidates
@@ -270,7 +282,9 @@ class TestContextBuilder:
             "metadata": {"source": "big.pdf", "domain": "tax"},
             "rerank_score": 0.5,
         }
-        result = ContextBuilder(max_context_length=50).build_context_with_metadata([chunk])
+        result = ContextBuilder(max_context_length=50).build_context_with_metadata(
+            [chunk]
+        )
         assert result["truncated"] is True
 
 

@@ -74,7 +74,7 @@ class CrossEncoderReranker:
 
         # Attach Python-native float scores
         scored: list[dict] = []
-        for candidate, raw in zip(candidates, raw_scores):
+        for candidate, raw in zip(candidates, raw_scores, strict=False):
             scored.append({**candidate, "rerank_score": float(raw)})
 
         # Sort descending by rerank_score

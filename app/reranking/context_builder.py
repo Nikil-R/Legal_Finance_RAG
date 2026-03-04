@@ -38,7 +38,9 @@ class ContextBuilder:
             origin = chunk.get("origin") or meta.get("origin", "system")
             origin_label = "System" if origin == "system" else "User Upload"
             content = chunk.get("content", "")
-            parts.append(f"[{idx}] Source: {source} | Origin: {origin_label} | Domain: {domain}\n{content}")
+            parts.append(
+                f"[{idx}] Source: {source} | Origin: {origin_label} | Domain: {domain}\n{content}"
+            )
 
         context = "\n\n".join(parts)
 

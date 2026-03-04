@@ -1,26 +1,47 @@
 """
 Chat component — premium AI-assistant style.
 """
-import streamlit as st
-import requests
+
 from datetime import datetime
 
+import requests
+import streamlit as st
+
+from frontend.components.sources import render_sources
 from frontend.config import config
 from frontend.utils.api_client import api_client
 from frontend.utils.state import (
-    add_message, add_uploaded_file,
-    get_domain, get_messages, get_session_id, get_uploaded_files,
+    add_message,
+    add_uploaded_file,
+    get_domain,
+    get_messages,
+    get_session_id,
+    get_uploaded_files,
 )
-from frontend.components.sources import render_sources
-
 
 # ─── Welcome Page ────────────────────────────────────────────────────────────
 
 _EXAMPLES = [
-    ("TAX", "Section 80C deductions", "What are all deductions available under Section 80C of the Income Tax Act?"),
-    ("RBI", "KYC compliance",         "What are the KYC requirements for banks per RBI Master Directions?"),
-    ("CONTRACT", "Free consent",      "What constitutes free consent under the Indian Contract Act, 1872?"),
-    ("GST", "E-commerce rates",       "What is the GST rate applicable on e-commerce operators in India?"),
+    (
+        "💰 TAX",
+        "Section 80C deductions",
+        "What are all deductions available under Section 80C of the Income Tax Act?",
+    ),
+    (
+        "🏦 RBI",
+        "KYC compliance",
+        "What are the KYC requirements for banks per RBI Master Directions?",
+    ),
+    (
+        "📜 CONTRACT",
+        "Free consent",
+        "What constitutes free consent under the Indian Contract Act, 1872?",
+    ),
+    (
+        "⚡ GST",
+        "E-commerce rates",
+        "What is the GST rate applicable on e-commerce operators in India?",
+    ),
 ]
 
 
@@ -46,25 +67,31 @@ def render_welcome():
     )
     if uploaded and uploaded.name != st.session_state.get("last_uploaded_name"):
         _handle_upload(uploaded)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # Example cards (Grid)
-    st.markdown('<p style="font-size:0.7rem; color:#475569; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; margin:2rem auto 1rem; text-align:center;">Suggested Topics</p>', unsafe_allow_html=True)
-    
+    st.markdown(
+        '<p style="font-size:0.7rem; color:#475569; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; margin:2rem auto 1rem; text-align:center;">Suggested Topics</p>',
+        unsafe_allow_html=True,
+    )
+
     with st.container():
         cols = st.columns(2)
         for i, (tag, title, full_q) in enumerate(_EXAMPLES):
             with cols[i % 2]:
+                st.markdown(f'<p style="font-size:0.65rem; color:#6366f1; font-weight:800; margin-bottom:0.4rem; margin-left:0.5rem; text-transform:uppercase;">{tag}</p>', unsafe_allow_html=True)
                 if st.button(
-                    f"[{tag}]  {title}", 
-                    key=f"ex_btn_{i}", 
+                    title,
+                    key=f"ex_btn_{i}",
                     use_container_width=True,
-                    help=f"Query: {full_q}"
+                    help=f"Query: {full_q}",
                 ):
                     _process_query(full_q)
                     st.rerun()
 
+
 # ─── Chat History ─────────────────────────────────────────────────────────────
+
 
 def render_chat_history():
     messages = get_messages()
@@ -72,7 +99,10 @@ def render_chat_history():
         render_welcome()
         return
 
-    st.markdown('<div style="max-width:800px;margin:0 auto;padding:1.25rem 1rem 0.5rem;">', unsafe_allow_html=True)
+    st.markdown(
+        '<div style="max-width:800px;margin:0 auto;padding:1.25rem 1rem 0.5rem;">',
+        unsafe_allow_html=True,
+    )
     for idx, msg in enumerate(messages):
         if msg.role == "user":
             _render_user(msg)
@@ -128,6 +158,7 @@ def _render_meta(meta: dict, idx: int):
 
 # ─── File Badge Bar ───────────────────────────────────────────────────────────
 
+
 def render_file_upload():
     uploads = get_uploaded_files()
     if uploads:
@@ -137,12 +168,13 @@ def render_file_upload():
         st.markdown(
             f'<div class="lf-filesbar">'
             f'<span class="lf-filesbar-label">Active files</span>{badges}'
-            f'</div>',
+            f"</div>",
             unsafe_allow_html=True,
         )
 
 
 # ─── Chat Input Row ───────────────────────────────────────────────────────────
+
 
 def render_chat_input():
     # Only show the additional upload zone if we already have messages
@@ -157,7 +189,7 @@ def render_chat_input():
         )
         if uploaded and uploaded.name != st.session_state.get("last_uploaded_name"):
             _handle_upload(uploaded)
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # Chat input centered
     st.markdown('<div style="max-width:800px; margin:0 auto;">', unsafe_allow_html=True)
@@ -167,7 +199,7 @@ def render_chat_input():
     ):
         _process_query(prompt)
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _handle_upload(file):
@@ -199,6 +231,7 @@ def _handle_upload(file):
 
 
 # ─── Query Processing ─────────────────────────────────────────────────────────
+
 
 def _process_query(question: str):
     domain = get_domain()
@@ -236,8 +269,11 @@ def _process_query(question: str):
                 unsafe_allow_html=True,
             )
             add_message(
-                "assistant", result.answer,
-                sources=result.sources, metadata=result.metadata, domain=domain,
+                "assistant",
+                result.answer,
+                sources=result.sources,
+                metadata=result.metadata,
+                domain=domain,
             )
             if result.sources and st.session_state.get("show_sources", True):
                 render_sources(result.sources, key_prefix="live")

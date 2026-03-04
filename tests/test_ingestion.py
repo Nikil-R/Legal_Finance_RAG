@@ -144,7 +144,10 @@ class TestDocumentChunker:
     def test_chunk_document_empty_content(self):
         """chunk_document() on an empty document should return an empty list."""
         chunker = DocumentChunker(chunk_size=200, chunk_overlap=50)
-        doc = {"content": "", "metadata": {"source": "empty.txt", "domain": "tax", "file_path": ""}}
+        doc = {
+            "content": "",
+            "metadata": {"source": "empty.txt", "domain": "tax", "file_path": ""},
+        }
         chunks = chunker.chunk_document(doc)
         assert chunks == []
 
@@ -165,17 +168,12 @@ class TestFullPipeline:
         verify the summary counts are consistent.
         """
         # Import here to avoid loading heavy models at collection time
-        from app.ingestion.pipeline import run_ingestion_pipeline
 
         # Patch settings temporarily so we use the test chroma dir
-        import app.ingestion.pipeline as pipeline_module
-        import app.ingestion.embedder as embedder_module
-
-        original_persist = embedder_module.chromadb  # keep reference
-
         # Run with the test chroma path directly via pipeline kwargs
         # We need to override settings.CHROMA_PERSIST_DIR for this test.
         from app import config as cfg_module
+        from app.ingestion.pipeline import run_ingestion_pipeline
 
         original_dir = cfg_module.settings.CHROMA_PERSIST_DIR
         try:
@@ -188,10 +186,14 @@ class TestFullPipeline:
         finally:
             cfg_module.settings.CHROMA_PERSIST_DIR = original_dir
 
-        assert summary["documents_loaded"] > 0, "Pipeline should load at least 1 document"
+        assert (
+            summary["documents_loaded"] > 0
+        ), "Pipeline should load at least 1 document"
         assert summary["chunks_created"] > 0, "Pipeline should create at least 1 chunk"
-        assert summary["chunks_stored"] == summary["chunks_created"], (
-            "Every chunk created should be stored in ChromaDB"
-        )
+        assert (
+            summary["chunks_stored"] == summary["chunks_created"]
+        ), "Every chunk created should be stored in ChromaDB"
         assert isinstance(summary["domain_breakdown"], dict)
-        assert len(summary["domain_breakdown"]) > 0, "Domain breakdown should not be empty"
+        assert (
+            len(summary["domain_breakdown"]) > 0
+        ), "Domain breakdown should not be empty"

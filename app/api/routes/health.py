@@ -1,9 +1,12 @@
 """
 Health check and system status endpoints.
 """
-from fastapi import APIRouter
+
 from datetime import datetime, timezone
+
 import chromadb
+from fastapi import APIRouter
+
 from app.api.models import HealthResponse
 from app.config import settings
 from app.utils.logger import get_logger
@@ -16,7 +19,7 @@ logger = get_logger(__name__)
     "/health",
     response_model=HealthResponse,
     summary="Health check",
-    description="Returns the health status of the API and its components."
+    description="Returns the health status of the API and its components.",
 )
 async def health_check() -> HealthResponse:
     """
@@ -27,9 +30,9 @@ async def health_check() -> HealthResponse:
         "api": True,
         "groq_api_key_set": bool(settings.GROQ_API_KEY),
         "chroma_db": False,
-        "embeddings_model": False
+        "embeddings_model": False,
     }
-    
+
     # Check ChromaDB
     try:
         client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
@@ -37,28 +40,24 @@ async def health_check() -> HealthResponse:
         components["chroma_db"] = True
     except Exception as e:
         logger.warning("ChromaDB health check failed: %s", e)
-    
+
     # Check embeddings model (just verify it's configured)
     components["embeddings_model"] = bool(settings.EMBEDDING_MODEL)
-    
+
     # Overall status
     critical_components = ["api", "groq_api_key_set", "chroma_db"]
     all_critical_healthy = all(components.get(c, False) for c in critical_components)
     status = "healthy" if all_critical_healthy else "degraded"
-    
+
     return HealthResponse(
         status=status,
         version="0.1.0",
         components=components,
-        timestamp=datetime.now(timezone.utc)
+        timestamp=datetime.now(timezone.utc),
     )
 
 
-@router.get(
-    "/",
-    summary="Root endpoint",
-    description="Returns basic API information."
-)
+@router.get("/", summary="Root endpoint", description="Returns basic API information.")
 async def root() -> dict:
     """
     Root endpoint with API info.
@@ -68,14 +67,14 @@ async def root() -> dict:
         "version": "0.1.0",
         "description": "RAG system for Indian tax, finance, and legal documents",
         "docs_url": "/docs",
-        "health_url": "/health"
+        "health_url": "/health",
     }
 
 
 @router.get(
     "/config",
     summary="Get non-sensitive configuration",
-    description="Returns non-sensitive configuration values for debugging."
+    description="Returns non-sensitive configuration values for debugging.",
 )
 async def get_config() -> dict:
     """
@@ -90,5 +89,5 @@ async def get_config() -> dict:
         "top_k_retrieval": settings.TOP_K_RETRIEVAL,
         "top_k_rerank": settings.TOP_K_RERANK,
         "temperature": settings.TEMPERATURE,
-        "chroma_persist_dir": settings.CHROMA_PERSIST_DIR
+        "chroma_persist_dir": settings.CHROMA_PERSIST_DIR,
     }

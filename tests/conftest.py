@@ -1,22 +1,23 @@
 """
 Pytest configuration and shared fixtures.
 """
+
 import os
-import pytest
-import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
+import pytest
 
 # ============ Environment Setup ============
+
 
 def pytest_configure(config):
     """Configure pytest environment."""
     # Set test environment
     os.environ["TESTING"] = "true"
     os.environ["LOG_LEVEL"] = "WARNING"
-    
+
     # Use test ChromaDB directory
     os.environ["CHROMA_PERSIST_DIR"] = "./test_chroma_db"
 
@@ -31,16 +32,17 @@ def pytest_unconfigure(config):
 
 # ============ Fixtures ============
 
+
 @pytest.fixture(scope="session")
 def test_data_dir(tmp_path_factory):
     """Create temporary test data directory with sample documents."""
     data_dir = tmp_path_factory.mktemp("data")
-    
+
     # Create domain subdirectories
     (data_dir / "raw" / "tax").mkdir(parents=True)
     (data_dir / "raw" / "finance").mkdir(parents=True)
     (data_dir / "raw" / "legal").mkdir(parents=True)
-    
+
     # Create sample documents
     tax_content = """
     Income Tax Act, 1961 - Section 80C
@@ -56,7 +58,7 @@ def test_data_dir(tmp_path_factory):
     5. Life Insurance Premium payments
     6. Fixed Deposits with 5-year lock-in period
     """
-    
+
     finance_content = """
     Reserve Bank of India - KYC Guidelines 2023
     
@@ -68,7 +70,7 @@ def test_data_dir(tmp_path_factory):
     2. Customer Due Diligence (CDD) with risk-based approach
     3. Periodic KYC updation every 2 years for high-risk customers
     """
-    
+
     legal_content = """
     Indian Contract Act, 1872 - Key Provisions
     
@@ -80,11 +82,11 @@ def test_data_dir(tmp_path_factory):
     Section 14: Free Consent - Consent is free when not caused by 
     coercion, undue influence, fraud, or misrepresentation.
     """
-    
+
     (data_dir / "raw" / "tax" / "income_tax.txt").write_text(tax_content)
     (data_dir / "raw" / "finance" / "rbi_kyc.txt").write_text(finance_content)
     (data_dir / "raw" / "legal" / "contract_act.txt").write_text(legal_content)
-    
+
     return data_dir
 
 
@@ -103,14 +105,14 @@ def mock_groq_client():
         mock_response = MagicMock()
         mock_response.choices = [
             MagicMock(
-                message=MagicMock(content="Test response with citation [1].\n\n---\n**Disclaimer:** For educational purposes only."),
-                finish_reason="stop"
+                message=MagicMock(
+                    content="Test response with citation [1].\n\n---\n**Disclaimer:** For educational purposes only."
+                ),
+                finish_reason="stop",
             )
         ]
         mock_response.usage = MagicMock(
-            prompt_tokens=100,
-            completion_tokens=50,
-            total_tokens=150
+            prompt_tokens=100, completion_tokens=50, total_tokens=150
         )
         mock_instance.chat.completions.create.return_value = mock_response
         mock.return_value = mock_instance
@@ -141,32 +143,32 @@ def sample_chunks():
     """Sample chunks for testing."""
     return [
         {
-            "chunk_id": "tax_001_chunk_0",
             "content": "Section 80C allows deductions up to Rs 1,50,000 for PPF and ELSS investments.",
             "metadata": {
+                "chunk_id": "tax_001_chunk_0",
                 "source": "income_tax.txt",
                 "domain": "tax",
-                "chunk_index": 0
-            }
+                "chunk_index": 0,
+            },
         },
         {
-            "chunk_id": "finance_001_chunk_0",
             "content": "RBI mandates KYC norms for all banks including Aadhaar verification.",
             "metadata": {
+                "chunk_id": "finance_001_chunk_0",
                 "source": "rbi_kyc.txt",
                 "domain": "finance",
-                "chunk_index": 0
-            }
+                "chunk_index": 0,
+            },
         },
         {
-            "chunk_id": "legal_001_chunk_0",
             "content": "Section 2(h) defines a contract as an agreement enforceable by law.",
             "metadata": {
+                "chunk_id": "legal_001_chunk_0",
                 "source": "contract_act.txt",
                 "domain": "legal",
-                "chunk_index": 0
-            }
-        }
+                "chunk_index": 0,
+            },
+        },
     ]
 
 
@@ -184,13 +186,13 @@ def sample_query_response():
                 "source": "income_tax.txt",
                 "domain": "tax",
                 "relevance_score": 0.92,
-                "excerpt": "Section 80C allows deductions..."
+                "excerpt": "Section 80C allows deductions...",
             }
         ],
         "validation": {
             "overall_valid": True,
             "citations": {"has_citations": True, "citations_found": [1]},
-            "disclaimer": {"has_disclaimer": True}
+            "disclaimer": {"has_disclaimer": True},
         },
         "metadata": {
             "retrieval_candidates": 20,
@@ -198,13 +200,18 @@ def sample_query_response():
             "top_relevance_score": 0.92,
             "model": "llama-3.1-8b-instant",
             "prompt_version": "v1",
-            "token_usage": {"prompt_tokens": 500, "completion_tokens": 100, "total_tokens": 600},
-            "total_time_ms": 1500
-        }
+            "token_usage": {
+                "prompt_tokens": 500,
+                "completion_tokens": 100,
+                "total_tokens": 600,
+            },
+            "total_time_ms": 1500,
+        },
     }
 
 
 # ============ Markers ============
+
 
 def pytest_collection_modifyitems(config, items):
     """Add markers to tests based on their location."""
@@ -216,13 +223,14 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(pytest.mark.integration)
         elif "e2e" in str(item.fspath):
             item.add_marker(pytest.mark.e2e)
-        
+
         # Mark tests that require API key
         if "groq" in item.name.lower() or "api_key" in item.name.lower():
             item.add_marker(pytest.mark.requires_api_key)
 
 
 # ============ Skip Conditions ============
+
 
 @pytest.fixture
 def skip_without_api_key():

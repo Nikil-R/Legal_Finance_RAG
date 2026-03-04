@@ -2,7 +2,9 @@
 FastAPI dependencies for injecting services into routes.
 Uses caching to avoid reinitializing heavy models on each request.
 """
+
 from functools import lru_cache
+
 from app.generation import RAGPipeline
 from app.reranking import RetrievalPipeline
 from app.retrieval import HybridRetriever

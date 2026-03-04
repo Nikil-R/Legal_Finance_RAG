@@ -1,6 +1,7 @@
 """
 API endpoint tests — use FastAPI's TestClient (synchronous, no live server needed).
 """
+
 from __future__ import annotations
 
 import os

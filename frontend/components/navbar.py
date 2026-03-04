@@ -1,8 +1,10 @@
 """
 Navbar — glass bar with brand + API status.
 """
-import streamlit as st
+
 import requests
+import streamlit as st
+
 from frontend.config import config
 
 

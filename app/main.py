@@ -1,6 +1,7 @@
 """
 LegalFinance RAG API — Main Application Entry Point
 """
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -11,7 +12,12 @@ from app.api.middleware import (
     global_exception_handler,
     http_exception_handler,
 )
-from app.api.routes import documents_router, health_router, query_router, user_documents_router
+from app.api.routes import (
+    documents_router,
+    health_router,
+    query_router,
+    user_documents_router,
+)
 from app.config import settings
 from app.utils.logger import get_logger
 
@@ -85,10 +91,10 @@ app.add_exception_handler(HTTPException, http_exception_handler)
 
 # ── Routers ────────────────────────────────────────────────────────────────────
 
-app.include_router(health_router)                          # / and /health
-app.include_router(query_router, prefix="/api/v1")         # /api/v1/query
-app.include_router(documents_router, prefix="/api/v1")     # /api/v1/documents
-app.include_router(user_documents_router, prefix="/api/v1") # /api/v1/user
+app.include_router(health_router)  # / and /health
+app.include_router(query_router, prefix="/api/v1")  # /api/v1/query
+app.include_router(documents_router, prefix="/api/v1")  # /api/v1/documents
+app.include_router(user_documents_router, prefix="/api/v1")  # /api/v1/user
 
 # ── Run directly ───────────────────────────────────────────────────────────────
 

@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Optional
 from datetime import datetime
 from enum import Enum
+from typing import Optional
+
+from pydantic import BaseModel, Field
 
 
 class DomainEnum(str, Enum):
@@ -13,26 +14,26 @@ class DomainEnum(str, Enum):
 
 # ============ REQUEST MODELS ============
 
+
 class QueryRequest(BaseModel):
     """Request model for RAG query endpoint"""
+
     question: str = Field(
         ...,
         min_length=3,
         max_length=1000,
         description="The question to ask the RAG system",
-        examples=["What are the deductions available under Section 80C?"]
+        examples=["What are the deductions available under Section 80C?"],
     )
     domain: DomainEnum = Field(
         default=DomainEnum.all,
-        description="Filter by domain: tax, finance, legal, or all"
+        description="Filter by domain: tax, finance, legal, or all",
     )
     include_sources: bool = Field(
-        default=True,
-        description="Whether to include source documents in response"
+        default=True, description="Whether to include source documents in response"
     )
     session_id: Optional[str] = Field(
-        default=None,
-        description="Optional session ID for conversation memory"
+        default=None, description="Optional session ID for conversation memory"
     )
 
     class Config:
@@ -41,13 +42,14 @@ class QueryRequest(BaseModel):
                 "question": "What are the deductions available under Section 80C?",
                 "domain": "tax",
                 "include_sources": True,
-                "session_id": None
+                "session_id": None,
             }
         }
 
 
 class RetrievalOnlyRequest(BaseModel):
     """Request model for retrieval-only endpoint (no LLM generation)"""
+
     question: str = Field(..., min_length=3, max_length=1000)
     domain: DomainEnum = Field(default=DomainEnum.all)
     top_k: int = Field(default=5, ge=1, le=20)
@@ -55,16 +57,19 @@ class RetrievalOnlyRequest(BaseModel):
 
 class IngestRequest(BaseModel):
     """Request model for triggering document ingestion"""
+
     clear_existing: bool = Field(
         default=False,
-        description="Whether to clear existing documents before ingesting"
+        description="Whether to clear existing documents before ingesting",
     )
 
 
 # ============ RESPONSE MODELS ============
 
+
 class SourceDocument(BaseModel):
     """A source document used in the response"""
+
     reference_id: int
     source: str
     domain: str
@@ -75,6 +80,7 @@ class SourceDocument(BaseModel):
 
 class UserUploadResponse(BaseModel):
     """Response for user document upload"""
+
     success: bool
     session_id: str
     filename: str
@@ -84,6 +90,7 @@ class UserUploadResponse(BaseModel):
 
 class UserDocumentInfo(BaseModel):
     """Information about an uploaded user document"""
+
     filename: str
     uploaded_at: datetime
     chunks: int
@@ -91,6 +98,7 @@ class UserDocumentInfo(BaseModel):
 
 class UserDocumentsResponse(BaseModel):
     """Response listing user documents"""
+
     success: bool
     session_id: str
     documents: list[UserDocumentInfo]
@@ -99,6 +107,7 @@ class UserDocumentsResponse(BaseModel):
 
 class ValidationResult(BaseModel):
     """Validation results for the generated response"""
+
     overall_valid: bool
     has_citations: bool
     has_disclaimer: bool
@@ -107,6 +116,7 @@ class ValidationResult(BaseModel):
 
 class TokenUsage(BaseModel):
     """Token usage statistics"""
+
     prompt_tokens: int
     completion_tokens: int
     total_tokens: int
@@ -114,6 +124,7 @@ class TokenUsage(BaseModel):
 
 class QueryMetadata(BaseModel):
     """Metadata about the query processing"""
+
     retrieval_candidates: int
     reranked_chunks: int
     top_relevance_score: float
@@ -127,6 +138,7 @@ class QueryMetadata(BaseModel):
 
 class QueryResponse(BaseModel):
     """Response model for RAG query endpoint"""
+
     success: bool
     question: str
     domain: str
@@ -150,14 +162,14 @@ class QueryResponse(BaseModel):
                         "source": "income_tax_act.pdf",
                         "domain": "tax",
                         "relevance_score": 0.92,
-                        "excerpt": "Section 80C allows..."
+                        "excerpt": "Section 80C allows...",
                     }
                 ],
                 "validation": {
                     "overall_valid": True,
                     "has_citations": True,
                     "has_disclaimer": True,
-                    "issues": []
+                    "issues": [],
                 },
                 "metadata": {
                     "retrieval_candidates": 20,
@@ -168,19 +180,20 @@ class QueryResponse(BaseModel):
                     "token_usage": {
                         "prompt_tokens": 500,
                         "completion_tokens": 200,
-                        "total_tokens": 700
+                        "total_tokens": 700,
                     },
                     "retrieval_time_ms": 150,
                     "generation_time_ms": 800,
-                    "total_time_ms": 950
+                    "total_time_ms": 950,
                 },
-                "timestamp": "2024-01-15T10:30:00Z"
+                "timestamp": "2024-01-15T10:30:00Z",
             }
         }
 
 
 class RetrievalResponse(BaseModel):
     """Response for retrieval-only endpoint"""
+
     success: bool
     question: str
     domain: str
@@ -192,6 +205,7 @@ class RetrievalResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response"""
+
     status: str
     version: str
     components: dict[str, bool]
@@ -200,6 +214,7 @@ class HealthResponse(BaseModel):
 
 class StatsResponse(BaseModel):
     """System statistics response"""
+
     total_documents: int
     total_chunks: int
     domains: dict[str, int]
@@ -209,6 +224,7 @@ class StatsResponse(BaseModel):
 
 class IngestResponse(BaseModel):
     """Response for ingestion endpoint"""
+
     success: bool
     documents_loaded: int
     chunks_created: int
@@ -220,6 +236,7 @@ class IngestResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     """Standard error response"""
+
     success: bool = False
     error: str
     error_type: str

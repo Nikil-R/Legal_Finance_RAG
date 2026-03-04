@@ -1,0 +1,101 @@
+﻿B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+  --> app\api\routes\user_documents.py:58:9
+   |
+56 |     except Exception as e:
+57 |         logger.error("Error uploading user document: %s", str(e))
+58 |         raise HTTPException(status_code=500, detail=str(e))
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+  --> app\retrieval\bm25_search.py:40:13
+   |
+38 |               self._collection = client.get_collection(name=self.collection_name)
+39 |           except Exception:
+40 | /             raise RuntimeError(
+41 | |                 f"ChromaDB collection '{self.collection_name}' not found. "
+42 | |                 "Please run the ingestion pipeline first:\n"
+43 | |                 "  python -m app.ingestion.cli"
+44 | |             )
+   | |_____________^
+45 |
+46 |           logger.info(
+   |
+
+B904 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+  --> app\retrieval\vector_search.py:37:13
+   |
+35 |               self._collection = client.get_collection(name=self.collection_name)
+36 |           except Exception:
+37 | /             raise RuntimeError(
+38 | |                 f"ChromaDB collection '{self.collection_name}' not found. "
+39 | |                 "Please run the ingestion pipeline first:\n"
+40 | |                 "  python -m app.ingestion.cli"
+41 | |             )
+   | |_____________^
+42 |
+43 |           logger.info(
+   |
+
+E402 Module level import not at top of file
+  --> evaluation\runner.py:14:1
+   |
+12 | load_dotenv()
+13 |
+14 | from evaluation.evaluator import RAGEvaluator
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+15 | from evaluation.golden_dataset import GoldenDataset
+16 | from evaluation.reporter import EvaluationReporter
+   |
+
+E402 Module level import not at top of file
+  --> evaluation\runner.py:15:1
+   |
+14 | from evaluation.evaluator import RAGEvaluator
+15 | from evaluation.golden_dataset import GoldenDataset
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+16 | from evaluation.reporter import EvaluationReporter
+   |
+
+E402 Module level import not at top of file
+  --> evaluation\runner.py:16:1
+   |
+14 | from evaluation.evaluator import RAGEvaluator
+15 | from evaluation.golden_dataset import GoldenDataset
+16 | from evaluation.reporter import EvaluationReporter
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+E722 Do not use bare `except`
+   --> frontend\utils\api_client.py:129:9
+    |
+127 |             result = self.health_check()
+128 |             return result.get("status") == "healthy"
+129 |         except:
+    |         ^^^^^^
+130 |             return False
+    |
+
+E402 Module level import not at top of file
+  --> scripts\evaluate.py:12:1
+   |
+10 | sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+11 |
+12 | from evaluation.runner import main
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 |
+14 | if __name__ == "__main__":
+   |
+
+E402 Module level import not at top of file
+  --> scripts\ingest.py:12:1
+   |
+10 | sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+11 |
+12 | from app.ingestion.cli import main
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+13 |
+14 | if __name__ == "__main__":
+   |
+
+Found 9 errors.

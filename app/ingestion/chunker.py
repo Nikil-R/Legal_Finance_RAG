@@ -96,5 +96,9 @@ class DocumentChunker:
         for doc in documents:
             all_chunks.extend(self.chunk_document(doc))
 
-        logger.info("Total chunks created: %d from %d document(s).", len(all_chunks), len(documents))
+        logger.info(
+            "Total chunks created: %d from %d document(s).",
+            len(all_chunks),
+            len(documents),
+        )
         return all_chunks

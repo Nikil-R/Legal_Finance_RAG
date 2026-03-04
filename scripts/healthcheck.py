@@ -1,6 +1,8 @@
-import requests
-import sys
 import os
+import sys
+
+import requests
+
 
 def check_api_health(url="http://localhost:8000/health"):
     """Check API health status."""
@@ -21,7 +23,8 @@ def check_api_health(url="http://localhost:8000/health"):
         print(f"Connection to API failed: {e}")
         return False
 
+
 if __name__ == "__main__":
     # Get URL from environment or use default
-    api_url = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip('/') + "/health"
+    api_url = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip("/") + "/health"
     sys.exit(0 if check_api_health(api_url) else 1)

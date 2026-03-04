@@ -23,7 +23,12 @@ DEFAULT_BATCH_SIZE = 100
 class VectorStoreManager:
     """Manages embedding generation and ChromaDB storage for document chunks."""
 
-    def __init__(self, persist_dir: str, embedding_model: str, collection_name: str = COLLECTION_NAME) -> None:
+    def __init__(
+        self,
+        persist_dir: str,
+        embedding_model: str,
+        collection_name: str = COLLECTION_NAME,
+    ) -> None:
         logger.info("Loading embedding model '%s' …", embedding_model)
         self._encoder = SentenceTransformer(embedding_model)
 
@@ -44,7 +49,9 @@ class VectorStoreManager:
     # Public API
     # ------------------------------------------------------------------
 
-    def embed_and_store(self, chunks: list[dict], batch_size: int = DEFAULT_BATCH_SIZE) -> int:
+    def embed_and_store(
+        self, chunks: list[dict], batch_size: int = DEFAULT_BATCH_SIZE
+    ) -> int:
         """
         Embed *chunks* and upsert them into ChromaDB.
 
@@ -83,7 +90,12 @@ class VectorStoreManager:
                 metadatas=metadatas,
             )
             stored += len(batch)
-            logger.info("Batch %d/%d stored. Running total: %d.", batch_num + 1, num_batches, stored)
+            logger.info(
+                "Batch %d/%d stored. Running total: %d.",
+                batch_num + 1,
+                num_batches,
+                stored,
+            )
 
         return stored
 

@@ -44,7 +44,9 @@ def main() -> None:
             print(f"  Time      : {result['total_time_ms']:.0f} ms")
 
             preview = result["context"]
-            print(f"\nContext preview:\n{preview[:500]}{'…' if len(preview) > 500 else ''}")
+            print(
+                f"\nContext preview:\n{preview[:500]}{'…' if len(preview) > 500 else ''}"
+            )
 
             print("\nSources:")
             for src in result["sources"]:

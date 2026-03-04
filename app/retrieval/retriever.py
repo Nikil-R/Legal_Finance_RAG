@@ -33,6 +33,7 @@ class HybridRetriever:
         )
         self._bm25 = BM25Retriever(persist_dir=settings.CHROMA_PERSIST_DIR)
         from app.retrieval.user_retriever import UserDocumentRetriever
+
         self._user_retriever = UserDocumentRetriever()
         self._rrf = RRFusion(k=60)
         logger.info("HybridRetriever ready.")
@@ -67,9 +68,11 @@ class HybridRetriever:
         start = time.perf_counter()
 
         # System Search
-        vector_results = self._vector.search(query, top_k=k, domain_filter=domain_filter)
+        vector_results = self._vector.search(
+            query, top_k=k, domain_filter=domain_filter
+        )
         bm25_results = self._bm25.search(query, top_k=k, domain_filter=domain_filter)
-        
+
         # Mark system results
         for r in vector_results:
             r["origin"] = "system"
@@ -80,10 +83,14 @@ class HybridRetriever:
         user_vector_results = []
         user_bm25_results = []
         if session_id:
-            user_results = self._user_retriever.search(query, session_id=session_id, top_k=k)
+            user_results = self._user_retriever.search(
+                query, session_id=session_id, top_k=k
+            )
             # user_results is a combined list, need to separate for RRF if possible
             # or just add them to the system lists
-            user_vector_results = [r for r in user_results if r.get("source") == "vector"]
+            user_vector_results = [
+                r for r in user_results if r.get("source") == "vector"
+            ]
             user_bm25_results = [r for r in user_results if r.get("source") == "bm25"]
 
         # Merge results for RRF fusion

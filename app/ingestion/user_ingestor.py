@@ -2,15 +2,13 @@
 User Document Ingestor — handles isolated document ingestion for user sessions.
 """
 
-import os
-from pathlib import Path
 from datetime import datetime
-import uuid
+from pathlib import Path
 
-from app.ingestion.loader import DocumentLoader
+from app.config import get_settings
 from app.ingestion.chunker import DocumentChunker
 from app.ingestion.embedder import VectorStoreManager
-from app.config import get_settings
+from app.ingestion.loader import DocumentLoader
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -24,7 +22,7 @@ class UserDocumentIngestor:
         self.loader = DocumentLoader()
         self.chunker = DocumentChunker(
             chunk_size=self.settings.CHUNK_SIZE,
-            chunk_overlap=self.settings.CHUNK_OVERLAP
+            chunk_overlap=self.settings.CHUNK_OVERLAP,
         )
         self.upload_dir = Path("data/user_uploads")
         self.upload_dir.mkdir(parents=True, exist_ok=True)
@@ -33,6 +31,7 @@ class UserDocumentIngestor:
         """Extract text from a .docx file."""
         try:
             import docx
+
             doc = docx.Document(file_path)
             return "\n".join([para.text for para in doc.paragraphs])
         except Exception as exc:
@@ -47,7 +46,7 @@ class UserDocumentIngestor:
         session_dir = self.upload_dir / session_id
         session_dir.mkdir(parents=True, exist_ok=True)
         file_path = session_dir / filename
-        
+
         with open(file_path, "wb") as f:
             f.write(content)
 
@@ -74,8 +73,8 @@ class UserDocumentIngestor:
                 "file_path": str(file_path),
                 "session_id": session_id,
                 "uploaded_at": datetime.now().isoformat(),
-                "origin": "user"
-            }
+                "origin": "user",
+            },
         }
 
         # 4. Chunk
@@ -88,7 +87,7 @@ class UserDocumentIngestor:
         vsm = VectorStoreManager(
             persist_dir=self.settings.CHROMA_PERSIST_DIR,
             embedding_model=self.settings.EMBEDDING_MODEL,
-            collection_name=collection_name
+            collection_name=collection_name,
         )
         stored_count = vsm.embed_and_store(chunks)
 
@@ -96,12 +95,12 @@ class UserDocumentIngestor:
             "Ingested user file '%s' into collection '%s' (%d chunks).",
             filename,
             collection_name,
-            stored_count
+            stored_count,
         )
 
         return {
             "success": True,
             "filename": filename,
             "chunks_created": stored_count,
-            "session_id": session_id
+            "session_id": session_id,
         }
