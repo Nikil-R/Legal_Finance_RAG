@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+chromadb
+sentence-transformers
+langchain
+langchain-community
+langchain-text-splitters
+groq
+rank-bm25
+PyPDF2
+pyyaml
+pytest
+httpx
+streamlit
+requests

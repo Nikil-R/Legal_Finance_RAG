@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "legal-finance-rag"
+version = "0.1.0"
+description = "AI-powered RAG system for Indian tax laws, finance regulations, and legal provisions."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "groq>=0.3.0",
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "rank-bm25>=0.2.2",
+    "PyYAML>=6.0.0",
+    "pypdf>=3.15.0",
+    "streamlit>=1.25.0",
+    "requests>=2.31.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "B", "I"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+markers = [
+    "unit: mark test as unit test",
+    "integration: mark test as integration test",
+    "e2e: mark test as e2e test",
+    "requires_api_key: mark test as requiring an external API key",
+]

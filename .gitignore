@@ -1,0 +1,43 @@
+# ── Secrets ────────────────────────────────────────────────────
+.env
+
+# ── Python ─────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Virtual Environments ────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Vector Store ────────────────────────────────────────────────
+chroma_db/
+test_chroma_db/
+
+# ── Data (large files) ─────────────────────────────────────────
+data/raw/*.pdf
+data/raw/*.txt
+data/processed/
+
+# ── IDEs ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

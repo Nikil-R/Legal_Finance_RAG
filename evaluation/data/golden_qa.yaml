@@ -1,0 +1,336 @@
+# Golden Q&A Dataset for LegalFinance RAG Evaluation
+# Each entry has: question, expected_answer, domain, required_citations, keywords
+
+version: "1.0"
+description: "Golden dataset for evaluating LegalFinance RAG system"
+created: "2024-01-15"
+
+questions:
+  # ============ TAX DOMAIN (10 questions) ============
+  
+  - id: "tax_001"
+    question: "What is the maximum deduction allowed under Section 80C of the Income Tax Act?"
+    domain: "tax"
+    expected_answer: "The maximum deduction allowed under Section 80C is Rs 1,50,000 per financial year."
+    required_keywords:
+      - "80C"
+      - "1,50,000"
+      - "deduction"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "tax_002"
+    question: "What investments are eligible for deduction under Section 80C?"
+    domain: "tax"
+    expected_answer: "Eligible investments include PPF, EPF, NSC, ELSS, Life Insurance Premium, and Fixed Deposits with 5-year lock-in."
+    required_keywords:
+      - "PPF"
+      - "ELSS"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "tax_003"
+    question: "Who can claim deductions under Section 80C?"
+    domain: "tax"
+    expected_answer: "Individual taxpayers and Hindu Undivided Families (HUFs) can claim deductions under Section 80C."
+    required_keywords:
+      - "individual"
+      - "HUF"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "tax_004"
+    question: "What is the lock-in period for ELSS investments under Section 80C?"
+    domain: "tax"
+    expected_answer: "ELSS has a lock-in period of 3 years."
+    required_keywords:
+      - "ELSS"
+      - "3"
+      - "year"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "tax_005"
+    question: "Is Section 80C limit combined with any other sections?"
+    domain: "tax"
+    expected_answer: "Yes, the Section 80C limit of Rs 1,50,000 is combined with Section 80CCC and Section 80CCD(1)."
+    required_keywords:
+      - "80CCC"
+      - "80CCD"
+      - "combined"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "tax_006"
+    question: "What is the deduction limit for Section 80C for assessment year 2024-25?"
+    domain: "tax"
+    expected_answer: "The deduction limit under Section 80C remains Rs 1,50,000 for assessment year 2024-25."
+    required_keywords:
+      - "1,50,000"
+      - "2024"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "tax_007"
+    question: "Can Fixed Deposits qualify for Section 80C deduction?"
+    domain: "tax"
+    expected_answer: "Yes, Fixed Deposits with a 5-year lock-in period qualify for Section 80C deduction."
+    required_keywords:
+      - "fixed deposit"
+      - "5"
+      - "year"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "tax_008"
+    question: "What is NSC and is it eligible under Section 80C?"
+    domain: "tax"
+    expected_answer: "NSC (National Savings Certificate) is a government savings scheme that is eligible for deduction under Section 80C."
+    required_keywords:
+      - "NSC"
+      - "National Savings Certificate"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "tax_009"
+    question: "What is the time period for making Section 80C investments for a financial year?"
+    domain: "tax"
+    expected_answer: "Investments must be made between April 1 and March 31 of the financial year to claim deduction."
+    required_keywords:
+      - "April"
+      - "March"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "tax_010"
+    question: "Does EPF contribution qualify under Section 80C?"
+    domain: "tax"
+    expected_answer: "Yes, Employee Provident Fund (EPF) contributions qualify for deduction under Section 80C."
+    required_keywords:
+      - "EPF"
+      - "Employee Provident Fund"
+    expected_citations: 1
+    difficulty: "easy"
+
+  # ============ FINANCE DOMAIN (10 questions) ============
+  
+  - id: "fin_001"
+    question: "What are the KYC requirements mandated by RBI for banks?"
+    domain: "finance"
+    expected_answer: "RBI mandates KYC norms including customer identification using Aadhaar, PAN, Passport, or Voter ID, and Customer Due Diligence (CDD)."
+    required_keywords:
+      - "KYC"
+      - "RBI"
+      - "identification"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "fin_002"
+    question: "What documents can be used for KYC verification as per RBI guidelines?"
+    domain: "finance"
+    expected_answer: "Documents accepted for KYC include Aadhaar, PAN, Passport, and Voter ID."
+    required_keywords:
+      - "Aadhaar"
+      - "PAN"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "fin_003"
+    question: "What is Customer Due Diligence (CDD) as per RBI KYC norms?"
+    domain: "finance"
+    expected_answer: "Customer Due Diligence is a risk-based approach where banks assess customer risk levels. High-risk customers require Enhanced Due Diligence (EDD)."
+    required_keywords:
+      - "CDD"
+      - "risk"
+      - "due diligence"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "fin_004"
+    question: "How often should KYC be updated for high-risk customers?"
+    domain: "finance"
+    expected_answer: "KYC must be updated every 2 years for high-risk customers."
+    required_keywords:
+      - "2 years"
+      - "high-risk"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "fin_005"
+    question: "What is the KYC update frequency for low-risk customers?"
+    domain: "finance"
+    expected_answer: "KYC must be updated every 10 years for low-risk customers."
+    required_keywords:
+      - "10 years"
+      - "low-risk"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "fin_006"
+    question: "What is V-CIP in the context of RBI KYC guidelines?"
+    domain: "finance"
+    expected_answer: "V-CIP (Video-based Customer Identification Process) is allowed as an alternative to in-person verification for KYC."
+    required_keywords:
+      - "V-CIP"
+      - "video"
+      - "verification"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "fin_007"
+    question: "What are the penalties for non-compliance with KYC norms?"
+    domain: "finance"
+    expected_answer: "Non-compliance with KYC norms may result in penalties under the Prevention of Money Laundering Act (PMLA), 2002."
+    required_keywords:
+      - "PMLA"
+      - "penalty"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "fin_008"
+    question: "What is STR in the context of RBI KYC regulations?"
+    domain: "finance"
+    expected_answer: "STR (Suspicious Transaction Reports) must be filed by banks with the Financial Intelligence Unit (FIU-IND)."
+    required_keywords:
+      - "STR"
+      - "suspicious"
+      - "FIU"
+    expected_citations: 1
+    difficulty: "hard"
+    
+  - id: "fin_009"
+    question: "What entities are covered under RBI KYC guidelines?"
+    domain: "finance"
+    expected_answer: "RBI KYC guidelines apply to banks, NBFCs, and payment system operators."
+    required_keywords:
+      - "banks"
+      - "NBFC"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "fin_010"
+    question: "What is Enhanced Due Diligence (EDD) and when is it required?"
+    domain: "finance"
+    expected_answer: "Enhanced Due Diligence (EDD) is required for high-risk customers and involves more stringent verification procedures."
+    required_keywords:
+      - "EDD"
+      - "high-risk"
+    expected_citations: 1
+    difficulty: "medium"
+
+  # ============ LEGAL DOMAIN (10 questions) ============
+  
+  - id: "leg_001"
+    question: "What is the definition of a contract under the Indian Contract Act?"
+    domain: "legal"
+    expected_answer: "According to Section 2(h), an agreement enforceable by law is a contract."
+    required_keywords:
+      - "Section 2"
+      - "agreement"
+      - "enforceable"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "leg_002"
+    question: "What are the essentials of a valid contract under Section 10?"
+    domain: "legal"
+    expected_answer: "Section 10 states that valid contracts require free consent, competent parties, lawful consideration, lawful object, and must not be expressly declared void."
+    required_keywords:
+      - "Section 10"
+      - "free consent"
+      - "lawful"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_003"
+    question: "What constitutes free consent under the Indian Contract Act?"
+    domain: "legal"
+    expected_answer: "Under Section 14, consent is free when not caused by coercion, undue influence, fraud, misrepresentation, or mistake."
+    required_keywords:
+      - "Section 14"
+      - "coercion"
+      - "fraud"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_004"
+    question: "What is coercion under the Indian Contract Act?"
+    domain: "legal"
+    expected_answer: "Coercion is defined under Section 15 of the Indian Contract Act as committing or threatening to commit any act forbidden by law."
+    required_keywords:
+      - "Section 15"
+      - "coercion"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_005"
+    question: "What is undue influence as per the Contract Act?"
+    domain: "legal"
+    expected_answer: "Undue influence is defined under Section 16 where a person dominates the will of another to obtain unfair advantage."
+    required_keywords:
+      - "Section 16"
+      - "undue influence"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_006"
+    question: "What is fraud under Section 17 of the Indian Contract Act?"
+    domain: "legal"
+    expected_answer: "Fraud under Section 17 includes acts committed with intent to deceive another party."
+    required_keywords:
+      - "Section 17"
+      - "fraud"
+      - "deceive"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_007"
+    question: "What compensation is available for breach of contract?"
+    domain: "legal"
+    expected_answer: "Under Section 73, the party suffering breach is entitled to compensation for any loss or damage caused by the breach."
+    required_keywords:
+      - "Section 73"
+      - "compensation"
+      - "breach"
+    expected_citations: 1
+    difficulty: "medium"
+    
+  - id: "leg_008"
+    question: "What are liquidated damages under the Contract Act?"
+    domain: "legal"
+    expected_answer: "Under Section 74, when a sum is named in the contract for breach, the aggrieved party is entitled to reasonable compensation not exceeding that amount."
+    required_keywords:
+      - "Section 74"
+      - "liquidated"
+      - "damages"
+    expected_citations: 1
+    difficulty: "hard"
+    
+  - id: "leg_009"
+    question: "What is the difference between an agreement and a contract?"
+    domain: "legal"
+    expected_answer: "All agreements are not contracts, but all contracts are agreements. An agreement becomes a contract when enforceable by law."
+    required_keywords:
+      - "agreement"
+      - "contract"
+      - "enforceable"
+    expected_citations: 1
+    difficulty: "easy"
+    
+  - id: "leg_010"
+    question: "What is misrepresentation under Section 18 of the Contract Act?"
+    domain: "legal"
+    expected_answer: "Misrepresentation under Section 18 involves making false statements without intent to deceive, believing them to be true."
+    required_keywords:
+      - "Section 18"
+      - "misrepresentation"
+    expected_citations: 1
+    difficulty: "medium"
+
+# Metadata for evaluation thresholds
+evaluation_thresholds:
+  faithfulness_min: 0.7
+  correctness_min: 0.6
+  citation_quality_min: 0.8
+  retrieval_relevance_min: 0.5
+  overall_pass_rate: 0.8
