@@ -46,6 +46,7 @@ def init_session_state():
         "session_id": str(uuid.uuid4()),
         "uploaded_files": [],  # list[UploadedFile]
         "last_uploaded_name": None,  # dedupe guard
+        "theme": "Dark Mode",
     }
     for key, val in defaults.items():
         if key not in st.session_state:
