@@ -23,7 +23,7 @@ def _css():
     p = Path(__file__).parent / "styles" / "modern.css"
     if p.exists():
         theme = st.session_state.get("theme", "Dark Mode")
-        
+
         # Theme overrides
         theme_vars = ""
         if theme == "Light Mode":
@@ -47,7 +47,7 @@ def _css():
             .stButton button { color: #0f172a !important; }
             </style>
             """
-        
+
         st.markdown(theme_vars, unsafe_allow_html=True)
         st.markdown(
             f"<style>{p.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True
