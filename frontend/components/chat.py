@@ -113,11 +113,13 @@ def process_query(question: str):
     # Show thinking indicator
     with st.chat_message("assistant", avatar="⚖️"):
         with st.spinner("Searching documents and generating answer..."):
+            session_id = st.session_state.get("session_id")
             # Call API
             result = api_client.query(
                 question=question,
                 domain=domain,
-                include_sources=st.session_state.get("show_sources", True)
+                include_sources=st.session_state.get("show_sources", True),
+                session_id=session_id
             )
     
         if result.success:

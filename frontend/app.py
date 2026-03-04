@@ -17,7 +17,8 @@ from frontend.components import (
     render_domain_tabs,
     render_chat_history,
     render_chat_input,
-    render_sidebar
+    render_sidebar,
+    render_upload_section
 )
 from frontend.utils.state import init_session_state
 from frontend.config import config
@@ -51,6 +52,7 @@ def main():
     
     # Render sidebar
     render_sidebar()
+    render_upload_section()
     
     # Main content area
     main_container = st.container()

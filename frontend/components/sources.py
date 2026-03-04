@@ -31,8 +31,13 @@ def render_source_card(source: dict, message_idx: int, source_idx: int):
     reference_id = source.get("reference_id", source_idx + 1)
     source_name = source.get("source", "Unknown")
     domain = source.get("domain", "unknown")
+    origin = source.get("origin", "system")
     score = source.get("relevance_score", 0)
     excerpt = source.get("excerpt", "")
+    
+    # Origin label and color
+    origin_label = "System" if origin == "system" else "User Upload"
+    origin_color = "#6c757d" if origin == "system" else "#007bff"
     
     # Domain emoji
     domain_emoji = {
@@ -71,8 +76,20 @@ def render_source_card(source: dict, message_idx: int, source_idx: int):
                     Score: {score:.2f}
                 </span>
             </div>
-            <div style="color: #666; font-size: 0.85rem; margin-top: 0.5rem;">
-                Domain: {domain.upper()}
+            <div style="display: flex; gap: 10px; margin-top: 0.5rem; align-items: center;">
+                <span style="
+                    background-color: {origin_color};
+                    color: white;
+                    padding: 1px 6px;
+                    border-radius: 3px;
+                    font-size: 0.75rem;
+                    font-weight: bold;
+                ">
+                    {origin_label.upper()}
+                </span>
+                <span style="color: #666; font-size: 0.85rem;">
+                    Domain: {domain.upper()}
+                </span>
             </div>
         </div>
         """,

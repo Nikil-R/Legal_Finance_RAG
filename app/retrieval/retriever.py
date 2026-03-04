@@ -32,6 +32,8 @@ class HybridRetriever:
             embedding_model=settings.EMBEDDING_MODEL,
         )
         self._bm25 = BM25Retriever(persist_dir=settings.CHROMA_PERSIST_DIR)
+        from app.retrieval.user_retriever import UserDocumentRetriever
+        self._user_retriever = UserDocumentRetriever()
         self._rrf = RRFusion(k=60)
         logger.info("HybridRetriever ready.")
 
@@ -42,20 +44,10 @@ class HybridRetriever:
         query: str,
         domain: str = "all",
         top_k: int | None = None,
+        session_id: str | None = None,
     ) -> list[dict]:
         """
         Run hybrid retrieval and return re-ranked results.
-
-        Parameters
-        ----------
-        query:  Natural-language question.
-        domain: "tax", "finance", "legal", or "all" (default).
-        top_k:  Number of results to return (falls back to settings.TOP_K_RETRIEVAL).
-
-        Returns
-        -------
-        List of RRF-ranked dicts with:
-            chunk_id, content, metadata, rrf_score, found_by
         """
         if not query.strip():
             logger.warning("HybridRetriever.retrieve() received an empty query.")
@@ -74,17 +66,39 @@ class HybridRetriever:
 
         start = time.perf_counter()
 
+        # System Search
         vector_results = self._vector.search(query, top_k=k, domain_filter=domain_filter)
         bm25_results = self._bm25.search(query, top_k=k, domain_filter=domain_filter)
+        
+        # Mark system results
+        for r in vector_results:
+            r["origin"] = "system"
+        for r in bm25_results:
+            r["origin"] = "system"
 
-        fused = self._rrf.fuse(vector_results, bm25_results)
+        # User Search
+        user_vector_results = []
+        user_bm25_results = []
+        if session_id:
+            user_results = self._user_retriever.search(query, session_id=session_id, top_k=k)
+            # user_results is a combined list, need to separate for RRF if possible
+            # or just add them to the system lists
+            user_vector_results = [r for r in user_results if r.get("source") == "vector"]
+            user_bm25_results = [r for r in user_results if r.get("source") == "bm25"]
+
+        # Merge results for RRF fusion
+        all_vector = vector_results + user_vector_results
+        all_bm25 = bm25_results + user_bm25_results
+
+        fused = self._rrf.fuse(all_vector, all_bm25)
         top_results = fused[:k]
 
         elapsed_ms = (time.perf_counter() - start) * 1_000
         logger.info(
-            "HybridRetriever: query='%s…' | domain=%s | returned %d results in %.1f ms.",
+            "HybridRetriever: query='%s…' | domain=%s | session=%s | results=%d | time=%.1fms.",
             query[:50],
             domain,
+            session_id,
             len(top_results),
             elapsed_ms,
         )

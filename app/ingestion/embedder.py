@@ -23,19 +23,20 @@ DEFAULT_BATCH_SIZE = 100
 class VectorStoreManager:
     """Manages embedding generation and ChromaDB storage for document chunks."""
 
-    def __init__(self, persist_dir: str, embedding_model: str) -> None:
+    def __init__(self, persist_dir: str, embedding_model: str, collection_name: str = COLLECTION_NAME) -> None:
         logger.info("Loading embedding model '%s' …", embedding_model)
         self._encoder = SentenceTransformer(embedding_model)
 
         logger.info("Connecting to ChromaDB at '%s' …", persist_dir)
         self._client = chromadb.PersistentClient(path=persist_dir)
+        self.collection_name = collection_name
         self._collection = self._client.get_or_create_collection(
-            name=COLLECTION_NAME,
+            name=self.collection_name,
             metadata={"hnsw:space": "cosine"},
         )
         logger.info(
             "Collection '%s' ready (%d existing document(s)).",
-            COLLECTION_NAME,
+            self.collection_name,
             self._collection.count(),
         )
 
@@ -92,10 +93,10 @@ class VectorStoreManager:
 
     def clear_collection(self) -> None:
         """Delete and recreate the collection (for a clean re-ingestion)."""
-        logger.warning("Clearing collection '%s' …", COLLECTION_NAME)
-        self._client.delete_collection(COLLECTION_NAME)
+        logger.warning("Clearing collection '%s' …", self.collection_name)
+        self._client.delete_collection(self.collection_name)
         self._collection = self._client.get_or_create_collection(
-            name=COLLECTION_NAME,
+            name=self.collection_name,
             metadata={"hnsw:space": "cosine"},
         )
-        logger.info("Collection '%s' recreated (empty).", COLLECTION_NAME)
+        logger.info("Collection '%s' recreated (empty).", self.collection_name)

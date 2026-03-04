@@ -55,21 +55,10 @@ class RetrievalPipeline:
         retrieval_top_k: int = 20,
         rerank_top_k: int = 5,
         min_relevance_score: float = 0.1,
+        session_id: str | None = None,
     ) -> dict:
         """
         Execute the full pipeline and return a structured result.
-
-        Parameters
-        ----------
-        query:               Natural-language question.
-        domain:              "tax" | "finance" | "legal" | "all".
-        retrieval_top_k:     Candidates to fetch from hybrid retrieval.
-        rerank_top_k:        Final chunks after re-ranking (sent to LLM).
-        min_relevance_score: Minimum cross-encoder score to keep a chunk.
-
-        Returns
-        -------
-        Success dict (success=True) or failure dict (success=False).
         """
         pipeline_start = time.perf_counter()
 
@@ -80,7 +69,12 @@ class RetrievalPipeline:
 
         # ── 2. Retrieval ──────────────────────────────────────────────
         retrieval_start = time.perf_counter()
-        candidates = self._retriever.retrieve(query, domain=domain, top_k=retrieval_top_k)
+        candidates = self._retriever.retrieve(
+            query, 
+            domain=domain, 
+            top_k=retrieval_top_k, 
+            session_id=session_id
+        )
         retrieval_ms = (time.perf_counter() - retrieval_start) * 1_000
 
         logger.info("Retrieved %d candidates in %.1f ms.", len(candidates), retrieval_ms)

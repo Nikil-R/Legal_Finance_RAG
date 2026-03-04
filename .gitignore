@@ -31,6 +31,7 @@ test_chroma_db/
 data/raw/*.pdf
 data/raw/*.txt
 data/processed/
+data/user_uploads/
 
 # ── IDEs ───────────────────────────────────────────────────────
 .vscode/

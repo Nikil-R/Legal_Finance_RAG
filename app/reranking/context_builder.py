@@ -26,17 +26,6 @@ class ContextBuilder:
     def build_context(self, chunks: list[dict]) -> str:
         """
         Format *chunks* into a numbered, readable context string.
-
-        Each chunk is rendered as::
-
-            [N] Source: filename.pdf | Domain: tax
-            <chunk content>
-
-        Chunks are separated by blank lines.
-        The result is hard-capped to ``max_context_length`` characters;
-        if truncated, ``"... [truncated]"`` is appended.
-
-        Returns an empty string when *chunks* is empty.
         """
         if not chunks:
             return ""
@@ -46,8 +35,10 @@ class ContextBuilder:
             meta = chunk.get("metadata", {})
             source = meta.get("source", "unknown")
             domain = meta.get("domain", "unknown")
+            origin = chunk.get("origin") or meta.get("origin", "system")
+            origin_label = "System" if origin == "system" else "User Upload"
             content = chunk.get("content", "")
-            parts.append(f"[{idx}] Source: {source} | Domain: {domain}\n{content}")
+            parts.append(f"[{idx}] Source: {source} | Origin: {origin_label} | Domain: {domain}\n{content}")
 
         context = "\n\n".join(parts)
 
@@ -69,23 +60,6 @@ class ContextBuilder:
         """
         Build the context string and return it together with structured
         citation metadata.
-
-        Returns
-        -------
-        {
-            "context_string": str,
-            "sources": [
-                {
-                    "reference_id": int,       # matches [N] in context
-                    "chunk_id":     str,
-                    "source":       str,        # filename
-                    "domain":       str,
-                    "rerank_score": float | None,
-                }
-            ],
-            "total_chunks": int,
-            "truncated": bool,
-        }
         """
         context_string = self.build_context(chunks)
         truncated = _TRUNCATION_SUFFIX in context_string
@@ -93,12 +67,14 @@ class ContextBuilder:
         sources: list[dict] = []
         for idx, chunk in enumerate(chunks, start=1):
             meta = chunk.get("metadata", {})
+            origin = chunk.get("origin") or meta.get("origin", "system")
             sources.append(
                 {
                     "reference_id": idx,
                     "chunk_id": chunk.get("chunk_id", ""),
                     "source": meta.get("source", "unknown"),
                     "domain": meta.get("domain", "unknown"),
+                    "origin": origin,
                     "rerank_score": chunk.get("rerank_score"),  # may be None
                 }
             )

@@ -15,3 +15,4 @@ pytest
 httpx
 streamlit
 requests
+python-docx

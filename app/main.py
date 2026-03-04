@@ -11,7 +11,7 @@ from app.api.middleware import (
     global_exception_handler,
     http_exception_handler,
 )
-from app.api.routes import documents_router, health_router, query_router
+from app.api.routes import documents_router, health_router, query_router, user_documents_router
 from app.config import settings
 from app.utils.logger import get_logger
 
@@ -53,6 +53,7 @@ Financial Regulations, and Legal Provisions.
 - **Grounded Answers**: Responses always cite source document numbers
 - **Domain Filtering**: Search within tax, finance, or legal sub-corpora
 - **Legal Disclaimer**: Automatically appended to every response
+- **Isolated User Documents**: Upload and search personal docs in session-safe collections
 
 ## Quick Start
 1. Ingest documents: `POST /api/v1/documents/ingest`
@@ -87,6 +88,7 @@ app.add_exception_handler(HTTPException, http_exception_handler)
 app.include_router(health_router)                          # / and /health
 app.include_router(query_router, prefix="/api/v1")         # /api/v1/query
 app.include_router(documents_router, prefix="/api/v1")     # /api/v1/documents
+app.include_router(user_documents_router, prefix="/api/v1") # /api/v1/user
 
 # ── Run directly ───────────────────────────────────────────────────────────────
 

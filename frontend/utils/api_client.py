@@ -65,7 +65,7 @@ class APIClient:
         """Get available domains."""
         return self._make_request("GET", "/api/v1/documents/domains")
     
-    def query(self, question: str, domain: str = "all", include_sources: bool = True) -> QueryResult:
+    def query(self, question: str, domain: str = "all", include_sources: bool = True, session_id: str = None) -> QueryResult:
         """
         Send a query to the RAG system.
         
@@ -73,6 +73,7 @@ class APIClient:
             question: The question to ask
             domain: Domain filter (tax, finance, legal, all)
             include_sources: Whether to include source documents
+            session_id: Optional session ID for user-document isolation
         
         Returns:
             QueryResult with answer and metadata
@@ -80,7 +81,8 @@ class APIClient:
         payload = {
             "question": question,
             "domain": domain,
-            "include_sources": include_sources
+            "include_sources": include_sources,
+            "session_id": session_id
         }
         
         result = self._make_request("POST", "/api/v1/query", json=payload)

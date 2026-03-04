@@ -68,8 +68,33 @@ class SourceDocument(BaseModel):
     reference_id: int
     source: str
     domain: str
+    origin: str = "system"  # "system" or "user"
     relevance_score: float
     excerpt: Optional[str] = None
+
+
+class UserUploadResponse(BaseModel):
+    """Response for user document upload"""
+    success: bool
+    session_id: str
+    filename: str
+    chunks_created: int
+    error: Optional[str] = None
+
+
+class UserDocumentInfo(BaseModel):
+    """Information about an uploaded user document"""
+    filename: str
+    uploaded_at: datetime
+    chunks: int
+
+
+class UserDocumentsResponse(BaseModel):
+    """Response listing user documents"""
+    success: bool
+    session_id: str
+    documents: list[UserDocumentInfo]
+    error: Optional[str] = None
 
 
 class ValidationResult(BaseModel):

@@ -87,7 +87,7 @@ class RAGGenerator:
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",
         }
 
-    def generate_with_retrieval(self, question: str, domain: str = "all") -> dict:
+    def generate_with_retrieval(self, question: str, domain: str = "all", session_id: str | None = None) -> dict:
         """
         End-to-end: retrieval + generation.
         """
@@ -95,7 +95,7 @@ class RAGGenerator:
 
         # Initialize here to avoid circular imports at top level if any exists
         pipeline = RetrievalPipeline()
-        retrieval_result = pipeline.run(question, domain=domain)
+        retrieval_result = pipeline.run(question, domain=domain, session_id=session_id)
 
         if not retrieval_result["success"]:
             # Even if retrieval fails, we can either error out or ask LLM with empty context
