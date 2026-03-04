@@ -5,26 +5,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* --- Core variables --- */
-:root {
-  --bg-deep: #080c14;
-  --bg-dark: #0d1117;
-  --bg-elevated: #161b22;
-  --primary: #6366f1;
-  --primary-glow: rgba(99, 102, 241, 0.4);
-  --accent: #8b5cf6;
-  --text-main: #e2e8f0;
-  --text-muted: #94a3b8;
-  --text-dim: #475569;
-  --border: rgba(255, 255, 255, 0.1);
-  --radius-xl: 20px;
-  --radius-lg: 12px;
-}
+/* Variables are injected dynamically by app.py */
 
 /* --- Global Reset & Scrollbar --- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body, [data-testid="stApp"] {
+html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {
   font-family: 'Inter', system-ui, sans-serif;
   background-color: var(--bg-deep) !important;
   color: var(--text-main) !important;
@@ -36,7 +22,8 @@ html, body, [data-testid="stApp"] {
 ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
 /* --- Streamlit Overrides --- */
-[data-testid="stAppViewContainer"] { background: var(--bg-deep); }
+[data-testid="stAppViewContainer"] { background-color: var(--bg-deep) !important; }
+[data-testid="stHeader"] { background-color: transparent !important; }
 #MainMenu, footer, [data-testid="stToolbar"] { display: none !important; }
 
 /* Header & Hamburger Control */
