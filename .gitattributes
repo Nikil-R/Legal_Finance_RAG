@@ -1,0 +1,9 @@
+# Mark data and large non-code directories to be ignored by GitHub Language Statistics
+data/** linguist-vendored
+docs/** linguist-documentation
+tests/** linguist-documentation
+chroma_db/** linguist-vendored
+
+# Explicitly ensure HTML/JSON files in data don't count as code
+data/**/*.html linguist-documentation
+data/**/*.json linguist-documentation
