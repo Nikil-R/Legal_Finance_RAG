@@ -1,0 +1,26 @@
+GOVERNMENT OF INDIA
+MINISTRY OF FINANCE
+DEPARTMENT OF REVENUE
+CENTRAL BOARD OF DIRECT TAXES
+
+Circular No. 10/2021
+
+Date: 25th June, 2021
+F. No. 275/25/2021-IT(B)
+
+Subject: Clarification in respect of the Guidelines issued for the applicability of Tax Deduction at Source (TDS) under Chapter XVII-B of the Income-tax Act, 1961 — reg.
+
+CBDT had issued Circular No. 5/2021 providing guidelines for removal of difficulties arising from the provisions relating to Tax Deduction at Source (TDS) enacted vide Finance Act, 2021.
+
+2. Representations have been received seeking clarification on certain issues – specifically regarding applicability of Section 194Q (TDS on purchase of goods) vis-à-vis Section 206C(1H) (TCS on sale of goods) where both buyer and seller are in the same transaction qualifying under both provisions.
+
+3. It is clarified that:
+(i) If a transaction is covered under Section 194Q (TDS by buyer), the seller need not collect TCS under Section 206C(1H) for the same transaction.
+(ii) The obligation to deduct TDS under Section 194Q is on the buyer who is required to have his accounts audited under Section 44AB. Where the buyer has not deducted TDS, the seller remains liable to collect TCS under Section 206C(1H).
+(iii) Transactions in securities, commodities traded through exchanges, and electricity transactions are excluded from the ambit of both Section 194Q and Section 206C(1H).
+
+4. This circular shall take effect from 1st July 2021.
+
+(Kamlesh Varshney)
+Joint Secretary, Tax Policy and Legislation Division
+Central Board of Direct Taxes

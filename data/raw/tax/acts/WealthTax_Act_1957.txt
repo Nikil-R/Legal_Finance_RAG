@@ -1,0 +1,35 @@
+Wealth-Tax Act, 1957
+====================
+(Act No. 27 of 1957)
+[12th September, 1957]
+An Act to provide for the levy of wealth-tax.
+
+CHAPTER I — PRELIMINARY
+
+1. Short title, extent and commencement.
+(1) This Act may be called the Wealth-tax Act, 1957.
+(2) It extends to the whole of India.
+(3) It shall be deemed to have come into force on the 1st day of April, 1957.
+
+2. Definitions.
+In this Act, unless the context otherwise requires,—
+(a) "Appellate Tribunal" means the Appellate Tribunal constituted under section 252 of the Income-tax Act;
+(b) "assessee" means a person by whom wealth-tax or any other sum of money is payable under this Act, and includes—
+  (i) every person in respect of whom any proceeding under this Act has been taken for the determination of wealth-tax payable by him or the wealth-tax paid or payable by any other person;
+  (ii) every person who is deemed to be an assessee under any provision of this Act;
+(c) "assessment year" means the period of twelve months commencing on the 1st day of April every year;
+(d) "assets" includes property of every description, movable or immovable, but does not include—
+  (i) agricultural land and growing crops, grass or standing timber on such land;
+  (ii) any building owned or occupied by a cultivator of, or receiver of rent or revenue out of, agricultural land: Provided that the building is on or in the immediate vicinity of the land and is a building which the cultivator or receiver of rent or revenue by reason of his connection with the land requires as a dwelling house, or as a store-house, or other out-building;
+
+3. Charge of wealth-tax.
+(1) Subject to the other provisions of this Act, there shall be charged for every assessment year commencing on and from the 1st day of April, 1957, a tax (hereinafter referred to as "wealth-tax") in respect of the net wealth on the corresponding valuation date of every individual, Hindu undivided family and company at the rate or rates specified in Schedule III.
+
+CHAPTER II — LIABILITY TO ASSESSMENT
+
+4. Net wealth to include certain assets.
+(1) In computing the net wealth of an individual, there shall be included, as belonging to that individual, the value of assets which on the valuation date are held—
+  (a) by the spouse of such individual to whom such assets have been transferred by the individual, directly or indirectly, otherwise than for adequate consideration;
+  (b) by a minor child (not being a married daughter) of such individual.
+
+NOTE: The Wealth Tax Act, 1957 was abolished with effect from 1st April, 2016 by the Finance Act, 2015. No wealth tax is applicable from Assessment Year 2016-17 onwards.

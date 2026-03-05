@@ -13,3 +13,4 @@ streamlit>=1.25.0
 requests>=2.31.0
 langchain-text-splitters>=0.0.1
 python-multipart>=0.0.7
+beautifulsoup4>=4.12.0

@@ -1,0 +1,67 @@
+Income-Tax Act, 1961
+====================
+(Act No. 43 of 1961)
+[13th September, 1961]
+An Act to consolidate and amend the law relating to income-tax and super-tax.
+
+CHAPTER I — PRELIMINARY
+
+1. Short title, extent and commencement.
+(1) This Act may be called the Income-tax Act, 1961.
+(2) It extends to the whole of India.
+(3) Save as otherwise provided in this Act, it shall come into force on the 1st day of April, 1962.
+
+2. Definitions.
+In this Act, unless the context otherwise requires,—
+(1) "advance tax" means the advance tax payable in accordance with the provisions of Chapter XVII-C;
+(1A) "agricultural income" means—
+  (a) any rent or revenue derived from land which is situated in India and is used for agricultural purposes;
+  (b) any income derived from such land by—
+    (i) agriculture; or
+    (ii) the performance by a cultivator or receiver of rent-in-kind of any process ordinarily employed by a cultivator or receiver of rent-in-kind to render the produce raised or received by him fit to be taken to market;
+(2) "annual value" shall be deemed to be—
+  (a) the sum for which the property might reasonably be expected to let from year to year; or
+  (b) where the property or any part of the property is let and the actual rent received or receivable by the owner in respect thereof is in excess of the sum referred to in clause (a), the amount so received or receivable;
+(3) "assessee" means a person by whom any tax or any other sum of money is payable under this Act, and includes—
+  (a) every person in respect of whom any proceeding under this Act has been taken for the assessment of his income or of the income of any other person in respect of which he is assessable;
+  (b) every person who is deemed to be an assessee under any provision of this Act;
+
+CHAPTER II — BASIS OF CHARGE
+
+4. Charge of income-tax.
+(1) Where any Central Act enacts that income-tax shall be charged for any assessment year at any rate or rates, income-tax at that rate or those rates shall be charged for that year in accordance with, and subject to the provisions of, this Act in respect of the total income of the previous year of every person.
+
+5. Scope of total income.
+(1) Subject to the provisions of this Act, the total income of any previous year of a person who is a resident includes all income from whatever source derived which—
+  (a) is received or is deemed to be received in India in such year by or on behalf of such person; or
+  (b) accrues or arises or is deemed to accrue or arise to him in India during such year; or
+  (c) accrues or arises to him outside India during such year.
+(2) Subject to the provisions of this Act, the total income of any previous year of a person who is not a resident includes all income from whatever source derived which—
+  (a) is received or is deemed to be received in India in such year by or on behalf of such person; or
+  (b) accrues or arises or is deemed to accrue or arise to him in India during such year.
+
+CHAPTER III — INCOMES WHICH DO NOT FORM PART OF TOTAL INCOME
+
+10. Incomes not included in total income.
+In computing the total income of a previous year of any person, any income falling within any of the following clauses shall not be included—
+(1) agricultural income;
+(2) any sum received by a member of a Hindu undivided family as a member of the family where such sum has been paid out of income of the family;
+(3) any share of profit and any interest received by a partner of a firm from such firm;
+
+CHAPTER IV — COMPUTATION OF TOTAL INCOME
+
+14. Heads of income.
+Save as otherwise provided by this Act, all income shall, for the purposes of charge of income-tax and computation of total income, be classified under the following heads of income:—
+  A. — Salaries.
+  B. — Income from house property.
+  C. — Profits and gains of business or profession.
+  D. — Capital gains.
+  E. — Income from other sources.
+
+CHAPTER XVII — COLLECTION AND RECOVERY OF TAX
+
+192. Salary.
+(1) Any person responsible for paying any income chargeable under the head "Salaries" shall, at the time of payment, deduct income-tax on the amount payable at the average rate of income-tax computed on the basis of the rates in force for the financial year in which the payment is made, on the estimated income of the assessee under this head for that financial year.
+
+194. Dividends.
+The principal officer of an Indian company or a company which has made the prescribed arrangements for the declaration and payment of dividends shall, before making any payment in cash or before issuing any cheque or warrant in respect of any dividend or before making any distribution of dividend, deduct from the amount of such dividend, income-tax at the rates in force.
