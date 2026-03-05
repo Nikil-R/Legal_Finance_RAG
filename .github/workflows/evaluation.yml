@@ -41,9 +41,12 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          python -m evaluation.runner \
-            --ci \
-            ${{ github.event.inputs.domain && format('--domain {0}', github.event.inputs.domain) || '' }} \
+          python scripts/evaluation_gate.py \
+            --min-pass-rate 0.8 \
+            --min-faithfulness 0.7 \
+            --min-correctness 0.6 \
+            --min-citation-quality 0.8 \
+            --min-retrieval-relevance 0.5 \
             ${{ github.event.inputs.limit && format('--limit {0}', github.event.inputs.limit) || '' }}
       
       - name: Upload evaluation report

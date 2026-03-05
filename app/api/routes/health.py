@@ -2,13 +2,17 @@
 Health check and system status endpoints.
 """
 
+import os
 from datetime import datetime, timezone
 
 import chromadb
 from fastapi import APIRouter
+from fastapi.responses import Response
 
 from app.api.models import HealthResponse
 from app.config import settings
+from app.infra import redis_store
+from app.observability import metrics, prom_bridge
 from app.utils.logger import get_logger
 
 router = APIRouter(tags=["Health"])
@@ -31,21 +35,27 @@ async def health_check() -> HealthResponse:
         "groq_api_key_set": bool(settings.GROQ_API_KEY),
         "chroma_db": False,
         "embeddings_model": False,
+        "api_auth_configured": (not settings.API_AUTH_ENABLED)
+        or bool(settings.API_KEYS or settings.API_KEYS_HASHED),
+        "redis": redis_store.enabled or not bool(settings.REDIS_URL),
     }
 
     # Check ChromaDB
-    try:
-        client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
-        client.heartbeat()
+    if os.getenv("TESTING", "").lower() == "true":
         components["chroma_db"] = True
-    except Exception as e:
-        logger.warning("ChromaDB health check failed: %s", e)
+    else:
+        try:
+            client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
+            client.heartbeat()
+            components["chroma_db"] = True
+        except Exception as e:
+            logger.warning("ChromaDB health check failed: %s", e)
 
     # Check embeddings model (just verify it's configured)
     components["embeddings_model"] = bool(settings.EMBEDDING_MODEL)
 
     # Overall status
-    critical_components = ["api", "groq_api_key_set", "chroma_db"]
+    critical_components = ["api", "groq_api_key_set", "chroma_db", "api_auth_configured"]
     all_critical_healthy = all(components.get(c, False) for c in critical_components)
     status = "healthy" if all_critical_healthy else "degraded"
 
@@ -91,3 +101,22 @@ async def get_config() -> dict:
         "temperature": settings.TEMPERATURE,
         "chroma_persist_dir": settings.CHROMA_PERSIST_DIR,
     }
+
+
+@router.get(
+    "/metrics",
+    summary="Runtime metrics snapshot",
+    description="Returns in-memory counters and latency summaries for observability.",
+)
+async def get_metrics() -> dict:
+    return metrics.snapshot()
+
+
+@router.get(
+    "/metrics/prometheus",
+    summary="Prometheus metrics endpoint",
+    description="Prometheus-formatted metrics for scraping.",
+)
+async def get_metrics_prometheus() -> Response:
+    payload, content_type = prom_bridge.render()
+    return Response(content=payload, media_type=content_type)

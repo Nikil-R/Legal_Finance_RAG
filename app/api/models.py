@@ -76,6 +76,7 @@ class SourceDocument(BaseModel):
     origin: str = "system"  # "system" or "user"
     relevance_score: float
     excerpt: Optional[str] = None
+    citation_spans: list[dict] = Field(default_factory=list)
 
 
 class UserUploadResponse(BaseModel):
@@ -111,7 +112,7 @@ class ValidationResult(BaseModel):
     overall_valid: bool
     has_citations: bool
     has_disclaimer: bool
-    issues: list[str] = []
+    issues: list[str] = Field(default_factory=list)
 
 
 class TokenUsage(BaseModel):
@@ -134,6 +135,9 @@ class QueryMetadata(BaseModel):
     retrieval_time_ms: float
     generation_time_ms: float
     total_time_ms: float
+    guardrails: dict = Field(default_factory=dict)
+    query_rewrite: dict = Field(default_factory=dict)
+    cache_hit: bool = False
 
 
 class QueryResponse(BaseModel):
@@ -143,7 +147,7 @@ class QueryResponse(BaseModel):
     question: str
     domain: str
     answer: Optional[str] = None
-    sources: list[SourceDocument] = []
+    sources: list[SourceDocument] = Field(default_factory=list)
     validation: Optional[ValidationResult] = None
     metadata: Optional[QueryMetadata] = None
     error: Optional[str] = None

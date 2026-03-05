@@ -1,5 +1,25 @@
+import json
 import logging
 import sys
+from datetime import datetime, timezone
+
+from app.config import settings
+from app.utils.request_context import get_request_id, get_trace_id
+
+
+class JsonFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        payload = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+            "request_id": get_request_id(),
+            "trace_id": get_trace_id(),
+        }
+        if record.exc_info:
+            payload["exception"] = self.formatException(record.exc_info)
+        return json.dumps(payload, ensure_ascii=True)
 
 
 def get_logger(name: str, level: str = "INFO") -> logging.Logger:
@@ -17,10 +37,13 @@ def get_logger(name: str, level: str = "INFO") -> logging.Logger:
 
     if not logger.handlers:
         handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter(
-            fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            datefmt="%Y-%m-%dT%H:%M:%S",
-        )
+        if settings.LOG_FORMAT.lower() == "json":
+            formatter = JsonFormatter()
+        else:
+            formatter = logging.Formatter(
+                fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                datefmt="%Y-%m-%dT%H:%M:%S",
+            )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 

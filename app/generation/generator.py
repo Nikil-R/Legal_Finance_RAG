@@ -84,6 +84,7 @@ class RAGGenerator:
             "sources": sources,
             "validation": validation,
             "usage": llm_result["usage"],
+            "duration_ms": llm_result.get("duration_ms", 0.0),
             "model": llm_result["model"],
             "prompt_version": self.prompt_version,
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat() + "Z",

@@ -46,6 +46,11 @@ class TestHealthEndpoints:
         for key in ("api", "groq_api_key_set", "chroma_db", "embeddings_model"):
             assert key in data["components"], f"Missing component: {key}"
 
+    def test_metrics_endpoint_schema(self, client):
+        data = client.get("/metrics").json()
+        assert "counters" in data
+        assert "timings" in data
+
     def test_config_returns_non_sensitive(self, client):
         """Config endpoint must expose public settings but never the API key."""
         data = client.get("/config").json()
@@ -126,6 +131,10 @@ class TestQueryValidation:
         r = client.post("/api/v1/query", json={"question": "What is Section 80C?"})
         # 422 would mean the default failed
         assert r.status_code != 422
+
+    def test_v2_query_route_available(self, client):
+        r = client.post("/api/v2/query", json={"question": "What is Section 80C?"})
+        assert r.status_code != 404
 
 
 # ── Retrieval-Only Endpoint ───────────────────────────────────────────────────

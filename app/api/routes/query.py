@@ -2,9 +2,11 @@
 Query endpoints for the RAG system.
 """
 
+import asyncio
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends
+from fastapi.concurrency import run_in_threadpool
 
 from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
 from app.api.models import (
@@ -18,12 +20,23 @@ from app.api.models import (
     TokenUsage,
     ValidationResult,
 )
+from app.api.security import require_api_key
+from app.config import settings
 from app.generation import RAGPipeline
+from app.observability import metrics
 from app.reranking import RetrievalPipeline
 from app.utils.logger import get_logger
+from app.utils.pii import redact_pii
 
 router = APIRouter(prefix="/query", tags=["Query"])
 logger = get_logger(__name__)
+
+
+async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
+    return await asyncio.wait_for(
+        run_in_threadpool(fn, *args, **kwargs),
+        timeout=float(timeout_seconds),
+    )
 
 
 @router.post(
@@ -48,7 +61,9 @@ logger = get_logger(__name__)
     """,
 )
 async def query(
-    request: QueryRequest, pipeline: RAGPipeline = Depends(get_rag_pipeline)
+    request: QueryRequest,
+    _: None = Depends(require_api_key),
+    pipeline: RAGPipeline = Depends(get_rag_pipeline),
 ) -> QueryResponse:
     """
     Main RAG query endpoint.
@@ -56,10 +71,21 @@ async def query(
     logger.info(
         "Query received: '%s...' | Domain: %s", request.question[:50], request.domain
     )
+    processed_question = (
+        redact_pii(request.question)
+        if settings.PII_REDACTION_ENABLED
+        else request.question
+    )
 
     try:
         # Run the RAG pipeline
-        result = pipeline.run(question=request.question, domain=request.domain.value)
+        result = await _run_with_timeout(
+            pipeline.run,
+            question=processed_question,
+            domain=request.domain.value,
+            session_id=request.session_id,
+            timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
+        )
 
         # Build response
         if result["success"]:
@@ -75,9 +101,11 @@ async def query(
                             relevance_score=src.get(
                                 "relevance_score", src.get("rerank_score", 0.0)
                             ),
+                            origin=src.get("origin", "system"),
                             excerpt=src.get(
                                 "excerpt", src.get("content", "")[:200] + "..."
                             ),
+                            citation_spans=src.get("citation_spans", []),
                         )
                     )
 
@@ -107,11 +135,14 @@ async def query(
                 retrieval_time_ms=meta.get("retrieval_time_ms", 0),
                 generation_time_ms=meta.get("generation_time_ms", 0),
                 total_time_ms=meta.get("total_time_ms", 0),
+                guardrails=meta.get("guardrails", {}),
+                query_rewrite=meta.get("query_rewrite", {}),
+                cache_hit=meta.get("cache_hit", False),
             )
 
             response = QueryResponse(
                 success=True,
-                question=request.question,
+                question=processed_question,
                 domain=request.domain.value,
                 answer=result["answer"],
                 sources=sources,
@@ -131,17 +162,27 @@ async def query(
             # Query failed (no results, etc.)
             return QueryResponse(
                 success=False,
-                question=request.question,
+                question=processed_question,
                 domain=request.domain.value,
                 error=result.get("error", "Unknown error occurred"),
                 timestamp=datetime.now(timezone.utc),
             )
 
+    except TimeoutError:
+        metrics.inc("query_timeout_total")
+        logger.error("Query timed out after %ss", settings.REQUEST_TIMEOUT_SECONDS)
+        return QueryResponse(
+            success=False,
+            question=processed_question,
+            domain=request.domain.value,
+            error=f"Query timed out after {settings.REQUEST_TIMEOUT_SECONDS}s",
+            timestamp=datetime.now(timezone.utc),
+        )
     except Exception as e:
         logger.error("Query error: %s", str(e), exc_info=True)
         return QueryResponse(
             success=False,
-            question=request.question,
+            question=processed_question,
             domain=request.domain.value,
             error=str(e),
             timestamp=datetime.now(timezone.utc),
@@ -156,18 +197,26 @@ async def query(
 )
 async def retrieve_only(
     request: RetrievalOnlyRequest,
+    _: None = Depends(require_api_key),
     pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """
     Retrieval-only endpoint (no LLM generation).
     """
     logger.info("Retrieval request: '%s...'", request.question[:50])
+    processed_question = (
+        redact_pii(request.question)
+        if settings.PII_REDACTION_ENABLED
+        else request.question
+    )
 
     try:
-        result = pipeline.run(
-            query=request.question,
+        result = await _run_with_timeout(
+            pipeline.run,
+            query=processed_question,
             domain=request.domain.value,
             rerank_top_k=request.top_k,
+            timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
         )
 
         if result["success"]:
@@ -187,7 +236,7 @@ async def retrieve_only(
 
             return RetrievalResponse(
                 success=True,
-                question=request.question,
+                question=processed_question,
                 domain=request.domain.value,
                 chunks=chunks,
                 total_found=result.get("candidates_found", 0),
@@ -196,7 +245,7 @@ async def retrieve_only(
         else:
             return RetrievalResponse(
                 success=False,
-                question=request.question,
+                question=processed_question,
                 domain=request.domain.value,
                 chunks=[],
                 total_found=0,
@@ -204,11 +253,23 @@ async def retrieve_only(
                 error=result.get("error", "Retrieval failed"),
             )
 
+    except TimeoutError:
+        metrics.inc("retrieval_timeout_total")
+        logger.error("Retrieval timed out after %ss", settings.REQUEST_TIMEOUT_SECONDS)
+        return RetrievalResponse(
+            success=False,
+            question=processed_question,
+            domain=request.domain.value,
+            chunks=[],
+            total_found=0,
+            retrieval_time_ms=0,
+            error=f"Retrieval timed out after {settings.REQUEST_TIMEOUT_SECONDS}s",
+        )
     except Exception as e:
         logger.error("Retrieval error: %s", str(e), exc_info=True)
         return RetrievalResponse(
             success=False,
-            question=request.question,
+            question=processed_question,
             domain=request.domain.value,
             chunks=[],
             total_found=0,

@@ -1,0 +1,11 @@
+apiVersion: 1
+providers:
+  - name: legalfinance
+    orgId: 1
+    folder: LegalFinance
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards

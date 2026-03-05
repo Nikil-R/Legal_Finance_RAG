@@ -1,0 +1,18 @@
+groups:
+  - name: legalfinance-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: sum(rate(rag_http_requests_total{status=~"5.."}[5m])) / sum(rate(rag_http_requests_total[5m])) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "HTTP 5xx error rate is above 5%"
+
+      - alert: QueryFailureSpike
+        expr: sum(rate(rag_query_total{status=~"failed_generation|failed_retrieval|blocked_output|blocked_retrieval"}[10m])) > 0.5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAG query failures are elevated"

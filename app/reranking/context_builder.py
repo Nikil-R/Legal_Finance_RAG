@@ -70,6 +70,7 @@ class ContextBuilder:
         for idx, chunk in enumerate(chunks, start=1):
             meta = chunk.get("metadata", {})
             origin = chunk.get("origin") or meta.get("origin", "system")
+            content = chunk.get("content", "") or ""
             sources.append(
                 {
                     "reference_id": idx,
@@ -78,6 +79,8 @@ class ContextBuilder:
                     "domain": meta.get("domain", "unknown"),
                     "origin": origin,
                     "rerank_score": chunk.get("rerank_score"),  # may be None
+                    "content": content,
+                    "excerpt": content[:400],
                 }
             )
 

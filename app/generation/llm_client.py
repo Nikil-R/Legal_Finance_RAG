@@ -4,7 +4,9 @@ Groq API Client — wrapper for interacting with Groq's LLM API.
 
 from __future__ import annotations
 
+import random
 import time
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 
 from groq import Groq
 
@@ -42,9 +44,7 @@ class GroqClient:
         """
         Executes a chat completion request to Groq.
         """
-        try:
-            start_time = time.perf_counter()
-
+        def _single_call() -> object:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
@@ -55,40 +55,79 @@ class GroqClient:
                 max_tokens=max_tokens,
                 top_p=1.0,
             )
+            return response
 
-            end_time = time.perf_counter()
-            duration_ms = (end_time - start_time) * 1000
+        start_time = time.perf_counter()
+        attempts = max(1, int(settings.LLM_MAX_RETRIES))
+        last_error = "unknown error"
 
-            usage = response.usage
-            logger.info(
-                "Generated response: %d tokens in %.1fms",
-                usage.total_tokens,
-                duration_ms,
-            )
+        for attempt in range(1, attempts + 1):
+            try:
+                with ThreadPoolExecutor(max_workers=1) as pool:
+                    future = pool.submit(_single_call)
+                    response = future.result(
+                        timeout=float(settings.LLM_REQUEST_TIMEOUT_SECONDS)
+                    )
 
-            return {
-                "success": True,
-                "content": response.choices[0].message.content,
-                "model": self.model,
-                "usage": {
-                    "prompt_tokens": usage.prompt_tokens,
-                    "completion_tokens": usage.completion_tokens,
-                    "total_tokens": usage.total_tokens,
-                },
-                "finish_reason": response.choices[0].finish_reason,
-                "duration_ms": duration_ms,
-            }
+                end_time = time.perf_counter()
+                duration_ms = (end_time - start_time) * 1000
 
-        except Exception as e:
-            error_str = str(e)
-            error_type = "unknown"
-            if "Rate limit" in error_str:
-                error_type = "rate_limit"
-            elif "API" in error_str or "Authentication" in error_str:
-                error_type = "api_error"
+                usage = response.usage
+                logger.info(
+                    "Generated response: %d tokens in %.1fms (attempt=%d/%d)",
+                    usage.total_tokens,
+                    duration_ms,
+                    attempt,
+                    attempts,
+                )
 
-            logger.error("Groq generation failed (%s): %s", error_type, error_str)
-            return {"success": False, "error": error_str, "error_type": error_type}
+                return {
+                    "success": True,
+                    "content": response.choices[0].message.content,
+                    "model": self.model,
+                    "usage": {
+                        "prompt_tokens": usage.prompt_tokens,
+                        "completion_tokens": usage.completion_tokens,
+                        "total_tokens": usage.total_tokens,
+                    },
+                    "finish_reason": response.choices[0].finish_reason,
+                    "duration_ms": duration_ms,
+                }
+            except FutureTimeoutError:
+                last_error = (
+                    f"LLM request timed out after {settings.LLM_REQUEST_TIMEOUT_SECONDS}s"
+                )
+                logger.warning(
+                    "Groq request timeout (attempt=%d/%d): %s",
+                    attempt,
+                    attempts,
+                    last_error,
+                )
+            except Exception as e:
+                last_error = str(e)
+                logger.warning(
+                    "Groq request failed (attempt=%d/%d): %s",
+                    attempt,
+                    attempts,
+                    last_error,
+                )
+
+            if attempt < attempts:
+                base = max(0.1, float(settings.LLM_RETRY_BACKOFF_SECONDS))
+                jitter = random.uniform(0.0, 0.25)
+                sleep_for = (base * (2 ** (attempt - 1))) + jitter
+                time.sleep(sleep_for)
+
+        error_type = "unknown"
+        if "rate limit" in last_error.lower():
+            error_type = "rate_limit"
+        elif "timeout" in last_error.lower():
+            error_type = "timeout"
+        elif "api" in last_error.lower() or "authentication" in last_error.lower():
+            error_type = "api_error"
+
+        logger.error("Groq generation failed (%s): %s", error_type, last_error)
+        return {"success": False, "error": last_error, "error_type": error_type}
 
     def health_check(self) -> bool:
         """Verifies API connectivity with a minimal request."""

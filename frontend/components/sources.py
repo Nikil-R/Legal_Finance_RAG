@@ -1,5 +1,5 @@
 """
-Source citations — Perplexity-style inline chips + expandable cards.
+Source citations with expandable cards and citation-claim highlights.
 """
 
 import streamlit as st
@@ -13,27 +13,22 @@ _ORIGIN_BADGE = {
     "system": '<span class="lf-badge sys">SYSTEM</span>',
     "user": '<span class="lf-badge usr">YOUR FILE</span>',
 }
-_ICON = {"tax": "💰", "finance": "🏦", "legal": "📜", "user_upload": "📎"}
+_ICON = {"tax": "T", "finance": "F", "legal": "L", "user_upload": "U"}
 
 
 def render_sources(sources: list, key_prefix: str = "s"):
     if not sources:
         return
 
-    # Inline chips
     chips = "".join(
         f'<span class="lf-src-chip">[{s.get("reference_id","?")}] '
-        f'{s.get("source","Unknown")[:22]}{"…" if len(s.get("source",""))>22 else ""}</span>'
+        f'{s.get("source","Unknown")[:22]}{"..." if len(s.get("source","")) > 22 else ""}</span>'
         for s in sources
     )
-    st.markdown(
-        f'<div class="lf-src-chips">{chips}</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown(f'<div class="lf-src-chips">{chips}</div>', unsafe_allow_html=True)
 
-    # Expandable cards
     with st.expander(
-        f"📚 {len(sources)} source{'s' if len(sources) > 1 else ''}",
+        f"{len(sources)} source{'s' if len(sources) > 1 else ''}",
         expanded=False,
     ):
         for s in sources:
@@ -47,15 +42,14 @@ def _card(s: dict):
     origin = s.get("origin", "system")
     score = float(s.get("relevance_score") or s.get("rerank_score") or 0)
     excerpt = s.get("excerpt", "")
+    citation_spans = s.get("citation_spans", [])
 
-    icon = _ICON.get(domain, "📄")
-    dbadge = _DOMAIN_BADGE.get(
-        domain, f'<span class="lf-badge">{domain.upper()}</span>'
-    )
+    icon = _ICON.get(domain, "D")
+    dbadge = _DOMAIN_BADGE.get(domain, f'<span class="lf-badge">{domain.upper()}</span>')
     obadge = _ORIGIN_BADGE.get(origin, _ORIGIN_BADGE["system"])
-
     sc = "hi" if score >= 0.65 else ("md" if score >= 0.35 else "lo")
     pct = min(int(score * 100), 100)
+    claims = ", ".join(c.get("claim", "")[:80] for c in citation_spans[:3])
 
     st.markdown(
         f"""<div class="lf-src-card">
@@ -67,7 +61,8 @@ def _card(s: dict):
             <div class="lf-score-fill {sc}" style="width:{pct}%"></div>
           </div>
           <div class="lf-src-meta">Relevance score: {score:.3f}</div>
-          {'<div class="lf-src-excerpt">'+excerpt[:300]+("…" if len(excerpt)>300 else "")+"</div>" if excerpt else ""}
+          {'<div class="lf-src-excerpt">' + excerpt[:300] + ('...' if len(excerpt) > 300 else '') + '</div>' if excerpt else ''}
+          {'<div class="lf-src-meta">Cited claims: ' + claims + '</div>' if claims else ''}
         </div>""",
         unsafe_allow_html=True,
     )

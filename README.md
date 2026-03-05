@@ -14,6 +14,13 @@ An AI-powered Retrieval-Augmented Generation (RAG) system for Indian tax laws, f
 - **Domain Filtering**: Search within Tax, Finance, Legal, or All domains
 - **Mandatory Disclaimers**: Legal/financial disclaimer on every response
 - **Evaluation System**: Automated quality metrics with CI integration
+- **Runtime Guardrails**: Input, retrieval, and output safety checks
+- **Query Rewriting**: Domain-aware rewrite for stronger hybrid retrieval
+- **Source Highlighting**: Citation claim-to-source highlight spans for UI
+- **API v2**: Versioned API surface (`/api/v2/...`)
+- **Operational Controls**: Rate limiting, API key auth, query cache, metrics endpoint
+- **Distributed Runtime Support**: Optional Redis backend for shared cache/rate limiting
+- **Prometheus Export**: `/metrics/prometheus` endpoint for observability stacks
 
 ## 🏗️ Architecture
 
@@ -185,6 +192,30 @@ CHUNK_SIZE=512
 TOP_K_RETRIEVAL=20
 TOP_K_RERANK=5
 TEMPERATURE=0.0
+ENABLE_GUARDRAILS=true
+ENABLE_QUERY_REWRITE=true
+GUARDRAIL_MIN_TOP_SCORE=0.15
+RATE_LIMIT_RPM=120
+API_AUTH_ENABLED=true
+API_KEYS=
+REDIS_URL=
+REDIS_KEY_PREFIX=legal_finance_rag
+ENABLE_QUERY_CACHE=true
+QUERY_CACHE_TTL_SECONDS=300
+EVAL_GATE_MIN_PASS_RATE=0.8
+```
+
+### Operations Endpoints
+
+- `GET /metrics`: in-memory counters + p95/p99 timing snapshots
+- `GET /metrics/prometheus`: Prometheus-formatted metrics
+- `GET /health`: includes component readiness
+- `POST /api/v1/query` and `POST /api/v2/query`: equivalent versioned routes
+
+### Evaluation Quality Gate
+
+```bash
+python scripts/evaluation_gate.py --min-pass-rate 0.8
 ```
 
 ## 📝 API Reference
@@ -231,3 +262,42 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## ⚠️ Disclaimer
 
 This tool is for **educational purposes only**. It should not be considered as professional legal, tax, or financial advice. Always consult qualified professionals for advice specific to your situation.
+
+## Production Hardening
+
+### Reliability
+- Configure request timeout and LLM retry controls:
+  - `REQUEST_TIMEOUT_SECONDS`
+  - `LLM_REQUEST_TIMEOUT_SECONDS`
+  - `LLM_MAX_RETRIES`
+  - `LLM_RETRY_BACKOFF_SECONDS`
+- Run load test:
+  - `python scripts/load_test.py --base-url http://localhost:8000 --requests 200 --concurrency 20 --api-key <key>`
+
+### Security
+- Keep API auth enabled (`API_AUTH_ENABLED=true`).
+- Use hashed keys in production (`API_KEYS_HASHED`) and rotate keys regularly.
+- CI now runs `pip-audit`, `bandit`, and `gitleaks`.
+
+### Observability
+- Structured logs: `LOG_FORMAT=json`
+- Request correlation headers: `X-Request-ID`, `X-Trace-ID`
+- Prometheus endpoint: `/metrics/prometheus`
+- Optional monitoring stack:
+  - `docker compose -f docker/docker-compose.yml -f docker/docker-compose.monitoring.yml up -d`
+
+### Evaluation Gate
+- CI enforces pass rate and metric floors:
+  - pass rate >= 0.8
+  - faithfulness >= 0.7
+  - correctness >= 0.6
+  - citation quality >= 0.8
+  - retrieval relevance >= 0.5
+
+### Operations and Compliance
+- Runbook: `docs/operations/runbook.md`
+- Backup/restore: `docs/operations/backup_restore.md`
+- Security operations: `docs/security/security_operations.md`
+- Data safety policy: `docs/compliance/data_safety.md`
+- Backup command:
+  - `python scripts/backup_chroma.py --source ./chroma_db --target-dir ./backups`
