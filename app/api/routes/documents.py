@@ -3,6 +3,9 @@ Document management endpoints.
 """
 
 from fastapi import APIRouter, HTTPException
+from app.api.rate_limit import limiter
+from app.api.security_decorators import require_role
+from app.models.auth import Role, User
 
 from app.api.dependencies import clear_pipeline_cache, get_retriever
 from app.api.models import (
@@ -13,10 +16,10 @@ from app.api.models import (
 )
 from app.infra.system_ingestion_jobs import system_ingestion_job_store
 from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
-from app.utils.logger import get_logger
+from app.observability import logger as obs_logger
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
-logger = get_logger(__name__)
+logger = obs_logger.bind(module="api.documents")
 
 
 def _maybe_invalidate_cache_for_job(record: dict) -> dict:
@@ -92,13 +95,16 @@ async def get_stats() -> StatsResponse:
     Poll /documents/ingest/jobs/{job_id} for completion status.
     """,
 )
-async def ingest_documents(request: IngestRequest) -> IngestJobResponse:
+@limiter.limit("20/hour")
+@require_role(Role.INGEST, Role.ADMIN)
+async def ingest_documents(request: IngestRequest, user: User) -> IngestJobResponse:
     """
     Trigger document ingestion asynchronously.
     """
     logger.info(
         "System ingestion enqueue requested | clear_existing: %s", request.clear_existing
     )
+    logger.debug("User %s triggered system ingestion request", user.email)
 
     try:
         result = enqueue_system_ingestion_job(clear_existing=request.clear_existing)
@@ -116,10 +122,12 @@ async def ingest_documents(request: IngestRequest) -> IngestJobResponse:
 
 
 @router.get("/ingest/jobs/{job_id}", response_model=IngestJobStatusResponse)
-async def get_ingestion_job_status(job_id: str) -> IngestJobStatusResponse:
+@require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+async def get_ingestion_job_status(job_id: str, user: User) -> IngestJobStatusResponse:
     """
     Get status of an asynchronous system-ingestion job.
     """
+    logger.debug("Ingestion status requested by %s for job %s", user.email, job_id)
     record = system_ingestion_job_store.get_job(job_id)
     if record is None:
         raise HTTPException(status_code=404, detail="Ingestion job not found.")

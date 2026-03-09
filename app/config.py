@@ -2,6 +2,8 @@ from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from app.utils.secrets_manager import secrets
+
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables / .env file."""
@@ -9,8 +11,21 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     # --- LLM ---
-    GROQ_API_KEY: str = ""
     GROQ_MODEL: str = "llama-3.1-8b-instant"
+    ENVIRONMENT: str = "local"
+    TESTING: bool = False
+
+    @property
+    def GROQ_API_KEY(self) -> str:
+        secret_name = "prod/legal-rag/api-keys"
+        key_name = "groq_api_key" if self.ENVIRONMENT == "production" else "GROQ_API_KEY"
+        return secrets.get_secret(secret_name, key_name)
+
+    @property
+    def REDIS_URL(self) -> str:
+        secret_name = "prod/legal-rag/infra"
+        key_name = "redis_url" if self.ENVIRONMENT == "production" else "REDIS_URL"
+        return secrets.get_secret(secret_name, key_name)
 
     # --- Vector Store ---
     CHROMA_PERSIST_DIR: str = "./chroma_db"
@@ -56,7 +71,6 @@ class Settings(BaseSettings):
     REJECT_DEFAULT_API_KEYS: bool = True
     RATE_LIMIT_RPM: int = 120
     REQUEST_TIMEOUT_SECONDS: int = 45
-    REDIS_URL: str = ""
     REDIS_KEY_PREFIX: str = "legal_finance_rag"
     INGESTION_QUEUE_BACKEND: str = "auto"  # auto | celery | local
     CELERY_BROKER_URL: str = ""
@@ -68,8 +82,12 @@ class Settings(BaseSettings):
     ENABLE_QUERY_CACHE: bool = True
     QUERY_CACHE_TTL_SECONDS: int = 300
 
-    ENVIRONMENT: str = "development"
-    TESTING: bool = False
+    # --- Vector DB ---
+    QDRANT_URL: str = "http://localhost:6333"
+    QDRANT_API_KEY: str = ""
+
+    # --- Tracing ---
+    OTLP_ENDPOINT: str = "http://localhost:4317"
 
     # --- LLM Reliability ---
     LLM_REQUEST_TIMEOUT_SECONDS: int = 40

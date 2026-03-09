@@ -1,122 +1,177 @@
-"""
-Health check and system status endpoints.
-"""
+from __future__ import annotations
 
-import os
-from datetime import datetime, timezone
+import asyncio
+import time
+from datetime import datetime
+from typing import Dict, Literal
 
-import chromadb
-from fastapi import APIRouter
-from fastapi.responses import Response
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
-from app.api.models import HealthResponse
-from app.config import settings
-from app.infra import redis_store
-from app.observability import metrics, prom_bridge
-from app.utils.logger import get_logger
-
-router = APIRouter(tags=["Health"])
-logger = get_logger(__name__)
+router = APIRouter(prefix="/health", tags=["Observability"])
 
 
-@router.get(
-    "/health",
-    response_model=HealthResponse,
-    summary="Health check",
-    description="Returns the health status of the API and its components.",
-)
-async def health_check() -> HealthResponse:
-    """
-    Health check endpoint.
-    """
-    # Check components
-    components = {
-        "api": True,
-        "groq_api_key_set": bool(settings.GROQ_API_KEY),
-        "chroma_db": False,
-        "embeddings_model": False,
-        "api_auth_configured": (not settings.API_AUTH_ENABLED)
-        or bool(settings.API_KEYS or settings.API_KEYS_HASHED),
-        "redis": redis_store.enabled or not bool(settings.REDIS_URL),
+class ComponentHealth(BaseModel):
+    status: Literal["healthy", "unhealthy"]
+    latency_ms: float
+    message: str = ""
+
+
+class HealthResponse(BaseModel):
+    status: Literal["healthy", "degraded", "unhealthy"]
+    timestamp: datetime
+    checks: Dict[str, ComponentHealth]
+
+
+async def check_redis() -> ComponentHealth:
+    from redis.asyncio import Redis
+    from app.config import settings
+
+    start = time.time()
+    try:
+        redis = Redis.from_url(
+            settings.REDIS_URL,
+            socket_timeout=2.0,
+            socket_connect_timeout=2.0,
+        )
+        await redis.ping()
+        await redis.close()
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2))
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
+
+
+async def check_celery() -> ComponentHealth:
+    from app.tasks import celery_app
+
+    start = time.time()
+    try:
+        inspect = celery_app.control.inspect(timeout=2.0)
+        active = inspect.active()
+
+        if not active:
+            return ComponentHealth(
+                status="unhealthy",
+                latency_ms=0,
+                message="No active Celery workers",
+            )
+
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(
+            status="healthy",
+            latency_ms=round(latency, 2),
+            message=f"{len(active)} workers active",
+        )
+    except Exception as exc:
+        return ComponentHealth(
+            status="unhealthy", latency_ms=0, message=f"Celery check failed: {exc}"
+        )
+
+
+async def check_qdrant() -> ComponentHealth:
+    from app.config import settings
+
+    start = time.time()
+    try:
+        from qdrant_client import QdrantClient
+
+        client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
+        collections = client.get_collections()
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(
+            status="healthy",
+            latency_ms=round(latency, 2),
+            message=f"{len(collections.collections)} collections",
+        )
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
+
+
+async def check_groq() -> ComponentHealth:
+    from app.config import settings
+    from groq import AsyncGroq
+
+    start = time.time()
+    try:
+        client = AsyncGroq(api_key=settings.GROQ_API_KEY, timeout=5.0)
+        await client.chat.completions.create(
+            model=settings.GROQ_MODEL,
+            messages=[{"role": "user", "content": "ping"}],
+            max_tokens=1,
+        )
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2))
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
+
+
+@router.get("", response_model=HealthResponse)
+async def health_check():
+    tasks = await asyncio.gather(
+        check_redis(),
+        check_celery(),
+        check_qdrant(),
+        check_groq(),
+        return_exceptions=True,
+    )
+
+    def normalize(idx: int) -> ComponentHealth:
+        result = tasks[idx]
+        if isinstance(result, ComponentHealth):
+            return result
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(result))
+
+    checks = {
+        "redis": normalize(0),
+        "celery": normalize(1),
+        "qdrant": normalize(2),
+        "groq": normalize(3),
     }
 
-    # Check ChromaDB
-    if os.getenv("TESTING", "").lower() == "true":
-        components["chroma_db"] = True
-    else:
-        try:
-            client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
-            client.heartbeat()
-            components["chroma_db"] = True
-        except Exception as e:
-            logger.warning("ChromaDB health check failed: %s", e)
+    unhealthy = sum(1 for component in checks.values() if component.status == "unhealthy")
+    status = "healthy" if unhealthy == 0 else "degraded" if unhealthy == 1 else "unhealthy"
 
-    # Check embeddings model (just verify it's configured)
-    components["embeddings_model"] = bool(settings.EMBEDDING_MODEL)
-
-    # Overall status
-    critical_components = ["api", "groq_api_key_set", "chroma_db", "api_auth_configured"]
-    all_critical_healthy = all(components.get(c, False) for c in critical_components)
-    status = "healthy" if all_critical_healthy else "degraded"
-
-    return HealthResponse(
+    response = HealthResponse(
         status=status,
-        version="0.1.0",
-        components=components,
-        timestamp=datetime.now(timezone.utc),
+        timestamp=datetime.utcnow(),
+        checks=checks,
+    )
+
+    if status == "unhealthy":
+        raise HTTPException(status_code=503, detail=response.dict())
+
+    return response
+
+
+@router.get("/liveness")
+async def liveness_check():
+    return JSONResponse(
+        {
+            "status": "alive",
+            "timestamp": datetime.utcnow().isoformat(),
+        }
     )
 
 
-@router.get("/", summary="Root endpoint", description="Returns basic API information.")
-async def root() -> dict:
-    """
-    Root endpoint with API info.
-    """
-    return {
-        "name": "LegalFinance RAG API",
-        "version": "0.1.0",
-        "description": "RAG system for Indian tax, finance, and legal documents",
-        "docs_url": "/docs",
-        "health_url": "/health",
-    }
+@router.get("/readiness")
+async def readiness_check():
+    redis_health, qdrant_health = await asyncio.gather(check_redis(), check_qdrant())
 
+    if redis_health.status == "unhealthy" or qdrant_health.status == "unhealthy":
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "status": "not_ready",
+                "redis": redis_health.dict(),
+                "qdrant": qdrant_health.dict(),
+            },
+        )
 
-@router.get(
-    "/config",
-    summary="Get non-sensitive configuration",
-    description="Returns non-sensitive configuration values for debugging.",
-)
-async def get_config() -> dict:
-    """
-    Returns non-sensitive config values.
-    """
-    return {
-        "groq_model": settings.GROQ_MODEL,
-        "embedding_model": settings.EMBEDDING_MODEL,
-        "cross_encoder_model": settings.CROSS_ENCODER_MODEL,
-        "chunk_size": settings.CHUNK_SIZE,
-        "chunk_overlap": settings.CHUNK_OVERLAP,
-        "top_k_retrieval": settings.TOP_K_RETRIEVAL,
-        "top_k_rerank": settings.TOP_K_RERANK,
-        "temperature": settings.TEMPERATURE,
-        "chroma_persist_dir": settings.CHROMA_PERSIST_DIR,
-    }
-
-
-@router.get(
-    "/metrics",
-    summary="Runtime metrics snapshot",
-    description="Returns in-memory counters and latency summaries for observability.",
-)
-async def get_metrics() -> dict:
-    return metrics.snapshot()
-
-
-@router.get(
-    "/metrics/prometheus",
-    summary="Prometheus metrics endpoint",
-    description="Prometheus-formatted metrics for scraping.",
-)
-async def get_metrics_prometheus() -> Response:
-    payload, content_type = prom_bridge.render()
-    return Response(content=payload, media_type=content_type)
+    return JSONResponse(
+        {
+            "status": "ready",
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+    )

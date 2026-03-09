@@ -1,53 +1,88 @@
-"""
-In-memory metrics registry for lightweight production observability.
-"""
-
 from __future__ import annotations
 
-from collections import defaultdict, deque
-from statistics import mean
-from threading import Lock
+from typing import Dict
 
+from prometheus_client import Counter, Gauge, Histogram, Info
+from prometheus_fastapi_instrumentator import Instrumentator
+
+from app.config import settings
 
 class MetricsRegistry:
-    def __init__(self, max_timings_per_metric: int = 1000) -> None:
-        self._lock = Lock()
-        self._counters: dict[str, int] = defaultdict(int)
-        self._timings: dict[str, deque[float]] = {}
-        self._max_timings_per_metric = max_timings_per_metric
+    """In-memory counters/timings for quick snapshots."""
 
-    def inc(self, name: str, value: int = 1) -> None:
-        with self._lock:
-            self._counters[name] += value
+    def __init__(self) -> None:
+        self._counters: Dict[str, int] = {}
+        self._timings: Dict[str, list[float]] = {}
+        self._lock = None
+
+    def inc(self, name: str, amount: int = 1) -> None:
+        self._counters[name] = self._counters.get(name, 0) + amount
 
     def observe_ms(self, name: str, value_ms: float) -> None:
-        with self._lock:
-            window = self._timings.get(name)
-            if window is None:
-                window = deque(maxlen=self._max_timings_per_metric)
-                self._timings[name] = window
-            window.append(float(value_ms))
+        self._timings.setdefault(name, []).append(float(value_ms))
 
-    def snapshot(self) -> dict:
-        with self._lock:
-            timings = {}
-            for name, values in self._timings.items():
-                if not values:
-                    continue
-                sorted_values = sorted(values)
-                idx_95 = max(int(0.95 * (len(sorted_values) - 1)), 0)
-                idx_99 = max(int(0.99 * (len(sorted_values) - 1)), 0)
-                timings[name] = {
+    def snapshot(self) -> Dict[str, Dict]:
+        return {
+            "counters": dict(self._counters),
+            "timings": {
+                name: {
                     "count": len(values),
-                    "avg_ms": round(mean(values), 3),
-                    "p95_ms": round(sorted_values[idx_95], 3),
-                    "p99_ms": round(sorted_values[idx_99], 3),
+                    "avg_ms": sum(values) / len(values) if values else 0,
+                    "p95_ms": sorted(values)[int(0.95 * (len(values) - 1))] if values else 0,
                 }
-
-            return {
-                "counters": dict(self._counters),
-                "timings": timings,
-            }
+                for name, values in self._timings.items()
+                if values
+            },
+        }
 
 
 metrics = MetricsRegistry()
+
+# Prometheus instrumentation
+query_counter = Counter(
+    "query_requests_total",
+    "Total number of query requests",
+    ["role", "status"],
+)
+
+query_latency = Histogram(
+    "query_duration_seconds",
+    "Execution time of query endpoint",
+    ["endpoint"],
+    buckets=[0.1, 0.5, 1.0, 2.0, 5.0, 10.0],
+)
+
+ingestion_counter = Counter(
+    "ingestion_requests_total",
+    "Total number of ingestion requests",
+    ["status"],
+)
+
+celery_queue_length = Gauge(
+    "celery_queue_length",
+    "Pending Celery jobs by queue",
+    ["queue_name"],
+)
+
+system_info = Info("legal_rag_system", "System information")
+
+_metrics_instrumentator: Instrumentator | None = None
+
+
+def configure_metrics(app) -> None:
+    global _metrics_instrumentator
+    _metrics_instrumentator = Instrumentator(
+        should_group_status_codes=False,
+        should_ignore_untemplated=True,
+        excluded_handlers=["/metrics"],
+        inprogress_name="http_requests_inprogress",
+        inprogress_labels=True,
+    )
+
+    _metrics_instrumentator.instrument(app).expose(app, endpoint="/metrics")
+    system_info.info(
+        {
+            "service": "legal-rag-api",
+            "environment": settings.ENVIRONMENT,
+        }
+    )

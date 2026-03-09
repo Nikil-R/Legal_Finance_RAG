@@ -1,0 +1,74 @@
+groups:
+  - name: legal_rag_alerts
+    interval: 30s
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Error rate >5% for 5m"
+          description: "Current error rate: {{ $value }}"
+
+      - alert: HighQueryLatency
+        expr: |
+          histogram_quantile(0.95, rate(query_duration_seconds_bucket[5m])) > 5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Query P95 latency >5s"
+
+      - alert: CeleryQueueBacklog
+        expr: celery_queue_length > 1000
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Celery queue has >1000 jobs"
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+
+      - alert: NoCeleryWorkers
+        expr: celery_queue_length > 0 and absent(celery_workers_active)
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "No Celery workers detected"
+
+      - alert: LowCacheHitRate
+        expr: rate(cache_operations_total{operation="hit"}[10m]) / rate(cache_operations_total[10m]) < 0.5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Cache hit rate below 50%"
+
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes > 2e9
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory usage >2GB"
+
+      - alert: QdrantUnavailable
+        expr: up{job="qdrant"} == 0
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Qdrant unavailable"
