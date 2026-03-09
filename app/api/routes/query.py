@@ -5,7 +5,7 @@ Query endpoints for the RAG system.
 import asyncio
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.concurrency import run_in_threadpool
 
 from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
@@ -20,13 +20,14 @@ from app.api.models import (
     TokenUsage,
     ValidationResult,
 )
-from app.api.security import require_api_key
+from app.api.security import AuthenticatedUser, get_current_user, require_api_key
 from app.config import settings
 from app.generation import RAGPipeline
 from app.observability import metrics
 from app.reranking import RetrievalPipeline
 from app.utils.logger import get_logger
-from app.utils.pii import redact_pii
+from app.utils.pii_redactor import redact_pii
+from app.utils.session_ownership import verify_session_ownership
 
 router = APIRouter(prefix="/query", tags=["Query"])
 logger = get_logger(__name__)
@@ -63,19 +64,30 @@ async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
 async def query(
     request: QueryRequest,
     _: None = Depends(require_api_key),
+    user: AuthenticatedUser = Depends(get_current_user),
     pipeline: RAGPipeline = Depends(get_rag_pipeline),
 ) -> QueryResponse:
     """
     Main RAG query endpoint.
     """
-    logger.info(
-        "Query received: '%s...' | Domain: %s", request.question[:50], request.domain
-    )
     processed_question = (
         redact_pii(request.question)
         if settings.PII_REDACTION_ENABLED
         else request.question
     )
+    logger.info(
+        "Query received: '%s...' | Domain: %s",
+        processed_question[:50],
+        request.domain,
+    )
+    if request.session_id and not verify_session_ownership(
+        session_id=request.session_id,
+        owner_id=user.id,
+        persist_dir=settings.CHROMA_PERSIST_DIR,
+    ):
+        raise HTTPException(
+            status_code=403, detail="Session does not belong to current user."
+        )
 
     try:
         # Run the RAG pipeline
@@ -84,6 +96,7 @@ async def query(
             question=processed_question,
             domain=request.domain.value,
             session_id=request.session_id,
+            owner_id=user.id,
             timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
         )
 
@@ -203,12 +216,12 @@ async def retrieve_only(
     """
     Retrieval-only endpoint (no LLM generation).
     """
-    logger.info("Retrieval request: '%s...'", request.question[:50])
     processed_question = (
         redact_pii(request.question)
         if settings.PII_REDACTION_ENABLED
         else request.question
     )
+    logger.info("Retrieval request: '%s...'", processed_question[:50])
 
     try:
         result = await _run_with_timeout(

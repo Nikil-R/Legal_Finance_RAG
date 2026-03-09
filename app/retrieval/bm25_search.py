@@ -7,10 +7,12 @@ consistent with the vector store, even after re-ingestion.
 
 from __future__ import annotations
 
+import hashlib
 import re
 
 import chromadb
 import numpy as np
+from functools import lru_cache
 from rank_bm25 import BM25Okapi
 
 from app.utils.logger import get_logger
@@ -22,6 +24,16 @@ VALID_DOMAINS = {"tax", "finance", "legal"}
 
 # Minimum token length to keep during tokenisation
 _MIN_TOKEN_LEN = 2
+
+
+@lru_cache(maxsize=1)
+def get_cached_bm25_index(
+    docs_hash: str, tokenized_corpus: tuple[tuple[str, ...], ...]
+) -> BM25Okapi:
+    """Return or build a BM25 index for the supplied corpus checksum."""
+    logger.debug("Building cached BM25 index (hash=%s)", docs_hash)
+    corpus_lists = [list(tokens) for tokens in tokenized_corpus]
+    return BM25Okapi(corpus_lists)
 
 
 class BM25Retriever:
@@ -66,6 +78,15 @@ class BM25Retriever:
         tokens = re.split(r"[^a-zA-Z0-9]", text.lower())
         return [t for t in tokens if len(t) >= _MIN_TOKEN_LEN]
 
+    @staticmethod
+    def _compute_docs_hash(ids: list[str], texts: list[str]) -> str:
+        """Create a stable fingerprint for the current corpus contents."""
+        hasher = hashlib.sha256()
+        hasher.update(str(len(ids)).encode())
+        hasher.update(",".join(ids).encode())
+        hasher.update(",".join(texts).encode())
+        return hasher.hexdigest()
+
     # ------------------------------------------------------------------
     # Index building
     # ------------------------------------------------------------------
@@ -73,26 +94,59 @@ class BM25Retriever:
     def _build_index(self, domain_filter: str | None = None) -> None:
         """
         Fetch all (filtered) documents from ChromaDB and build a BM25Okapi index.
-
-        Called before every search so the index stays in sync with the store.
+        Uses batching to avoid 'too many SQL variables' error on large collections.
+        Caches the index to avoid expensive rebuilds on every request.
         """
+        # Check if we already have a valid index for this filter
+        cache_key = domain_filter or "all"
+        if (
+            self._bm25 is not None
+            and getattr(self, "_last_cache_key", None) == cache_key
+            and getattr(self, "_last_docs_hash", None) is not None
+        ):
+            logger.debug("BM25 index cache hit for: %s", cache_key)
+            return
+
+        logger.info("Building BM25 index for domain: %s ...", cache_key)
+        
         where: dict | None = None
         if domain_filter and domain_filter in VALID_DOMAINS:
             where = {"domain": {"$eq": domain_filter}}
 
-        # get() with no ids fetches everything; limit is ChromaDB's internal max
-        raw = self._collection.get(
-            where=where,
-            include=["documents", "metadatas"],
-        )
+        all_ids: list[str] = []
+        all_texts: list[str] = []
+        all_metadatas: list[dict] = []
+        
+        # Batch fetching to handle large collections
+        batch_size = 10000
+        offset = 0
+        total_available = self._collection.count()
+        
+        while True:
+            raw = self._collection.get(
+                where=where,
+                include=["documents", "metadatas"],
+                limit=batch_size,
+                offset=offset,
+            )
+            
+            ids = raw["ids"]
+            if not ids:
+                break
+                
+            all_ids.extend(ids)
+            all_texts.extend(raw["documents"])
+            all_metadatas.extend(raw["metadatas"])
+            
+            offset += len(ids)
+            logger.debug("Fetched %d/%d chunks for BM25...", offset, total_available)
+            
+            if len(ids) < batch_size:
+                break
 
-        ids: list[str] = raw["ids"]
-        texts: list[str] = raw["documents"]
-        metadatas: list[dict] = raw["metadatas"]
-
-        if not texts:
+        if not all_texts:
             logger.warning(
-                "BM25Retriever: no documents found in collection (filter=%s).",
+                "BM25Retriever: no documents found (filter=%s).",
                 domain_filter,
             )
             self._corpus_tokens = []
@@ -100,18 +154,26 @@ class BM25Retriever:
             self._corpus_texts = []
             self._corpus_metadatas = []
             self._bm25 = None
+            self._last_cache_key = cache_key
             return
 
-        self._corpus_tokens = [self._tokenize(t) for t in texts]
-        self._corpus_ids = ids
-        self._corpus_texts = texts
-        self._corpus_metadatas = [dict(m) for m in metadatas]
-        self._bm25 = BM25Okapi(self._corpus_tokens)
+        logger.info("Tokenizing %d documents for BM25...", len(all_texts))
+        self._corpus_tokens = [self._tokenize(t) for t in all_texts]
+        self._corpus_ids = all_ids
+        self._corpus_texts = all_texts
+        self._corpus_metadatas = [dict(m) for m in all_metadatas]
+        
+        logger.info("Fitting BM25 index...")
+        docs_hash = self._compute_docs_hash(self._corpus_ids, self._corpus_texts)
+        tokenized_tuple = tuple(tuple(tokens) for tokens in self._corpus_tokens)
+        self._bm25 = get_cached_bm25_index(docs_hash, tokenized_tuple)
+        self._last_docs_hash = docs_hash
+        self._last_cache_key = cache_key
 
-        logger.debug(
-            "BM25 index built: %d documents (filter=%s).",
-            len(texts),
-            domain_filter,
+        logger.info(
+            "BM25 index built: %d documents (domain=%s).",
+            len(all_texts),
+            cache_key,
         )
 
     # ------------------------------------------------------------------

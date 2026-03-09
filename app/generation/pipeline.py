@@ -10,8 +10,8 @@ import time
 
 from app.config import settings
 from app.generation.citation_mapper import CitationMapper
-from app.generation.guardrails import GuardrailEngine
 from app.generation.generator import RAGGenerator
+from app.generation.guardrails import GuardrailEngine
 from app.observability import metrics, prom_bridge
 from app.reranking.pipeline import RetrievalPipeline
 from app.utils.cache import TTLCache
@@ -30,8 +30,16 @@ class RAGPipeline:
         self._cache = TTLCache(ttl_seconds=settings.QUERY_CACHE_TTL_SECONDS)
         logger.info("RAGPipeline initialized.")
 
-    def _cache_key(self, question: str, domain: str, session_id: str | None) -> str:
-        raw = f"{domain}|{session_id or ''}|{question.strip().lower()}"
+    def _cache_key(
+        self,
+        question: str,
+        domain: str,
+        session_id: str | None,
+        owner_id: str | None,
+    ) -> str:
+        raw = (
+            f"{domain}|{owner_id or ''}|{session_id or ''}|{question.strip().lower()}"
+        )
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
     def run(
@@ -39,6 +47,7 @@ class RAGPipeline:
         question: str,
         domain: str = "all",
         session_id: str | None = None,
+        owner_id: str | None = None,
     ) -> dict:
         start_time = time.perf_counter()
         question = question.strip()
@@ -69,7 +78,7 @@ class RAGPipeline:
                     },
                 }
 
-        cache_key = self._cache_key(question, domain, session_id)
+        cache_key = self._cache_key(question, domain, session_id, owner_id)
         if settings.ENABLE_QUERY_CACHE:
             cached = self._cache.get(cache_key)
             if cached is not None:
@@ -80,7 +89,7 @@ class RAGPipeline:
             metrics.inc("query_cache_miss_total")
 
         retrieval_result = self.retrieval_pipeline.run(
-            question, domain=domain, session_id=session_id
+            question, domain=domain, session_id=session_id, owner_id=owner_id
         )
         if not retrieval_result["success"]:
             metrics.inc("query_retrieval_failed_total")

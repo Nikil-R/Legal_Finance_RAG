@@ -49,6 +49,7 @@ async def lifespan(app: FastAPI):
     logger.info("Request timeout  : %ss", settings.REQUEST_TIMEOUT_SECONDS)
     logger.info("LLM timeout      : %ss", settings.LLM_REQUEST_TIMEOUT_SECONDS)
     logger.info("LLM retries      : %d", settings.LLM_MAX_RETRIES)
+    logger.info("Ingestion queue  : %s", settings.INGESTION_QUEUE_BACKEND)
     logger.info("Query cache      : %s", settings.ENABLE_QUERY_CACHE)
     logger.info("PII redaction    : %s", settings.PII_REDACTION_ENABLED)
     logger.info("Log format       : %s", settings.LOG_FORMAT)
@@ -82,9 +83,13 @@ A Retrieval-Augmented Generation (RAG) API for legal and financial documents.
     openapi_url="/openapi.json",
 )
 
+cors_origins = settings.CORS_ORIGINS
+if isinstance(cors_origins, str):
+    cors_origins = [origin.strip() for origin in cors_origins.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS.split(","),
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

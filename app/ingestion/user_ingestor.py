@@ -2,6 +2,8 @@
 User Document Ingestor — handles isolated document ingestion for user sessions.
 """
 
+import re
+import secrets
 from datetime import datetime
 from pathlib import Path
 
@@ -12,6 +14,52 @@ from app.ingestion.loader import DocumentLoader
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+
+def sanitize_filename(filename: str) -> str:
+    """
+    Sanitize a filename to prevent path traversal and remove special characters.
+    
+    Guarantees:
+    1. Strip directories (Path.name)
+    2. Remove non-alphanumeric/special chars ([^\\w\\-.])
+    3. Block hidden files and parent directory references
+    """
+    # 1. Strip directories
+    safe = Path(filename).name
+    
+    # 2. Remove special characters (keep alphanum, underscore, hyphen, dot)
+    safe = re.sub(r'[^\w\-.]', '_', safe)
+    
+    # 3. Block hidden files and parent directory references
+    if '..' in safe or safe.startswith('.'):
+        raise ValueError("Invalid filename")
+        
+    return safe
+
+
+def sanitize_upload(filename: str, storage_dir: Path) -> Path:
+    """
+    Build a safe upload path inside ``storage_dir``.
+
+    Security guarantees:
+    1. Strip any incoming path components.
+    2. Normalize filename to a safe character set.
+    3. Add a random prefix to avoid collisions.
+    4. Enforce that resolved path remains inside ``storage_dir``.
+    """
+    # Start with the user's requested stricter logic
+    safe_basename = sanitize_filename(filename)
+    
+    # 2. Add random prefix for collision safety
+    unique_name = f"{secrets.token_hex(8)}_{safe_basename}"
+    storage_root = storage_dir.resolve()
+    save_path = (storage_root / unique_name).resolve()
+
+    if not save_path.is_relative_to(storage_root):
+        raise ValueError("Invalid file path.")
+
+    return save_path
 
 
 class UserDocumentIngestor:
@@ -38,14 +86,17 @@ class UserDocumentIngestor:
             logger.warning("Could not read DOCX '%s': %s", file_path, exc)
             return ""
 
-    def ingest_file(self, content: bytes, filename: str, session_id: str) -> dict:
+    def ingest_file(
+        self, content: bytes, filename: str, session_id: str, owner_id: str
+    ) -> dict:
         """
         Accept file content, extract text, chunk, and store in a session-specific collection.
         """
         # 1. Save file temporarily
-        session_dir = self.upload_dir / session_id
+        session_dir = (self.upload_dir / session_id).resolve()
         session_dir.mkdir(parents=True, exist_ok=True)
-        file_path = session_dir / filename
+        file_path = sanitize_upload(filename, session_dir)
+        display_name = Path(filename).name
 
         with open(file_path, "wb") as f:
             f.write(content)
@@ -59,19 +110,23 @@ class UserDocumentIngestor:
         elif suffix == ".docx":
             text = self._load_docx(str(file_path))
         else:
+            file_path.unlink(missing_ok=True)
             return {"success": False, "error": f"Unsupported file type: {suffix}"}
 
         if not text.strip():
+            file_path.unlink(missing_ok=True)
             return {"success": False, "error": "No text content found in file"}
 
         # 3. Create document object for chunker
         doc = {
             "content": text,
             "metadata": {
-                "source": filename,
+                "source": display_name,
                 "domain": "user_upload",
                 "file_path": str(file_path),
+                "stored_filename": file_path.name,
                 "session_id": session_id,
+                "owner_id": owner_id,
                 "uploaded_at": datetime.now().isoformat(),
                 "origin": "user",
             },
@@ -93,14 +148,14 @@ class UserDocumentIngestor:
 
         logger.info(
             "Ingested user file '%s' into collection '%s' (%d chunks).",
-            filename,
+            display_name,
             collection_name,
             stored_count,
         )
 
         return {
             "success": True,
-            "filename": filename,
+            "filename": display_name,
             "chunks_created": stored_count,
             "session_id": session_id,
         }

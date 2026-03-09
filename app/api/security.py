@@ -6,11 +6,20 @@ from __future__ import annotations
 
 import hashlib
 import hmac
-import os
+from dataclasses import dataclass
 
 from fastapi import HTTPException, Request
 
 from app.config import settings
+
+
+@dataclass(frozen=True)
+class AuthenticatedUser:
+    """Authenticated principal resolved from API key headers."""
+
+    id: str
+    key_id: str | None = None
+    auth_method: str = "api_key"
 
 
 def _parse_key_records(raw: str) -> dict[str, str]:
@@ -28,15 +37,44 @@ def _contains_default_placeholder(values: dict[str, str]) -> bool:
     return any("replace_with_strong_key" in v.lower() for v in values.values())
 
 
-def require_api_key(request: Request) -> None:
-    if os.getenv("TESTING", "").lower() == "true":
-        return
+def _cache_user(request: Request, user: AuthenticatedUser) -> None:
+    state = getattr(request, "state", None)
+    if state is not None:
+        state.authenticated_user = user
+
+
+def _cached_user(request: Request) -> AuthenticatedUser | None:
+    state = getattr(request, "state", None)
+    if state is None:
+        return None
+    return getattr(state, "authenticated_user", None)
+
+
+def _resolve_user_id(provided_key: str, provided_key_id: str) -> str:
+    if provided_key_id:
+        return f"key_id:{provided_key_id}"
+    provided_hash = hashlib.sha256(provided_key.encode("utf-8")).hexdigest()
+    return f"key_hash:{provided_hash}"
+
+
+def _authenticate_request(request: Request) -> AuthenticatedUser:
+    cached = _cached_user(request)
+    if cached is not None:
+        return cached
+
+    if settings.TESTING and settings.ENVIRONMENT != "production":
+        test_user_id = request.headers.get("x-test-user-id", "test-user")
+        user = AuthenticatedUser(id=test_user_id, key_id="test", auth_method="testing")
+        _cache_user(request, user)
+        return user
 
     if not settings.API_AUTH_ENABLED:
-        return
+        user = AuthenticatedUser(id="anonymous", auth_method="auth_disabled")
+        _cache_user(request, user)
+        return user
 
     provided_key = request.headers.get(settings.API_KEY_HEADER_NAME.lower())
-    provided_key_id = request.headers.get(settings.API_KEY_ID_HEADER_NAME.lower(), "")
+    provided_key_id = request.headers.get(settings.API_KEY_ID_HEADER_NAME.lower(), "").strip()
     if not provided_key:
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
     if len(provided_key) < settings.API_KEY_MIN_LENGTH:
@@ -70,10 +108,30 @@ def require_api_key(request: Request) -> None:
         candidate_hashes.extend(allowed_hashed.values())
 
     if any(hmac.compare_digest(provided_key, ref) for ref in candidate_plain):
-        return
+        user = AuthenticatedUser(
+            id=_resolve_user_id(provided_key, provided_key_id),
+            key_id=provided_key_id or None,
+            auth_method="api_key",
+        )
+        _cache_user(request, user)
+        return user
 
     provided_hash = hashlib.sha256(provided_key.encode("utf-8")).hexdigest()
     if any(hmac.compare_digest(provided_hash, ref) for ref in candidate_hashes):
-        return
+        user = AuthenticatedUser(
+            id=_resolve_user_id(provided_key, provided_key_id),
+            key_id=provided_key_id or None,
+            auth_method="api_key",
+        )
+        _cache_user(request, user)
+        return user
 
     raise HTTPException(status_code=401, detail="Invalid or missing API key.")
+
+
+def require_api_key(request: Request) -> None:
+    _authenticate_request(request)
+
+
+def get_current_user(request: Request) -> AuthenticatedUser:
+    return _authenticate_request(request)

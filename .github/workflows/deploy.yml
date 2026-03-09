@@ -70,11 +70,14 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ steps.vars.outputs.tag }}
 
-      - name: Deploy (placeholder)
-        env:
-          DEPLOY_TARGET: ${{ secrets.DEPLOY_TARGET }}
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Deploy to Production
+        if: ${{ inputs.environment == 'production' }}
         run: |
-          echo "Deploying tag ${{ steps.vars.outputs.tag }} to ${{ inputs.environment }}"
-          echo "Replace this step with your platform command (k8s/ecs/vm)."
+          aws ecs update-service \
+            --cluster prod-cluster \
+            --service legal-rag-api \
+            --force-new-deployment
 
+          aws ecs wait services-stable \
+            --cluster prod-cluster \
+            --services legal-rag-api

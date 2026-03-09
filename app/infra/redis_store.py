@@ -39,27 +39,37 @@ class RedisStore:
     def _key(self, raw: str) -> str:
         return f"{settings.REDIS_KEY_PREFIX}:{raw}"
 
-    def cache_get(self, key: str) -> dict | None:
+    def json_get(self, key: str) -> dict | None:
         if not self._client:
             return None
         try:
-            raw = self._client.get(self._key(f"cache:{key}"))
+            raw = self._client.get(self._key(key))
             return json.loads(raw) if raw else None
         except Exception:
             return None
 
-    def cache_set(self, key: str, value: dict, ttl_seconds: int) -> bool:
+    def json_set(self, key: str, value: dict, ttl_seconds: int | None = None) -> bool:
         if not self._client:
             return False
         try:
-            self._client.setex(
-                self._key(f"cache:{key}"),
-                int(max(1, ttl_seconds)),
-                json.dumps(value),
-            )
+            payload = json.dumps(value)
+            if ttl_seconds is None:
+                self._client.set(self._key(key), payload)
+            else:
+                self._client.setex(
+                    self._key(key),
+                    int(max(1, ttl_seconds)),
+                    payload,
+                )
             return True
         except Exception:
             return False
+
+    def cache_get(self, key: str) -> dict | None:
+        return self.json_get(f"cache:{key}")
+
+    def cache_set(self, key: str, value: dict, ttl_seconds: int) -> bool:
+        return self.json_set(f"cache:{key}", value, ttl_seconds=ttl_seconds)
 
     def rate_limit_allow(self, key: str, limit_per_minute: int) -> tuple[bool, int]:
         """

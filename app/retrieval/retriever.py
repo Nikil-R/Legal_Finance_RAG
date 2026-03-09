@@ -46,6 +46,7 @@ class HybridRetriever:
         domain: str = "all",
         top_k: int | None = None,
         session_id: str | None = None,
+        owner_id: str | None = None,
     ) -> list[dict]:
         """
         Run hybrid retrieval and return re-ranked results.
@@ -84,7 +85,10 @@ class HybridRetriever:
         user_bm25_results = []
         if session_id:
             user_results = self._user_retriever.search(
-                query, session_id=session_id, top_k=k
+                query,
+                session_id=session_id,
+                owner_id=owner_id,
+                top_k=k,
             )
             # user_results is a combined list, need to separate for RRF if possible
             # or just add them to the system lists

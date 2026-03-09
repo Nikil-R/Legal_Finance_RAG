@@ -4,16 +4,17 @@ In-memory metrics registry for lightweight production observability.
 
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import defaultdict, deque
 from statistics import mean
 from threading import Lock
 
 
 class MetricsRegistry:
-    def __init__(self) -> None:
+    def __init__(self, max_timings_per_metric: int = 1000) -> None:
         self._lock = Lock()
         self._counters: dict[str, int] = defaultdict(int)
-        self._timings: dict[str, list[float]] = defaultdict(list)
+        self._timings: dict[str, deque[float]] = {}
+        self._max_timings_per_metric = max_timings_per_metric
 
     def inc(self, name: str, value: int = 1) -> None:
         with self._lock:
@@ -21,7 +22,11 @@ class MetricsRegistry:
 
     def observe_ms(self, name: str, value_ms: float) -> None:
         with self._lock:
-            self._timings[name].append(float(value_ms))
+            window = self._timings.get(name)
+            if window is None:
+                window = deque(maxlen=self._max_timings_per_metric)
+                self._timings[name] = window
+            window.append(float(value_ms))
 
     def snapshot(self) -> dict:
         with self._lock:

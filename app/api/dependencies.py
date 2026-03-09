@@ -7,18 +7,24 @@ from __future__ import annotations
 import os
 from functools import lru_cache
 
-from app.generation import RAGPipeline
-from app.reranking import RetrievalPipeline
 import chromadb
 
 from app.config import settings
+from app.generation import RAGPipeline
+from app.reranking import RetrievalPipeline
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
 
 class _FallbackRAGPipeline:
-    def run(self, question: str, domain: str = "all", session_id: str | None = None) -> dict:
+    def run(
+        self,
+        question: str,
+        domain: str = "all",
+        session_id: str | None = None,
+        owner_id: str | None = None,
+    ) -> dict:
         return {
             "success": False,
             "error": "RAG pipeline unavailable (startup/dependency error).",
@@ -38,6 +44,7 @@ class _FallbackRetrievalPipeline:
         rerank_top_k: int = 5,
         min_relevance_score: float = 0.1,
         session_id: str | None = None,
+        owner_id: str | None = None,
     ) -> dict:
         return {
             "success": False,

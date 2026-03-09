@@ -58,10 +58,18 @@ class Settings(BaseSettings):
     REQUEST_TIMEOUT_SECONDS: int = 45
     REDIS_URL: str = ""
     REDIS_KEY_PREFIX: str = "legal_finance_rag"
+    INGESTION_QUEUE_BACKEND: str = "auto"  # auto | celery | local
+    CELERY_BROKER_URL: str = ""
+    CELERY_RESULT_BACKEND: str = ""
+    INGESTION_LOCAL_WORKERS: int = 2
+    INGESTION_JOB_TTL_SECONDS: int = 24 * 60 * 60
 
     # --- Cache ---
     ENABLE_QUERY_CACHE: bool = True
     QUERY_CACHE_TTL_SECONDS: int = 300
+
+    ENVIRONMENT: str = "development"
+    TESTING: bool = False
 
     # --- LLM Reliability ---
     LLM_REQUEST_TIMEOUT_SECONDS: int = 40
@@ -71,6 +79,7 @@ class Settings(BaseSettings):
     # --- Compliance ---
     PII_REDACTION_ENABLED: bool = True
     USER_DOC_RETENTION_DAYS: int = 30
+    USER_UPLOAD_MAX_BYTES: int = 10 * 1024 * 1024
 
     # --- Evaluation Gate ---
     EVAL_GATE_MIN_PASS_RATE: float = 0.8

@@ -36,11 +36,11 @@ class DocumentLoader:
         Returns an empty string if the file is corrupted or unreadable.
         """
         try:
-            import PyPDF2  # type: ignore
+            import pypdf  # type: ignore
 
             text_parts: list[str] = []
             with open(file_path, "rb") as fh:
-                reader = PyPDF2.PdfReader(fh)
+                reader = pypdf.PdfReader(fh)
                 for page_num, page in enumerate(reader.pages):
                     try:
                         text = page.extract_text()

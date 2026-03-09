@@ -3,12 +3,15 @@ Upload Component — handles user document uploads and session management.
 """
 
 import os
+import time
 import uuid
 
 import requests
 import streamlit as st
 
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+JOB_POLL_INTERVAL_SECONDS = 1.0
+JOB_POLL_TIMEOUT_SECONDS = 90.0
 
 
 def init_session():
@@ -50,18 +53,48 @@ def render_upload_section():
                         timeout=60,
                     )
 
-                    if response.status_code == 200:
+                    if response.status_code in (200, 202):
                         data = response.json()
-                        st.session_state.last_uploaded = uploaded_file.name
-                        status.update(
-                            label=f"✅ {uploaded_file.name} ready!",
-                            state="complete",
-                            expanded=False,
-                        )
-                        st.sidebar.success(f"Indexed {data['chunks_created']} chunks.")
+                        job_id = data.get("job_id")
+
+                        if job_id:
+                            status.update(
+                                label="Upload accepted. Indexing in background...",
+                                state="running",
+                                expanded=True,
+                            )
+                            ok, final_data = _poll_upload_job(job_id)
+                            if ok:
+                                st.session_state.last_uploaded = uploaded_file.name
+                                status.update(
+                                    label=f"✅ {uploaded_file.name} ready!",
+                                    state="complete",
+                                    expanded=False,
+                                )
+                                st.sidebar.success(
+                                    f"Indexed {final_data.get('chunks_created', 0)} chunks."
+                                )
+                            else:
+                                status.update(label="❌ Upload failed", state="error")
+                                st.sidebar.error(
+                                    final_data.get("error", "Document ingestion failed")
+                                )
+                        else:
+                            st.session_state.last_uploaded = uploaded_file.name
+                            status.update(
+                                label=f"✅ {uploaded_file.name} ready!",
+                                state="complete",
+                                expanded=False,
+                            )
+                            st.sidebar.success(
+                                f"Indexed {data.get('chunks_created', 0)} chunks."
+                            )
                     else:
                         status.update(label="❌ Upload failed", state="error")
-                        st.sidebar.error(response.json().get("detail", "Unknown error"))
+                        err = response.json().get("error") or response.json().get(
+                            "detail", "Unknown error"
+                        )
+                        st.sidebar.error(err)
                 except Exception as e:
                     status.update(label="❌ Connection error", state="error")
                     st.sidebar.error(f"Could not connect to API: {str(e)}")
@@ -95,3 +128,23 @@ def render_upload_section():
                 st.sidebar.info("No personal documents uploaded yet.")
     except Exception:
         pass
+
+
+def _poll_upload_job(job_id: str) -> tuple[bool, dict]:
+    deadline = time.time() + JOB_POLL_TIMEOUT_SECONDS
+    while time.time() < deadline:
+        resp = requests.get(
+            f"{API_BASE_URL}/api/v1/user/upload/jobs/{job_id}",
+            timeout=10,
+        )
+        if resp.status_code != 200:
+            return False, {"error": "Could not fetch upload status."}
+        data = resp.json()
+        status = data.get("status", "queued")
+        if status == "completed":
+            return True, data
+        if status == "failed":
+            return False, {"error": data.get("error", "Ingestion failed.")}
+        time.sleep(JOB_POLL_INTERVAL_SECONDS)
+
+    return False, {"error": "Ingestion still processing. Please check again shortly."}

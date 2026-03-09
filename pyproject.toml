@@ -28,6 +28,7 @@ dependencies = [
     "requests>=2.31.0",
     "redis>=5.0.0",
     "prometheus-client>=0.20.0",
+    "celery>=5.4.0",
 ]
 
 [tool.ruff]

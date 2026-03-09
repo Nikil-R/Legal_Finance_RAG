@@ -147,7 +147,7 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          pytest tests/ -v --tb=short -m "requires_api_key" || true
+          pytest tests/ -v --tb=short -m "requires_api_key"
 
   build:
     name: Build Docker Images

@@ -10,7 +10,7 @@ class FrontendConfig:
 
     # API Settings
     API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8000")
-    API_TIMEOUT: int = 60  # seconds
+    API_TIMEOUT: int = 300  # seconds
 
     # UI Settings
     PAGE_TITLE: str = "LegalFinance RAG"

@@ -85,8 +85,27 @@ class UserUploadResponse(BaseModel):
     success: bool
     session_id: str
     filename: str
-    chunks_created: int
+    status: str = "processing"
+    job_id: Optional[str] = None
+    chunks_created: Optional[int] = None
+    backend: Optional[str] = None
+    message: Optional[str] = None
     error: Optional[str] = None
+
+
+class UserUploadJobStatusResponse(BaseModel):
+    """Status for an asynchronous user-document ingestion job."""
+
+    success: bool
+    job_id: str
+    session_id: str
+    filename: str
+    status: str
+    chunks_created: int = 0
+    backend: Optional[str] = None
+    error: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class UserDocumentInfo(BaseModel):
@@ -224,6 +243,37 @@ class StatsResponse(BaseModel):
     domains: dict[str, int]
     index_status: str
     last_ingestion: Optional[datetime] = None
+
+
+class IngestJobResponse(BaseModel):
+    """Response for asynchronous ingestion trigger."""
+
+    success: bool
+    job_id: str
+    status: str
+    clear_existing: bool
+    backend: Optional[str] = None
+    message: Optional[str] = None
+    error: Optional[str] = None
+
+
+class IngestJobStatusResponse(BaseModel):
+    """Status for an asynchronous system-ingestion job."""
+
+    success: bool
+    job_id: str
+    status: str
+    clear_existing: bool
+    backend: Optional[str] = None
+    documents_loaded: int = 0
+    chunks_created: int = 0
+    chunks_stored: int = 0
+    domains: dict[str, int] = Field(default_factory=dict)
+    time_taken_seconds: float = 0
+    cache_invalidated: bool = False
+    error: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class IngestResponse(BaseModel):

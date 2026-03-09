@@ -2,21 +2,41 @@
 Document management endpoints.
 """
 
-import time
-from datetime import datetime, timezone
-
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.api.dependencies import clear_pipeline_cache, get_retriever
-from app.api.models import IngestRequest, IngestResponse, StatsResponse
-from app.ingestion.pipeline import run_ingestion_pipeline
+from app.api.models import (
+    IngestJobResponse,
+    IngestJobStatusResponse,
+    IngestRequest,
+    StatsResponse,
+)
+from app.infra.system_ingestion_jobs import system_ingestion_job_store
+from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
 from app.utils.logger import get_logger
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 logger = get_logger(__name__)
 
-# Track last ingestion time
-_last_ingestion: datetime | None = None
+
+def _maybe_invalidate_cache_for_job(record: dict) -> dict:
+    """
+    Invalidate API pipeline caches once a Celery-backed ingestion job is complete.
+    """
+    if record.get("status") != "completed" or record.get("cache_invalidated"):
+        return record
+
+    clear_pipeline_cache()
+    updated = system_ingestion_job_store.update_job(
+        record["job_id"], cache_invalidated=True
+    )
+    if updated is not None:
+        return updated
+
+    # Fallback if persistence update fails.
+    patched = dict(record)
+    patched["cache_invalidated"] = True
+    return patched
 
 
 @router.get(
@@ -32,13 +52,14 @@ async def get_stats() -> StatsResponse:
     try:
         retriever = get_retriever()
         stats = retriever.get_stats()
+        last_ingestion = system_ingestion_job_store.get_last_completed_at()
 
         return StatsResponse(
             total_documents=stats.get("total_documents", 0),
             total_chunks=stats.get("total_chunks", 0),
             domains=stats.get("domains", {}),
             index_status="ready" if stats.get("total_chunks", 0) > 0 else "empty",
-            last_ingestion=_last_ingestion,
+            last_ingestion=last_ingestion,
         )
 
     except Exception as e:
@@ -48,18 +69,19 @@ async def get_stats() -> StatsResponse:
             total_chunks=0,
             domains={},
             index_status="error",
-            last_ingestion=None,
+            last_ingestion=system_ingestion_job_store.get_last_completed_at(),
         )
 
 
 @router.post(
     "/ingest",
-    response_model=IngestResponse,
+    response_model=IngestJobResponse,
+    status_code=202,
     summary="Trigger document ingestion",
     description="""
-    Triggers the document ingestion pipeline.
+    Enqueue document ingestion in the background.
     
-    This will:
+    The worker will:
     1. Load all documents from data/raw/ subfolders
     2. Chunk the documents
     3. Generate embeddings
@@ -67,55 +89,59 @@ async def get_stats() -> StatsResponse:
     
     Use clear_existing=true to remove old documents first.
     
-    Note: This is a synchronous operation and may take a while for large document sets.
+    Poll /documents/ingest/jobs/{job_id} for completion status.
     """,
 )
-async def ingest_documents(request: IngestRequest) -> IngestResponse:
+async def ingest_documents(request: IngestRequest) -> IngestJobResponse:
     """
-    Trigger document ingestion.
+    Trigger document ingestion asynchronously.
     """
-    global _last_ingestion
-
-    logger.info("Ingestion triggered | clear_existing: %s", request.clear_existing)
+    logger.info(
+        "System ingestion enqueue requested | clear_existing: %s", request.clear_existing
+    )
 
     try:
-        start = time.time()
-
-        # Run ingestion
-        result = run_ingestion_pipeline(clear_existing=request.clear_existing)
-
-        elapsed = time.time() - start
-        _last_ingestion = datetime.now(timezone.utc)
-
-        # Clear cached pipelines so they pick up new documents
-        clear_pipeline_cache()
-
-        logger.info(
-            "Ingestion complete | Chunks: %d | Time: %.2fs",
-            result["chunks_stored"],
-            elapsed,
-        )
-
-        return IngestResponse(
+        result = enqueue_system_ingestion_job(clear_existing=request.clear_existing)
+        return IngestJobResponse(
             success=True,
-            documents_loaded=result.get("documents_loaded", 0),
-            chunks_created=result.get("chunks_created", 0),
-            chunks_stored=result.get("chunks_stored", 0),
-            domains=result.get("domains", {}),
-            time_taken_seconds=elapsed,
+            job_id=result["job_id"],
+            status=result.get("status", "queued"),
+            clear_existing=bool(result.get("clear_existing", request.clear_existing)),
+            backend=result.get("backend"),
+            message="Ingestion accepted. Poll job status endpoint for completion.",
         )
-
     except Exception as e:
-        logger.error("Ingestion error: %s", str(e), exc_info=True)
-        return IngestResponse(
-            success=False,
-            documents_loaded=0,
-            chunks_created=0,
-            chunks_stored=0,
-            domains={},
-            time_taken_seconds=0,
-            error=str(e),
-        )
+        logger.error("Failed to enqueue ingestion job: %s", str(e), exc_info=True)
+        raise HTTPException(status_code=500, detail="Failed to enqueue ingestion job.") from e
+
+
+@router.get("/ingest/jobs/{job_id}", response_model=IngestJobStatusResponse)
+async def get_ingestion_job_status(job_id: str) -> IngestJobStatusResponse:
+    """
+    Get status of an asynchronous system-ingestion job.
+    """
+    record = system_ingestion_job_store.get_job(job_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail="Ingestion job not found.")
+
+    record = _maybe_invalidate_cache_for_job(record)
+
+    return IngestJobStatusResponse(
+        success=True,
+        job_id=record["job_id"],
+        status=record["status"],
+        clear_existing=bool(record.get("clear_existing", False)),
+        backend=record.get("backend"),
+        documents_loaded=int(record.get("documents_loaded", 0)),
+        chunks_created=int(record.get("chunks_created", 0)),
+        chunks_stored=int(record.get("chunks_stored", 0)),
+        domains=record.get("domains", {}),
+        time_taken_seconds=float(record.get("time_taken_seconds", 0.0)),
+        cache_invalidated=bool(record.get("cache_invalidated", False)),
+        error=record.get("error"),
+        created_at=record.get("created_at"),
+        updated_at=record.get("updated_at"),
+    )
 
 
 @router.get(

@@ -1,4 +1,4 @@
-.PHONY: help install install-dev test test-unit test-integration lint format clean run-api run-frontend run-all ingest evaluate docker-build docker-up docker-down
+.PHONY: help install install-dev test test-unit test-integration lint format clean run-api run-frontend run-worker run-all ingest evaluate docker-build docker-up docker-down
 
 # Default target
 help:
@@ -12,6 +12,7 @@ help:
 	@echo "Development:"
 	@echo "  make run-api        Start FastAPI server"
 	@echo "  make run-frontend   Start Streamlit frontend"
+	@echo "  make run-worker     Start Celery ingestion worker"
 	@echo "  make run-all        Start both API and frontend"
 	@echo ""
 	@echo "Testing:"
@@ -51,6 +52,9 @@ run-api:
 
 run-frontend:
 	streamlit run frontend/app.py
+
+run-worker:
+	celery -A app.tasks.celery_app worker --loglevel=INFO
 
 run-all:
 	@echo "Starting API and Frontend..."

@@ -48,6 +48,7 @@ class RetrievalPipeline:
         rerank_top_k: int = 5,
         min_relevance_score: float = 0.1,
         session_id: str | None = None,
+        owner_id: str | None = None,
     ) -> dict:
         pipeline_start = time.perf_counter()
 
@@ -67,6 +68,7 @@ class RetrievalPipeline:
             domain=domain,
             top_k=retrieval_top_k,
             session_id=session_id,
+            owner_id=owner_id,
         )
         retrieval_ms = (time.perf_counter() - retrieval_start) * 1_000
         logger.info("Retrieved %d candidates in %.1f ms.", len(candidates), retrieval_ms)

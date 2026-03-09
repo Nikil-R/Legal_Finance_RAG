@@ -2,6 +2,7 @@
 Chat component — premium AI-assistant style.
 """
 
+import time
 from datetime import datetime
 
 import requests
@@ -18,6 +19,9 @@ from frontend.utils.state import (
     get_session_id,
     get_uploaded_files,
 )
+
+JOB_POLL_INTERVAL_SECONDS = 1.0
+JOB_POLL_TIMEOUT_SECONDS = 90.0
 
 # ─── Welcome Page ────────────────────────────────────────────────────────────
 
@@ -215,22 +219,52 @@ def _handle_upload(file):
                 files={"file": (file.name, file.getvalue())},
                 timeout=90,
             )
-            if resp.status_code == 200:
+            if resp.status_code in (200, 202):
                 data = resp.json()
-                add_uploaded_file(file.name, data.get("chunks_created", 0))
+                job_id = data.get("job_id")
+                if job_id:
+                    ok, final_data = _poll_upload_job(job_id)
+                    if not ok:
+                        st.error(final_data.get("error", "Upload failed"))
+                        return
+                    chunks_created = int(final_data.get("chunks_created", 0))
+                else:
+                    chunks_created = int(data.get("chunks_created", 0))
+
+                add_uploaded_file(file.name, chunks_created)
                 st.session_state.last_uploaded_name = file.name
                 add_message(
                     "assistant",
                     f"📄 **{file.name}** uploaded and indexed — "
-                    f"**{data.get('chunks_created', 0)} chunks** ready.\n\n"
+                    f"**{chunks_created} chunks** ready.\n\n"
                     "You can now ask questions that reference this document alongside official regulations.",
                 )
                 st.rerun()
             else:
-                err = resp.json().get("detail", "Upload failed")
+                err = resp.json().get("error") or resp.json().get("detail", "Upload failed")
                 st.error(f"Upload error: {err}")
         except Exception as exc:
             st.error(f"Could not reach API: {exc}")
+
+
+def _poll_upload_job(job_id: str) -> tuple[bool, dict]:
+    deadline = time.time() + JOB_POLL_TIMEOUT_SECONDS
+    while time.time() < deadline:
+        resp = requests.get(
+            f"{config.API_BASE_URL}/api/v1/user/upload/jobs/{job_id}",
+            timeout=10,
+        )
+        if resp.status_code != 200:
+            return False, {"error": "Could not fetch upload status."}
+        data = resp.json()
+        status = data.get("status", "queued")
+        if status == "completed":
+            return True, data
+        if status == "failed":
+            return False, {"error": data.get("error", "Ingestion failed.")}
+        time.sleep(JOB_POLL_INTERVAL_SECONDS)
+
+    return False, {"error": "Ingestion still processing. Please check again shortly."}
 
 
 # ─── Query Processing ─────────────────────────────────────────────────────────
