@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-from functools import lru_cache
 from typing import Dict, Optional
 
 from botocore.exceptions import ClientError
@@ -28,7 +27,6 @@ class SecretManager:
                     f"AWS Secrets Manager client init failed: {exc}"
                 ) from exc
 
-    @lru_cache(maxsize=50)
     def get_secret(self, secret_name: str, key_override: Optional[str] = None) -> str:
         if self.mode != "production":
             env_key = key_override or secret_name.upper().replace("-", "_")

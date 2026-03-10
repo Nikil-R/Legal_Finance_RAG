@@ -9,7 +9,6 @@ import streamlit as st
 def render_navbar():
     """Executive header with minimal, professional design."""
     status = st.session_state.get("api_status", "offline")
-    ok = st.session_state.get("api_healthy", False)
 
     # Status styling
     if status == "healthy":

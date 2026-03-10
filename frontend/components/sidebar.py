@@ -33,23 +33,6 @@ def _render_section_header(icon: str, title: str):
 def _domain_button(label: str, icon: str, value: str, current: str, count: int = 0):
     """Renders a professional domain selector button."""
     is_active = value == current
-    count_badge = f'<span style="margin-left: auto; font-size: 0.7rem; opacity: 0.5;">{count}</span>' if count else ""
-
-    # Active indicator bar
-    active_indicator = '<div style="position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--primary), var(--accent)); border-radius: 0 2px 2px 0;"></div>' if is_active else ""
-
-    # Button styling
-    bg_style = "background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), transparent); border-color: rgba(212, 175, 55, 0.3);" if is_active else "background: transparent; border-color: var(--border);"
-    text_color = "color: var(--text-main);" if is_active else "color: var(--text-muted);"
-    icon_opacity = "1" if is_active else "0.7"
-
-    button_html = f"""<button style="width: 100%; padding: 0.75rem 1rem; margin: 0.25rem 0; border: 1px solid; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden; display: flex; align-items: center; gap: 10px; {bg_style} {text_color}">
-        {active_indicator}
-        <span style="font-size: 1rem; opacity: {icon_opacity};">{icon}</span>
-        <span style="font-weight: 500; font-size: 0.95rem;">{label}</span>
-        {count_badge}
-    </button>"""
-
     if st.button(
         f"{icon} {label}",
         key=f"dom_{value}",
@@ -212,7 +195,6 @@ def render_sidebar():
         
         cfg = status_configs.get(status, status_configs["offline"])
         api_error = st.session_state.get("api_error", "")
-        error_html = f'<div style="font-size: 0.65rem; color: #f87171; margin-top: 4px; margin-left: 24px;">{api_error}</div>' if status not in ["healthy", "degraded"] and api_error else ""
 
         # Build the HTML string cleanly to avoid f-string/HTML nesting issues
         api_latency = st.session_state.get('api_latency', 0)

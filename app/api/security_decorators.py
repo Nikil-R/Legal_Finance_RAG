@@ -16,13 +16,13 @@ MOCK_USERS: dict[str, User] = {
         id="user_admin",
         email="admin@legal-rag.com",
         role=Role.ADMIN,
-        api_key_hash="246bb403d6082880ab88f8422b8540ff78b7ba0b2306157fa7022fefb3a4ecf7",
+        api_key_hash="246bb403d6082880ab88f8422b8540ff78b7ba0b2306157fa7022fefb3a4ecf7",  # gitleaks:allow
     ),
     "35cd23cc610c61fcd916f67d38579126fc26312d590fb51e18f837f074765110": User(
         id="user_query",
         email="user@legal-rag.com",
         role=Role.QUERY,
-        api_key_hash="35cd23cc610c61fcd916f67d38579126fc26312d590fb51e18f837f074765110",
+        api_key_hash="35cd23cc610c61fcd916f67d38579126fc26312d590fb51e18f837f074765110",  # gitleaks:allow
     ),
 }
 

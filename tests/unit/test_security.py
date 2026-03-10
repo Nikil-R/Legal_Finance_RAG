@@ -60,7 +60,7 @@ def test_require_api_key_rejects_placeholder(monkeypatch):
         "app.api.security.settings",
         SimpleNamespace(
             API_AUTH_ENABLED=True,
-            API_KEYS="replace_with_strong_key_1",
+            API_KEYS="replace_with_strong_key_1",  # gitleaks:allow
             API_KEYS_HASHED="",
             API_KEY_MIN_LENGTH=24,
             API_REQUIRE_KEY_ID=False,

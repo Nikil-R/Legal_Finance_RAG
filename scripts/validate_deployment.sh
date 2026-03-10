@@ -62,7 +62,7 @@ STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
     -X POST "$BASE_URL/api/v1/query" \
     -H "Content-Type: application/json" \
     -H "X-API-Key: invalid_key" \
-    -d '{"question":"test","domain":"tax"}')
+    -d '{"question":"test","domain":"tax"}') # gitleaks:allow
 
 if [ "$STATUS" -eq 401 ] || [ "$STATUS" -eq 403 ]; then
     echo "  - Invalid API key rejected: OK"
