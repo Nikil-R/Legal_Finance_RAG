@@ -32,8 +32,9 @@ class PromptManager:
         Returns a dictionary containing the prompt contents.
         Caches the result for performance.
         """
-        if version in self._cache:
-            return self._cache[version]
+        # Caching disabled for development so changes to YAML take effect immediately
+        # if version in self._cache:
+        #     return self._cache[version]
 
         filename = f"system_prompt_{version}.yaml"
         filepath = self.prompts_dir / filename

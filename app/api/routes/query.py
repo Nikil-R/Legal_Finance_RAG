@@ -172,7 +172,7 @@ async def query(
                 )
 
                 duration = time.time() - start_time
-                query_counter.labels(user_role=user.role.value, status="success").inc()
+                query_counter.labels(role=user.role.value, status="success").inc()
                 query_latency.labels(endpoint="/api/v1/query").observe(duration)
                 logger.info(
                     "query_completed",
@@ -191,7 +191,7 @@ async def query(
         except TimeoutError:
             duration = time.time() - start_time
             metrics.inc("query_timeout_total")
-            query_counter.labels(user_role=user.role.value, status="timeout").inc()
+            query_counter.labels(role=user.role.value, status="timeout").inc()
             logger.error(
                 "Query timed out",
                 user_id=user.id,
@@ -207,7 +207,7 @@ async def query(
         except Exception as exc:
             duration = time.time() - start_time
             metrics.inc("query_failure_total")
-            query_counter.labels(user_role=user.role.value, status="error").inc()
+            query_counter.labels(role=user.role.value, status="error").inc()
             logger.error(
                 "query_failed",
                 user_id=user.id,
