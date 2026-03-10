@@ -2,10 +2,13 @@
 API Utilities for health probes and basic connectivity.
 """
 
+import time
+
 import requests
 import streamlit as st
-import time
+
 from frontend.config import config
+
 
 def probe_api() -> bool:
     """Health probe — check if API is responsive and at least degraded."""

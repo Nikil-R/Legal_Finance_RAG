@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import random
 import time
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FutureTimeoutError
 
 from groq import Groq
 
@@ -114,7 +115,7 @@ class GroqClient:
 
             if attempt < attempts:
                 base = max(0.1, float(settings.LLM_RETRY_BACKOFF_SECONDS))
-                jitter = random.uniform(0.0, 0.25)
+                jitter = random.uniform(0.0, 0.25)  # nosec B311 \x2014 Non-cryptographic use (retry jitter)
                 sleep_for = (base * (2 ** (attempt - 1))) + jitter
                 time.sleep(sleep_for)
 

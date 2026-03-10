@@ -2,10 +2,7 @@
 Document management endpoints.
 """
 
-from fastapi import APIRouter, HTTPException, Depends, Request
-from app.api.rate_limit import limiter
-from app.api.security_decorators import require_role, get_current_user
-from app.models.auth import Role, User
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 from app.api.dependencies import clear_pipeline_cache, get_retriever
 from app.api.models import (
@@ -14,8 +11,11 @@ from app.api.models import (
     IngestRequest,
     StatsResponse,
 )
+from app.api.rate_limit import limiter
+from app.api.security_decorators import get_current_user, require_role
 from app.infra.system_ingestion_jobs import system_ingestion_job_store
 from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
+from app.models.auth import Role, User
 from app.observability import logger as obs_logger
 
 router = APIRouter(prefix="/documents", tags=["Documents"])

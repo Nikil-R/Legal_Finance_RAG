@@ -1,12 +1,12 @@
-import os
-import time
-import requests
-import zipfile
-import shutil
 import logging
-from pathlib import Path
+import shutil
 import subprocess
 import sys
+import time
+import zipfile
+from pathlib import Path
+
+import requests
 
 # Configure Logging
 logging.basicConfig(
@@ -27,8 +27,6 @@ def download_legal_cuad():
     
     zip_path = legal_dir / "cuad.zip"
     url = "https://zenodo.org/record/4595826/files/CUAD_v1.zip"
-    
-    extracted_txt_dir = legal_dir / "CUAD_v1" / "full_contract_txt"
     
     if list(legal_dir.glob("*.txt")) and len(list(legal_dir.glob("*.txt"))) > 50:
          logging.info("Legal (CUAD) documents already seem to be downloaded. Skipping.")
@@ -85,7 +83,7 @@ def download_finance_filings():
     
     tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "BRK-B", "JPM", "V"]
     
-    logging.info(f"Downloading SEC 10-K (Annual Reports) for Top 10 Tech/Finance companies...")
+    logging.info("Downloading SEC 10-K (Annual Reports) for Top 10 Tech/Finance companies...")
     for ticker in tickers:
         try:
             # Download the latest 10-K filing for each ticker

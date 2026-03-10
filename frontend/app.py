@@ -16,8 +16,8 @@ from frontend.components import (
     render_navbar,
     render_sidebar,
 )
-from frontend.utils.state import init_session_state
 from frontend.utils.api import probe_api
+from frontend.utils.state import init_session_state
 
 
 def _css():

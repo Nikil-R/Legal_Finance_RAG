@@ -1,6 +1,7 @@
 import re
 from pathlib import Path
 
+
 def sanitize_filename(filename: str) -> str:
     # 1. Strip directories
     safe = Path(filename).name

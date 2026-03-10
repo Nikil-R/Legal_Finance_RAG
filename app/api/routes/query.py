@@ -22,12 +22,14 @@ from app.api.models import (
     ValidationResult,
 )
 from app.api.rate_limit import limiter
-from app.api.security_decorators import require_role, get_current_user
+from app.api.security_decorators import get_current_user, require_role
 from app.config import settings
 from app.generation import RAGPipeline
 from app.models.auth import Role, User
 from app.observability import (
     logger as structlog_logger,
+)
+from app.observability import (
     metrics,
     query_counter,
     query_latency,

@@ -3,13 +3,7 @@ Professional Navbar — Executive Header Bar
 Minimal, clean, and authoritative.
 """
 
-import requests
 import streamlit as st
-
-from frontend.config import config
-from frontend.utils.api import probe_api
-
-
 
 
 def render_navbar():

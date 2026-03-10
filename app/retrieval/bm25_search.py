@@ -9,10 +9,10 @@ from __future__ import annotations
 
 import hashlib
 import re
+from functools import lru_cache
 
 import chromadb
 import numpy as np
-from functools import lru_cache
 from rank_bm25 import BM25Okapi
 
 from app.utils.logger import get_logger

@@ -9,7 +9,12 @@ from app.utils.logger import get_logger
 logger = get_logger(__name__)
 
 try:
-    from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
+    from prometheus_client import (
+        CONTENT_TYPE_LATEST,
+        Counter,
+        Histogram,
+        generate_latest,
+    )
 except Exception:  # pragma: no cover
     CONTENT_TYPE_LATEST = "text/plain"
     Counter = None  # type: ignore

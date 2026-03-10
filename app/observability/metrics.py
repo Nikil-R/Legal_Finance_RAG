@@ -7,6 +7,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.config import settings
 
+
 class MetricsRegistry:
     """In-memory counters/timings for quick snapshots."""
 

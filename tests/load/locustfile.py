@@ -8,9 +8,10 @@ For headless mode:
     locust -f tests/load/locustfile.py --headless --users 50 --spawn-rate 5 --run-time 5m --host http://localhost:8000
 """
 
-from locust import HttpUser, between, events, task
 import random
+
 from faker import Faker
+from locust import HttpUser, between, events, task
 
 fake = Faker()
 

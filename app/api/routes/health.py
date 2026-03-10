@@ -29,6 +29,7 @@ class HealthResponse(BaseModel):
 
 async def check_redis() -> ComponentHealth:
     from redis.asyncio import Redis
+
     from app.config import settings
 
     start = time.time()
@@ -77,8 +78,9 @@ _chroma_client = None
 
 
 async def check_chroma() -> ComponentHealth:
-    from app.config import settings
     import chromadb
+
+    from app.config import settings
     global _chroma_client
 
     start = time.time()

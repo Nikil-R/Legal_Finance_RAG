@@ -1,9 +1,12 @@
+import logging
 from functools import lru_cache
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.utils.secrets_manager import secrets
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -33,7 +36,7 @@ class Settings(BaseSettings):
                     self.REDIS_URL = secrets.get_secret("prod/legal-rag/infra", "redis_url")
             except Exception as e:
                 # Log but don't crash if we have env var fallbacks
-                pass
+                logger.warning("Failed to load secret, falling back to env vars: %s", e)
 
     # --- Vector Store ---
     CHROMA_PERSIST_DIR: str = "./chroma_db"
@@ -65,7 +68,7 @@ class Settings(BaseSettings):
     SLOW_REQUEST_THRESHOLD_MS: int = 2000
 
     # --- API ---
-    API_HOST: str = "0.0.0.0"
+    API_HOST: str = "0.0.0.0"  # nosec B104 \x2014 Required for container binding
     API_PORT: int = 8000
     API_BASE_URL: str = "http://localhost:8000"
     CORS_ORIGINS: str = "*"
