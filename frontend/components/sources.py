@@ -20,6 +20,19 @@ def render_sources(sources: list, key_prefix: str = "s"):
     if not sources:
         return
 
+    # Enhanced header with source count badge
+    header_html = f"""
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0;">
+        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">📚 Source Citations</div>
+        <div style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+                    border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 100px;
+                    padding: 2px 10px; font-size: 0.75rem; font-weight: 600; color: var(--primary);">
+            {len(sources)}
+        </div>
+    </div>
+    """
+    st.markdown(header_html, unsafe_allow_html=True)
+
     chips = "".join(
         f'<span class="lf-src-chip">[{s.get("reference_id","?")}] '
         f'{s.get("source","Unknown")[:22]}{"..." if len(s.get("source","")) > 22 else ""}</span>'
@@ -28,7 +41,7 @@ def render_sources(sources: list, key_prefix: str = "s"):
     st.markdown(f'<div class="lf-src-chips">{chips}</div>', unsafe_allow_html=True)
 
     with st.expander(
-        f"{len(sources)} source{'s' if len(sources) > 1 else ''}",
+        f"View {len(sources)} source{'s' if len(sources) > 1 else ''} details",
         expanded=False,
     ):
         for s in sources:

@@ -1,267 +1,1017 @@
-﻿/* 
-   LegalFinance AI — Premium Dark UI
-   Modern technical aesthetics for AI research.
+/*
+   LegalFinance AI — Executive Precision Design System
+   A refined editorial aesthetic for legal and finance professionals.
+
+   Design Principles:
+   - Authority through typography (serif headings, sans body)
+   - Sophisticated navy/gold/teal palette
+   - Precise spacing and visual hierarchy
+   - Subtle animations that convey professionalism
+   - Glass-morphism with warmth, not cold tech feel
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* Variables are injected dynamically by app.py */
+/* CSS Variables injected by app.py - Dark Mode (Default) */
+/*
+   --bg-deep: #0a1628
+   --bg-dark: #0f1d2e
+   --bg-elevated: #162236
+   --primary: #d4af37 (Gold)
+   --primary-glow: rgba(212, 175, 55, 0.3)
+   --accent: #0d9488 (Teal)
+   --text-main: #f8fafc
+   --text-muted: #94a3b8
+   --text-dim: #64748b
+   --border: rgba(212, 175, 55, 0.15)
+   --radius-xl: 16px
+   --radius-lg: 12px
+   --radius-md: 8px
+*/
 
-/* --- Global Reset & Scrollbar --- */
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {
-  font-family: 'Inter', system-ui, sans-serif;
-  background-color: var(--bg-deep) !important;
-  color: var(--text-main) !important;
+/* --- Global Reset & Typography --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #334155; }
+html, body, [data-testid="stApp"], [data-testid="stAppViewContainer"] {
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  background-color: var(--bg-deep) !important;
+  color: var(--text-main) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar - Refined */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--border), rgba(212, 175, 55, 0.2));
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
 
 /* --- Streamlit Overrides --- */
-[data-testid="stAppViewContainer"] { background-color: var(--bg-deep) !important; }
-[data-testid="stHeader"] { background-color: transparent !important; }
-#MainMenu, footer, [data-testid="stToolbar"] { display: none !important; }
+[data-testid="stAppViewContainer"] {
+  background: var(--bg-deep) !important;
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(13, 148, 136, 0.03) 0%, transparent 50%);
+}
 
-/* Header & Hamburger Control */
 [data-testid="stHeader"] {
   background: transparent !important;
   z-index: 100 !important;
 }
 
+/* Hide Streamlit branding */
+#MainMenu, footer, [data-testid="stToolbar"] {
+  display: none !important;
+}
+
+/* Collapsed sidebar control - Refined gold accent */
 [data-testid="collapsedControl"] {
-  background: rgba(99, 102, 241, 0.1) !important;
-  border-radius: 0 10px 10px 0 !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  border-radius: 0 8px 8px 0 !important;
   color: var(--primary) !important;
-  top: 15px !important;
-  padding: 8px !important;
-  backdrop-filter: blur(5px);
+  top: 20px !important;
+  padding: 10px !important;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
 }
 
-/* Main Content Container */
+[data-testid="collapsedControl"]:hover {
+  background: rgba(212, 175, 55, 0.2) !important;
+  border-color: rgba(212, 175, 55, 0.4) !important;
+}
+
+/* Main Content Container - Editorial width */
 [data-testid="block-container"] {
-  max-width: 900px !important;
+  max-width: 850px !important;
   margin: 0 auto !important;
-  padding: 4rem 1.5rem 12rem !important;
+  padding: 3rem 2rem 10rem !important;
 }
 
-/* --- Sidebar --- */
+/* --- Sidebar - Executive Panel --- */
 [data-testid="stSidebar"] {
-  background-color: var(--bg-dark) !important;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-deep) 100%) !important;
   border-right: 1px solid var(--border) !important;
-  min-width: 300px !important;
+  min-width: 280px !important;
+  max-width: 320px !important;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
 }
 
-[data-testid="stSidebarNav"] { display: none !important; }
-
-/* Sidebar Title */
-[data-testid="stSidebar"] h1 {
-  font-size: 1.4rem !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+[data-testid="stSidebarNav"] {
+  display: none !important;
 }
 
-/* Sidebar divider */
-hr { border-color: var(--border) !important; opacity: 0.5; }
+/* Sidebar Brand */
+[data-testid="stSidebar"] .element-container:first-child {
+  margin-bottom: 0.5rem;
+}
 
-/* Sidebar status text */
-.stCaption { color: var(--text-dim) !important; font-size: 0.75rem !important; }
+/* Section Headers in Sidebar */
+.sidebar-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1.5rem 0 0.75rem;
+}
 
-/* --- Navbar --- */
+.sidebar-section-header .icon {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.sidebar-section-header .title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+/* Domain Buttons */
+[data-testid="stSidebar"] .stButton button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 8px !important;
+  margin: 0.25rem 0 !important;
+  padding: 0.75rem 1rem !important;
+  height: auto !important;
+  min-height: 44px !important;
+}
+
+[data-testid="stSidebar"] .stButton button[type="primary"] {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.12), rgba(212, 175, 55, 0.03)) !important;
+  border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  color: var(--text-main) !important;
+  box-shadow: inset 3px 0 0 var(--primary), 0 2px 8px rgba(212, 175, 55, 0.1) !important;
+}
+
+[data-testid="stSidebar"] .stButton button[type="secondary"] {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+[data-testid="stSidebar"] .stButton button[type="secondary"]:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(212, 175, 55, 0.25) !important;
+  color: var(--text-main) !important;
+  transform: translateX(2px);
+}
+
+/* File Cards */
+.lf-file-card {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.05), transparent);
+  border: 1px solid rgba(13, 148, 136, 0.15);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.lf-file-card:hover {
+  border-color: rgba(13, 148, 136, 0.3);
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.08), rgba(13, 148, 136, 0.02));
+  transform: translateX(4px);
+}
+
+/* System Status Card */
+.lf-status-card {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.lf-status-card.online {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.lf-status-card.offline {
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* User Profile Card */
+.lf-profile-card {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(13, 148, 136, 0.03));
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  transition: all 0.2s ease;
+}
+
+.lf-profile-card:hover {
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.lf-profile-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-deep);
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  transition: all 0.2s ease;
+}
+
+.lf-profile-card:hover .lf-profile-avatar {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
+.lf-profile-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.lf-profile-badge {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Sidebar Toggles */
+[data-testid="stSidebar"] [data-testid="stToggle"] {
+  margin: 0.25rem 0;
+}
+
+[data-testid="stSidebar"] [data-testid="stToggle"] > div {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* Sidebar Dividers */
+[data-testid="stSidebar"] hr {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 1.25rem 0;
+  opacity: 0.5;
+}
+
+[data-testid="stSidebar"] .stCaption {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-dim) !important;
+}
+
+/* Scrollbar for Sidebar */
+[data-testid="stSidebar"] ::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-testid="stSidebar"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-testid="stSidebar"] ::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 3px;
+}
+
+[data-testid="stSidebar"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* Sidebar divider - Gold accent */
+hr {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+hr::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+/* Sidebar captions */
+.stCaption {
+  color: var(--text-dim) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* --- Navbar - Executive Header --- */
 .lf-navbar {
   position: sticky;
-  top: -60px; /* Offset for ST header height */
+  top: -60px;
   z-index: 99;
-  background: rgba(8, 12, 20, 0.75);
+  background: linear-gradient(180deg,
+    rgba(10, 22, 40, 0.98) 0%,
+    rgba(15, 29, 46, 0.95) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  padding: 0.75rem 0;
+  padding: 0.75rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .lf-brand {
-    font-size: 1.25rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #818cf8, #c084fc);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary) 0%, #e8c96a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.02em;
 }
 
-/* API Status Badge */
+/* Navbar Logo Animation */
+.lf-navbar [style*="⚖️"] {
+  animation: subtle-float 3s ease-in-out infinite;
+}
+
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* API Status Badge - Premium styling */
 .lf-api-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 100px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.lf-api-badge.on { color: #4ade80; }
-.lf-api-badge.off { color: #f87171; }
+.lf-api-badge.on {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.lf-api-badge.off {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.05);
+}
 
 .lf-api-pulse {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
 }
-.on .lf-api-pulse { animation: pulse 2s infinite; }
+
+.on .lf-api-pulse {
+  animation: pulse 2s infinite;
+}
 
 @keyframes pulse {
-	0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-	70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
-	100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
-/* --- Welcome Page / Hero --- */
+/* --- Welcome Page / Hero - Editorial Style --- */
 .lf-welcome-wrap {
-    text-align: center;
-    padding: 1rem 0 3rem;
-    animation: fadeIn 0.8s ease-out;
+  text-align: center;
+  padding: 2rem 0 4rem;
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .lf-hero-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 0 20px var(--primary-glow));
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.3));
+  animation: gentleFloat 4s ease-in-out infinite;
 }
 
 .lf-hero-title {
-    font-size: 2.5rem !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.04em;
-    margin-bottom: 1rem !important;
-    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem !important;
+  background: linear-gradient(135deg, #f8fafc 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
 }
 
 .lf-hero-sub {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0 auto !important;
-    line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 550px;
+  margin: 0 auto !important;
+  line-height: 1.7;
+  font-weight: 300;
 }
 
-/* --- Chat Elements --- */
+/* --- Chat Elements - Refined Bubbles --- */
 .lf-bubble-user {
-    background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
-    color: white !important;
-    padding: 1rem 1.25rem;
-    border-radius: 20px 20px 4px 20px;
-    font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08)) !important;
+  border: 1px solid rgba(212, 175, 55, 0.25) !important;
+  color: var(--text-main) !important;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-xl) var(--radius-xl) 4px var(--radius-xl);
+  font-size: 1rem;
+  line-height: 1.6;
+  box-shadow:
+    0 4px 20px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .lf-bubble-ai {
-    background: var(--bg-elevated) !important;
-    border: 1px solid var(--border);
-    padding: 1.25rem 1.5rem;
-    border-radius: 20px 20px 20px 4px;
-    font-size: 1rem;
-    line-height: 1.6;
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+  padding: 1.5rem;
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) 4px;
+  font-size: 1rem;
+  line-height: 1.7;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .lf-bubble-error {
-    background: rgba(239, 68, 68, 0.1) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    padding: 1rem;
-    border-radius: 12px;
-    color: #fca5a5;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05)) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  color: #fca5a5;
 }
 
+/* Timestamp - Refined */
 .lf-ts {
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    margin-top: 6px;
-    margin-left: 10px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-top: 8px;
+  margin-left: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
-.lf-ts.right { text-align: right; margin-right: 10px; }
 
-/* Typing indicator */
-.lf-typing { display: flex; gap: 4px; padding: 4px; }
-.lf-typing span {
-    width: 6px; height: 6px;
-    background: var(--text-dim);
-    border-radius: 50%;
-    animation: bounce 1.4s infinite ease-in-out both;
+.lf-ts.right {
+  text-align: right;
+  margin-right: 10px;
 }
+
+/* Typing indicator - Elegant dots */
+.lf-typing {
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+}
+
+.lf-typing span {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
 .lf-typing span:nth-child(1) { animation-delay: -0.32s; }
 .lf-typing span:nth-child(2) { animation-delay: -0.16s; }
 
-/* --- Example Cards Grid --- */
+/* --- Example Cards Grid - Premium Cards --- */
 [data-testid="stHorizontalBlock"] .stButton button {
-    background: var(--bg-elevated) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 14px !important;
-    height: 100% !important;
-    min-height: 80px;
-    padding: 1rem !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    text-align: left !important;
-    color: var(--text-main) !important;
+  background: linear-gradient(135deg, var(--bg-elevated), rgba(212, 175, 55, 0.03)) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  height: 100% !important;
+  min-height: 90px;
+  padding: 1.25rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  text-align: left !important;
+  color: var(--text-main) !important;
+  font-weight: 500;
 }
 
 [data-testid="stHorizontalBlock"] .stButton button:hover {
-    border-color: var(--primary) !important;
-    background: rgba(99, 102, 241, 0.05) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.03)) !important;
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+[data-testid="stHorizontalBlock"] .stButton button:active {
+  transform: translateY(-1px);
 }
 
 /* --- File Badges & Bar --- */
 .lf-filesbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    padding: 0.5rem 0;
-    margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 0.75rem 0;
+  margin-top: 1rem;
 }
-.lf-filesbar-label { font-size: 0.75rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; }
+
+.lf-filesbar-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
 .lf-fbadge {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 100px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05));
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-/* --- Inputs --- */
-[data-testid="stChatInput"] { 
-    background-color: var(--bg-deep) !important;
-    border-top: 1px solid var(--border) !important;
+.lf-fbadge:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.35);
 }
 
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes bounce { 
-    0%, 80%, 100% { transform: scale(0); } 
-    40% { transform: scale(1.0); }
+/* --- Inputs - Refined Chat Input --- */
+[data-testid="stChatInput"] {
+  background: linear-gradient(180deg, var(--bg-deep), var(--bg-dark)) !important;
+  border-top: 1px solid var(--border) !important;
+  padding: 1rem 0;
 }
 
-/* Source citations */
-.lf-source-card {
-    background: var(--bg-dark);
-    border-left: 3px solid var(--primary);
-    padding: 0.75rem 1rem;
-    margin: 0.5rem 0;
-    border-radius: 4px;
+[data-testid="stChatInput"] > div {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-xl) !important;
+  background: var(--bg-elevated) !important;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+[data-testid="stChatInput"] > div:focus-within {
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* --- Source Citations - Premium Cards --- */
+.lf-src-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 1rem 0;
+}
+
+.lf-src-chip {
+  background: rgba(13, 148, 136, 0.1);
+  border: 1px solid rgba(13, 148, 136, 0.25);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+}
+
+.lf-src-card {
+  background: linear-gradient(135deg, var(--bg-dark), rgba(13, 148, 136, 0.03));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin: 0.75rem 0;
+  transition: all 0.2s ease;
+}
+
+.lf-src-card:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.lf-src-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.lf-src-name {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.lf-badge-wrap {
+  display: flex;
+  gap: 6px;
+}
+
+.lf-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.lf-badge.tax {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--primary);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.lf-badge.fin {
+  background: rgba(13, 148, 136, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(13, 148, 136, 0.25);
+}
+
+.lf-badge.leg {
+  background: rgba(139, 92, 246, 0.15);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.lf-badge.sys {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--text-muted);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.lf-badge.usr {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+/* Relevance Score Bar */
+.lf-score-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+
+.lf-score-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.lf-score-fill.hi { background: linear-gradient(90deg, var(--primary), #e8c96a); }
+.lf-score-fill.md { background: linear-gradient(90deg, var(--accent), #2dd4bf); }
+.lf-score-fill.lo { background: linear-gradient(90deg, #64748b, #94a3b8); }
+
+.lf-src-meta {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+}
+
+.lf-src-excerpt {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+/* --- Domain Pills - Sidebar --- */
+.domain-pill {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin: 0.25rem 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.domain-pill:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.domain-pill.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+  border-color: var(--primary);
+}
+
+/* --- User Profile - Premium Card --- */
+.lf-profile-card {
+  background: linear-gradient(135deg, var(--bg-elevated), rgba(212, 175, 55, 0.03));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.lf-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-deep);
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.lf-profile-name {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.lf-profile-badge {
+  font-size: 0.7rem;
+  color: #10b981;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* --- Button Overrides - Premium Styling --- */
+.stButton button {
+  border-radius: var(--radius-md) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s ease !important;
+}
+
+.stButton button[type="primary"] {
+  background: linear-gradient(135deg, var(--primary), #c49b2c) !important;
+  border: none !important;
+  color: var(--bg-deep) !important;
+  font-weight: 600 !important;
+}
+
+.stButton button[type="primary"]:hover {
+  background: linear-gradient(135deg, #e8c96a, var(--primary)) !important;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.stButton button[type="secondary"] {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+.stButton button[type="secondary"]:hover {
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  color: var(--text-main) !important;
+  background: rgba(212, 175, 55, 0.05) !important;
+}
+
+/* --- Toggle Overrides --- */
+[data-testid="stToggle"] > div {
+  background: var(--bg-elevated) !important;
+}
+
+/* --- Expanders - Clean Styling --- */
+.streamlit-expanderHeader {
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: var(--text-muted) !important;
+}
+
+.streamlit-expanderContent {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  [data-testid="block-container"] {
+    padding: 2rem 1rem 8rem !important;
+  }
+
+  .lf-hero-title {
+    font-size: 2rem !important;
+  }
+
+  .lf-navbar {
+    padding: 0.75rem;
+  }
+
+  .lf-brand {
+    font-size: 1.1rem;
+  }
+}
+
+/* --- Loading States --- */
+[data-testid="stSpinner"] > div {
+  border-color: var(--primary) !important;
+}
+
+/* --- Success/Info/Error Messages --- */
+[data-testid="stToast"] {
+  border-radius: var(--radius-md) !important;
+}
+
+.element-container .stAlert {
+  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* --- Dialog/Modal Styling --- */
+[data-testid="stDialog"] {
+  background: var(--bg-dark) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+/* --- Tabs - Clean Styling --- */
+[data-testid="stTabs"] button {
+  color: var(--text-muted) !important;
+  font-weight: 500 !important;
+}
+
+[data-testid="stTabs"] button[aria-selected="true"] {
+  color: var(--primary) !important;
+  border-bottom-color: var(--primary) !important;
+}
+
+/* --- File Uploader - Premium Zone --- */
+[data-testid="stFileUploader"] > div {
+  border: 2px dashed var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  background: rgba(212, 175, 55, 0.02) !important;
+  transition: all 0.2s ease;
+}
+
+[data-testid="stFileUploader"] > div:hover {
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  background: rgba(212, 175, 55, 0.05) !important;
+}
+
+/* --- Markdown Content in Chat --- */
+.lf-bubble-ai code {
+  background: rgba(13, 148, 136, 0.1) !important;
+  border: 1px solid rgba(13, 148, 136, 0.2) !important;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+.lf-bubble-ai pre {
+  background: var(--bg-dark) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.lf-bubble-ai pre code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+}
+
+.lf-bubble-ai a {
+  color: var(--primary) !important;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  transition: border-color 0.2s ease;
+}
+
+.lf-bubble-ai a:hover {
+  border-bottom-color: var(--primary);
+}
+
+.lf-bubble-ai blockquote {
+  border-left: 3px solid var(--primary);
+  margin: 1rem 0;
+  padding: 0.5rem 0 0.5rem 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.lf-bubble-ai h1,
+.lf-bubble-ai h2,
+.lf-bubble-ai h3,
+.lf-bubble-ai h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--text-main);
+}
+
+.lf-bubble-ai h1 { font-size: 1.5rem; }
+.lf-bubble-ai h2 { font-size: 1.3rem; }
+.lf-bubble-ai h3 { font-size: 1.1rem; }
+
+.lf-bubble-ai ul,
+.lf-bubble-ai ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.lf-bubble-ai li {
+  margin: 0.4rem 0;
+}
+
+.lf-bubble-ai table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.lf-bubble-ai th,
+.lf-bubble-ai td {
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.lf-bubble-ai th {
+  background: var(--bg-dark);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.lf-bubble-ai tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
 }

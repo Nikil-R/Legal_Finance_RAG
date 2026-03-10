@@ -54,9 +54,11 @@ filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",
 ]
+asyncio_mode = "auto"
 markers = [
     "unit: mark test as unit test",
     "integration: mark test as integration test",
     "e2e: mark test as e2e test",
     "requires_api_key: mark test as requiring an external API key",
+    "security: mark test as security test",
 ]

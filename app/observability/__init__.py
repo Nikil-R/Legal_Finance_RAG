@@ -6,12 +6,13 @@ from app.observability.metrics import (
     query_latency,
 )
 from app.observability.prometheus_metrics import prom_bridge
-from app.observability.tracing import tracer
+from app.observability.tracing import configure_tracing, tracer
 
 __all__ = [
     "logger",
     "metrics",
     "configure_metrics",
+    "configure_tracing",
     "query_counter",
     "query_latency",
     "prom_bridge",

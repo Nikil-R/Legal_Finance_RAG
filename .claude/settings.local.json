@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(pip list:*)",
+      "Bash(python:*)",
+      "Bash(pip3 install:*)",
+      "Bash(pip show:*)",
+      "Bash(GROQ_API_KEY=\"test_key\" REDIS_URL=\"redis://localhost:6379/0\" TESTING=true python:*)",
+      "Bash(TESTING=true ENVIRONMENT=local python:*)",
+      "Bash(rm:*)"
+    ]
+  }
+}

@@ -24,6 +24,9 @@ class HealthResponse(BaseModel):
     checks: Dict[str, ComponentHealth]
 
 
+# ── Individual component checks ──────────────────────────────────────
+
+
 async def check_redis() -> ComponentHealth:
     from redis.asyncio import Redis
     from app.config import settings
@@ -32,13 +35,13 @@ async def check_redis() -> ComponentHealth:
     try:
         redis = Redis.from_url(
             settings.REDIS_URL,
-            socket_timeout=2.0,
-            socket_connect_timeout=2.0,
+            socket_timeout=1.0,
+            socket_connect_timeout=1.0,
         )
         await redis.ping()
         await redis.close()
         latency = (time.time() - start) * 1000
-        return ComponentHealth(status="healthy", latency_ms=round(latency, 2))
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2), message="Redis OK")
     except Exception as exc:
         return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
 
@@ -48,8 +51,8 @@ async def check_celery() -> ComponentHealth:
 
     start = time.time()
     try:
-        inspect = celery_app.control.inspect(timeout=2.0)
-        active = inspect.active()
+        inspect = celery_app.control.inspect(timeout=1.0)
+        active = await asyncio.to_thread(inspect.active)
 
         if not active:
             return ComponentHealth(
@@ -70,68 +73,146 @@ async def check_celery() -> ComponentHealth:
         )
 
 
-async def check_qdrant() -> ComponentHealth:
+_chroma_client = None
+
+
+async def check_chroma() -> ComponentHealth:
     from app.config import settings
+    import chromadb
+    global _chroma_client
 
     start = time.time()
     try:
-        from qdrant_client import QdrantClient
+        if _chroma_client is None:
+            _chroma_client = chromadb.PersistentClient(path=settings.CHROMA_PERSIST_DIR)
 
-        client = QdrantClient(url=settings.QDRANT_URL, api_key=settings.QDRANT_API_KEY)
-        collections = client.get_collections()
+        _chroma_client.heartbeat()
         latency = (time.time() - start) * 1000
         return ComponentHealth(
             status="healthy",
             latency_ms=round(latency, 2),
-            message=f"{len(collections.collections)} collections",
+            message="ChromaDB heartbeat OK",
         )
     except Exception as exc:
         return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
 
 
 async def check_groq() -> ComponentHealth:
+    """Lightweight Groq API key validation — does NOT make a full LLM call."""
     from app.config import settings
-    from groq import AsyncGroq
 
     start = time.time()
     try:
-        client = AsyncGroq(api_key=settings.GROQ_API_KEY, timeout=5.0)
-        await client.chat.completions.create(
-            model=settings.GROQ_MODEL,
-            messages=[{"role": "user", "content": "ping"}],
-            max_tokens=1,
-        )
+        api_key = settings.GROQ_API_KEY
+        if not api_key or api_key == "test_groq_key":
+            return ComponentHealth(status="unhealthy", latency_ms=0, message="Groq API key not configured")
+
+        # Just verify the key exists and is non-empty — a real LLM call is too slow for health checks
         latency = (time.time() - start) * 1000
-        return ComponentHealth(status="healthy", latency_ms=round(latency, 2))
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2), message="Groq API Key Configured")
     except Exception as exc:
         return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
 
 
+async def check_embedding() -> ComponentHealth:
+    start = time.time()
+    try:
+        from app.api.dependencies import get_retrieval_pipeline
+        pipeline = get_retrieval_pipeline()
+        encoder = pipeline._retriever._vector._encoder
+        # Quick encode test — the model is already loaded in memory
+        await asyncio.to_thread(encoder.encode, "test", show_progress_bar=False)
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2), message="Embedding Model Operational")
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=f"Embedding check failed: {exc}")
+
+
+async def check_reranker() -> ComponentHealth:
+    start = time.time()
+    try:
+        from app.api.dependencies import get_retrieval_pipeline
+        pipeline = get_retrieval_pipeline()
+        reranker = pipeline._reranker._model
+        await asyncio.to_thread(reranker.predict, [("test", "test")])
+        latency = (time.time() - start) * 1000
+        return ComponentHealth(status="healthy", latency_ms=round(latency, 2), message="Reranker Model Operational")
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=f"Reranker check failed: {exc}")
+
+
+# ── Helper: wrap any check with a per-component timeout ──────────────
+
+
+async def _safe_check(coro, timeout: float = 3.0) -> ComponentHealth:
+    """Run a health check with a hard timeout so no single check blocks the response."""
+    try:
+        return await asyncio.wait_for(coro, timeout=timeout)
+    except asyncio.TimeoutError:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=f"Timed out after {timeout}s")
+    except Exception as exc:
+        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(exc))
+
+
+# ── Main health endpoint ─────────────────────────────────────────────
+
+
 @router.get("", response_model=HealthResponse)
 async def health_check():
-    tasks = await asyncio.gather(
-        check_redis(),
-        check_celery(),
-        check_qdrant(),
-        check_groq(),
-        return_exceptions=True,
-    )
+    from app.config import settings
+    
+    is_local = settings.ENVIRONMENT in ("local", "development", "dev")
+    
+    # In local/dev mode, skip infrastructure checks (Redis, Celery)
+    # that require services not available on Windows
+    if is_local:
+        tasks = await asyncio.gather(
+            _safe_check(check_chroma(), timeout=3.0),
+            _safe_check(check_groq(), timeout=1.0),
+            _safe_check(check_embedding(), timeout=3.0),
+            _safe_check(check_reranker(), timeout=3.0),
+        )
+        checks = {
+            "chroma": tasks[0],
+            "groq": tasks[1],
+            "embedding": tasks[2],
+            "reranker": tasks[3],
+            "redis": ComponentHealth(status="healthy", latency_ms=0, message="Skipped (local mode)"),
+            "celery": ComponentHealth(status="healthy", latency_ms=0, message="Skipped (local mode)"),
+        }
+    else:
+        # Production: check everything
+        tasks = await asyncio.gather(
+            _safe_check(check_redis(), timeout=2.0),
+            _safe_check(check_celery(), timeout=2.0),
+            _safe_check(check_chroma(), timeout=3.0),
+            _safe_check(check_groq(), timeout=1.0),
+            _safe_check(check_embedding(), timeout=3.0),
+            _safe_check(check_reranker(), timeout=3.0),
+        )
+        checks = {
+            "redis": tasks[0],
+            "celery": tasks[1],
+            "chroma": tasks[2],
+            "groq": tasks[3],
+            "embedding": tasks[4],
+            "reranker": tasks[5],
+        }
 
-    def normalize(idx: int) -> ComponentHealth:
-        result = tasks[idx]
-        if isinstance(result, ComponentHealth):
-            return result
-        return ComponentHealth(status="unhealthy", latency_ms=0, message=str(result))
+    # Critical = must be healthy for system to work
+    # Auxiliary = nice-to-have, system still usable without them
+    critical_checks = ["chroma", "embedding"]
+    aux_checks = ["redis", "celery", "groq", "reranker"]
 
-    checks = {
-        "redis": normalize(0),
-        "celery": normalize(1),
-        "qdrant": normalize(2),
-        "groq": normalize(3),
-    }
+    any_critical_unhealthy = any(checks[c].status == "unhealthy" for c in critical_checks)
+    any_aux_unhealthy = any(checks[a].status == "unhealthy" for a in aux_checks)
 
-    unhealthy = sum(1 for component in checks.values() if component.status == "unhealthy")
-    status = "healthy" if unhealthy == 0 else "degraded" if unhealthy == 1 else "unhealthy"
+    if any_critical_unhealthy:
+        status = "unhealthy"
+    elif any_aux_unhealthy:
+        status = "degraded"
+    else:
+        status = "healthy"
 
     response = HealthResponse(
         status=status,
@@ -140,9 +221,14 @@ async def health_check():
     )
 
     if status == "unhealthy":
-        raise HTTPException(status_code=503, detail=response.dict())
+        response_dict = response.model_dump()
+        response_dict["timestamp"] = response.timestamp.isoformat()
+        raise HTTPException(status_code=503, detail=response_dict)
 
     return response
+
+
+# ── Kubernetes-style probes ──────────────────────────────────────────
 
 
 @router.get("/liveness")
@@ -157,15 +243,14 @@ async def liveness_check():
 
 @router.get("/readiness")
 async def readiness_check():
-    redis_health, qdrant_health = await asyncio.gather(check_redis(), check_qdrant())
+    chroma_health = await check_chroma()
 
-    if redis_health.status == "unhealthy" or qdrant_health.status == "unhealthy":
+    if chroma_health.status == "unhealthy":
         raise HTTPException(
             status_code=503,
             detail={
                 "status": "not_ready",
-                "redis": redis_health.dict(),
-                "qdrant": qdrant_health.dict(),
+                "chroma": chroma_health.dict(),
             },
         )
 

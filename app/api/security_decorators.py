@@ -28,6 +28,16 @@ MOCK_USERS: dict[str, User] = {
 
 
 async def get_current_user(api_key: str = Security(api_key_header)) -> User:
+    from app.config import settings
+
+    if not settings.API_AUTH_ENABLED:
+        return User(
+            id="anonymous",
+            email="anonymous@legal-rag.com",
+            role=Role.ADMIN,  # Grant admin in local dev if auth is off
+            api_key_hash="none",
+        )
+
     if not api_key:
         raise HTTPException(status_code=401, detail="Missing X-API-Key header")
 

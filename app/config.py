@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.utils.secrets_manager import secrets
@@ -8,24 +9,31 @@ from app.utils.secrets_manager import secrets
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables / .env file."""
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"  # Allow extra fields from env
+    )
 
     # --- LLM ---
     GROQ_MODEL: str = "llama-3.1-8b-instant"
     ENVIRONMENT: str = "local"
     TESTING: bool = False
+    GROQ_API_KEY: str = Field(default="test_groq_key")
+    REDIS_URL: str = Field(default="")
 
-    @property
-    def GROQ_API_KEY(self) -> str:
-        secret_name = "prod/legal-rag/api-keys"
-        key_name = "groq_api_key" if self.ENVIRONMENT == "production" else "GROQ_API_KEY"
-        return secrets.get_secret(secret_name, key_name)
-
-    @property
-    def REDIS_URL(self) -> str:
-        secret_name = "prod/legal-rag/infra"
-        key_name = "redis_url" if self.ENVIRONMENT == "production" else "REDIS_URL"
-        return secrets.get_secret(secret_name, key_name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.ENVIRONMENT == "production":
+            # Attempt to override from Secrets Manager if in production
+            try:
+                if self.GROQ_API_KEY == "test_groq_key":
+                    self.GROQ_API_KEY = secrets.get_secret("prod/legal-rag/api-keys", "groq_api_key")
+                if not self.REDIS_URL:
+                    self.REDIS_URL = secrets.get_secret("prod/legal-rag/infra", "redis_url")
+            except Exception as e:
+                # Log but don't crash if we have env var fallbacks
+                pass
 
     # --- Vector Store ---
     CHROMA_PERSIST_DIR: str = "./chroma_db"

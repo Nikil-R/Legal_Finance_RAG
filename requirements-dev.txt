@@ -7,4 +7,6 @@ black>=24.0.0
 ruff>=0.3.0
 isort>=5.13.0
 httpx>=0.25.0
+locust>=2.20.0
+faker>=20.0.0
 -r requirements.txt

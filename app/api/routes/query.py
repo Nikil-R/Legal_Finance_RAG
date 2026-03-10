@@ -6,7 +6,7 @@ import asyncio
 import time
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 
 from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
@@ -22,7 +22,7 @@ from app.api.models import (
     ValidationResult,
 )
 from app.api.rate_limit import limiter
-from app.api.security_decorators import require_role
+from app.api.security_decorators import require_role, get_current_user
 from app.config import settings
 from app.generation import RAGPipeline
 from app.models.auth import Role, User
@@ -72,25 +72,26 @@ async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
 @limiter.limit("60/hour")
 @require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
 async def query(
-    request: QueryRequest,
-    user: User,
+    query_request: QueryRequest,
+    request: Request,
+    user: User = Depends(get_current_user),
     pipeline: RAGPipeline = Depends(get_rag_pipeline),
 ) -> QueryResponse:
     """
     Main RAG query endpoint.
     """
     processed_question = (
-        redact_pii(request.question)
+        redact_pii(query_request.question)
         if settings.PII_REDACTION_ENABLED
-        else request.question
+        else query_request.question
     )
     logger.info(
         "Query received: '%s...' | Domain: %s",
         processed_question[:50],
-        request.domain,
+        query_request.domain,
     )
-    if request.session_id and not verify_session_ownership(
-        session_id=request.session_id,
+    if query_request.session_id and not verify_session_ownership(
+        session_id=query_request.session_id,
         owner_id=user.id,
         persist_dir=settings.CHROMA_PERSIST_DIR,
     ):
@@ -108,15 +109,15 @@ async def query(
             result = await _run_with_timeout(
                 pipeline.run,
                 question=processed_question,
-                domain=request.domain.value,
-                session_id=request.session_id,
+                domain=query_request.domain.value,
+                session_id=query_request.session_id,
                 owner_id=user.id,
                 timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
             )
 
             if result["success"]:
                 sources = []
-                if request.include_sources:
+                if query_request.include_sources:
                     for src in result.get("sources", []):
                         sources.append(
                             SourceDocument(
@@ -162,7 +163,7 @@ async def query(
                 response = QueryResponse(
                     success=True,
                     question=processed_question,
-                    domain=request.domain.value,
+                    domain=query_request.domain.value,
                     answer=result["answer"],
                     sources=sources,
                     validation=validation,
@@ -183,7 +184,7 @@ async def query(
             return QueryResponse(
                 success=False,
                 question=processed_question,
-                domain=request.domain.value,
+                domain=query_request.domain.value,
                 error=result.get("error", "Unknown error occurred"),
                 timestamp=datetime.now(timezone.utc),
             )
@@ -199,7 +200,7 @@ async def query(
             return QueryResponse(
                 success=False,
                 question=processed_question,
-                domain=request.domain.value,
+                domain=query_request.domain.value,
                 error=f"Query timed out after {settings.REQUEST_TIMEOUT_SECONDS}s",
                 timestamp=datetime.now(timezone.utc),
             )
@@ -223,17 +224,18 @@ async def query(
 @limiter.limit("60/hour")
 @require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
 async def retrieve_only(
-    request: RetrievalOnlyRequest,
-    user: User,
+    retrieval_request: RetrievalOnlyRequest,
+    request: Request,
+    user: User = Depends(get_current_user),
     pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """
     Retrieval-only endpoint (no LLM generation).
     """
     processed_question = (
-        redact_pii(request.question)
+        redact_pii(retrieval_request.question)
         if settings.PII_REDACTION_ENABLED
-        else request.question
+        else retrieval_request.question
     )
     logger.info("Retrieval request: '%s...'", processed_question[:50])
 
@@ -241,8 +243,8 @@ async def retrieve_only(
         result = await _run_with_timeout(
             pipeline.run,
             query=processed_question,
-            domain=request.domain.value,
-            rerank_top_k=request.top_k,
+            domain=retrieval_request.domain.value,
+            rerank_top_k=retrieval_request.top_k,
             timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
         )
 
@@ -264,7 +266,7 @@ async def retrieve_only(
             return RetrievalResponse(
                 success=True,
                 question=processed_question,
-                domain=request.domain.value,
+                domain=retrieval_request.domain.value,
                 chunks=chunks,
                 total_found=result.get("candidates_found", 0),
                 retrieval_time_ms=result.get("total_time_ms", 0),
@@ -273,7 +275,7 @@ async def retrieve_only(
             return RetrievalResponse(
                 success=False,
                 question=processed_question,
-                domain=request.domain.value,
+                domain=retrieval_request.domain.value,
                 chunks=[],
                 total_found=0,
                 retrieval_time_ms=0,
@@ -286,7 +288,7 @@ async def retrieve_only(
         return RetrievalResponse(
             success=False,
             question=processed_question,
-            domain=request.domain.value,
+            domain=retrieval_request.domain.value,
             chunks=[],
             total_found=0,
             retrieval_time_ms=0,
@@ -297,7 +299,7 @@ async def retrieve_only(
         return RetrievalResponse(
             success=False,
             question=processed_question,
-            domain=request.domain.value,
+            domain=retrieval_request.domain.value,
             chunks=[],
             total_found=0,
             retrieval_time_ms=0,

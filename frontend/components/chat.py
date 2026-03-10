@@ -27,23 +27,23 @@ JOB_POLL_TIMEOUT_SECONDS = 90.0
 
 _EXAMPLES = [
     (
-        "💰 TAX",
-        "Section 80C deductions",
+        "TAX",
+        "💰 Section 80C deductions",
         "What are all deductions available under Section 80C of the Income Tax Act?",
     ),
     (
-        "🏦 RBI",
-        "KYC compliance",
+        "RBI",
+        "🏦 KYC compliance",
         "What are the KYC requirements for banks per RBI Master Directions?",
     ),
     (
-        "📜 CONTRACT",
-        "Free consent",
+        "CONTRACT",
+        "📜 Free consent",
         "What constitutes free consent under the Indian Contract Act, 1872?",
     ),
     (
-        "⚡ GST",
-        "E-commerce rates",
+        "GST",
+        "⚡ E-commerce rates",
         "What is the GST rate applicable on e-commerce operators in India?",
     ),
 ]
@@ -58,6 +58,17 @@ def render_welcome():
             Ask questions about Indian tax laws, RBI regulations, and legal provisions.
             Upload your own documents to get answers grounded in both official rules and your files.
           </p>
+          <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 100px; font-size: 0.85rem; color: #d4af37;">
+              <span>🔍</span> RAG-Powered
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.2); border-radius: 100px; font-size: 0.85rem; color: #0d9488;">
+              <span>📜</span> Indian Law
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(100, 116, 139, 0.1); border: 1px solid rgba(100, 116, 139, 0.2); border-radius: 100px; font-size: 0.85rem; color: #94a3b8;">
+              <span>🔒</span> Private Session
+            </div>
+          </div>
         </div>""",
         unsafe_allow_html=True,
     )
@@ -75,16 +86,25 @@ def render_welcome():
 
     # Example cards (Grid)
     st.markdown(
-        '<p style="font-size:0.7rem; color:#475569; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; margin:2rem auto 1rem; text-align:center;">Suggested Topics</p>',
+        '<p style="font-size:0.7rem; color:#94a3b8; text-transform:uppercase; letter-spacing:0.15em; font-weight:600; margin:2rem auto 1rem; text-align:center;">Suggested Topics</p>',
         unsafe_allow_html=True,
     )
+
+    # Tag colors matching the design system
+    _TAG_COLORS = {
+        "TAX": "#d4af37",      # Gold
+        "RBI": "#0d9488",      # Teal
+        "CONTRACT": "#8b5cf6", # Purple
+        "GST": "#f97316",      # Orange
+    }
 
     with st.container():
         cols = st.columns(2)
         for i, (tag, title, full_q) in enumerate(_EXAMPLES):
+            tag_color = _TAG_COLORS.get(tag, "#d4af37")
             with cols[i % 2]:
                 st.markdown(
-                    f'<p style="font-size:0.65rem; color:#6366f1; font-weight:800; margin-bottom:0.4rem; margin-left:0.5rem; text-transform:uppercase;">{tag}</p>',
+                    f'<p style="font-size:0.65rem; color:{tag_color}; font-weight:700; margin-bottom:0.4rem; margin-left:0.5rem; text-transform:uppercase; letter-spacing:0.05em;">{tag}</p>',
                     unsafe_allow_html=True,
                 )
                 if st.button(

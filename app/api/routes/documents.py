@@ -2,9 +2,9 @@
 Document management endpoints.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Request
 from app.api.rate_limit import limiter
-from app.api.security_decorators import require_role
+from app.api.security_decorators import require_role, get_current_user
 from app.models.auth import Role, User
 
 from app.api.dependencies import clear_pipeline_cache, get_retriever
@@ -97,17 +97,21 @@ async def get_stats() -> StatsResponse:
 )
 @limiter.limit("20/hour")
 @require_role(Role.INGEST, Role.ADMIN)
-async def ingest_documents(request: IngestRequest, user: User) -> IngestJobResponse:
+async def ingest_documents(
+    ingest_request: IngestRequest, 
+    request: Request,
+    user: User = Depends(get_current_user)
+) -> IngestJobResponse:
     """
     Trigger document ingestion asynchronously.
     """
     logger.info(
-        "System ingestion enqueue requested | clear_existing: %s", request.clear_existing
+        "System ingestion enqueue requested | clear_existing: %s", ingest_request.clear_existing
     )
     logger.debug("User %s triggered system ingestion request", user.email)
 
     try:
-        result = enqueue_system_ingestion_job(clear_existing=request.clear_existing)
+        result = enqueue_system_ingestion_job(clear_existing=ingest_request.clear_existing)
         return IngestJobResponse(
             success=True,
             job_id=result["job_id"],
@@ -123,7 +127,11 @@ async def ingest_documents(request: IngestRequest, user: User) -> IngestJobRespo
 
 @router.get("/ingest/jobs/{job_id}", response_model=IngestJobStatusResponse)
 @require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
-async def get_ingestion_job_status(job_id: str, user: User) -> IngestJobStatusResponse:
+async def get_ingestion_job_status(
+    job_id: str, 
+    request: Request,
+    user: User = Depends(get_current_user)
+) -> IngestJobStatusResponse:
     """
     Get status of an asynchronous system-ingestion job.
     """

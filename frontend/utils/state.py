@@ -39,6 +39,7 @@ def init_session_state():
         "messages": [],
         "current_domain": "all",
         "api_healthy": None,
+        "api_status": "offline",
         "stats": None,
         "show_sources": config.SHOW_SOURCES,
         "show_metadata": config.SHOW_METADATA,
