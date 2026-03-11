@@ -25,13 +25,14 @@ An AI-powered Retrieval-Augmented Generation (RAG) system for Indian tax laws, f
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐     ┌─────────────────┐
-│   Streamlit     │────▶│    FastAPI      │
-│   Frontend      │◀────│    Backend      │
-└─────────────────┘     └────────┬────────┘
-                                 │
-         ┌───────────────────────┼───────────────────────┐
-         ▼                       ▼                       ▼
+┌─────────────────────┐     ┌─────────────────┐
+│   Chainlit          │────▶│    FastAPI      │
+│   Frontend (8501)   │◀────│    Backend      │
+│   (Web UI)          │     │    (8000)       │
+└─────────────────────┘     └────────┬────────┘
+                                     │
+         ┌───────────────────────────┼───────────────────────┐
+         ▼                           ▼                       ▼
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │  Vector Search  │     │  BM25 Search    │     │  Cross-Encoder  │
 │  (ChromaDB)     │     │  (rank-bm25)    │     │  Reranking      │
@@ -44,10 +45,12 @@ An AI-powered Retrieval-Augmented Generation (RAG) system for Indian tax laws, f
                         └────────┬────────┘
                                  ▼
                         ┌─────────────────┐
-                        │  Groq (Llama)   │
+                        │   Groq (Llama)  │
                         │  Generation     │
                         └─────────────────┘
 ```
+
+> **Note:** As of March 2026, the frontend has been migrated from **Streamlit** to **Chainlit** for improved UX and enterprise capabilities. See [CHAINLIT_README.md](CHAINLIT_README.md) for migration details and setup instructions.
 
 ## 🚀 Quick Start
 
@@ -84,11 +87,13 @@ make ingest-clear
 # 2. Start the API server
 make run-api
 
-# 3. In another terminal, start the frontend
-make run-frontend
+# 3. In another terminal, start the Chainlit frontend
+chainlit run chainlit_app/app.py --port 8501
 
 # Open http://localhost:8501 in your browser
 ```
+
+For detailed Chainlit setup and configuration, see [CHAINLIT_README.md](CHAINLIT_README.md).
 
 ### Using Docker
 
@@ -108,18 +113,24 @@ make docker-down
 
 ```
 legal_finance_rag/
-├── app/                    # FastAPI backend
+├── app/                    # FastAPI backend (UNTOUCHED)
 │   ├── api/               # API routes and models
 │   ├── ingestion/         # Document loading and chunking
 │   ├── retrieval/         # Vector + BM25 search
 │   ├── reranking/         # Cross-encoder reranking
 │   ├── generation/        # LLM generation with Groq
 │   └── prompts/           # Versioned prompt templates
-├── frontend/              # Streamlit UI
-├── evaluation/            # Golden dataset and metrics
-├── data/raw/              # Source documents by domain
-├── tests/                 # Test suite
-└── docker/                # Docker configuration
+├── chainlit_app/          # ✨ Chainlit frontend (NEW)
+│   ├── app.py            # Main Chainlit application
+│   ├── api_client.py     # HTTP client to backend
+│   ├── config.py         # Configuration
+│   └── public/           # Branding assets
+├── chainlit.md           # Welcome screen markdown
+├── frontend/             # [DEPRECATED] Old Streamlit UI (kept for reference)
+├── evaluation/           # Golden dataset and metrics
+├── data/raw/             # Source documents by domain
+├── tests/                # Test suite
+└── docker/               # Docker configuration
 ```
 
 ## 📊 Adding Documents
@@ -171,12 +182,12 @@ cat evaluation/reports/latest.txt
 
 ### Metrics
 
-| Metric | Description | Threshold |
-|--------|-------------|-----------|
-| Faithfulness | Is the answer grounded in sources? | ≥ 0.70 |
-| Correctness | Does it match expected answer? | ≥ 0.60 |
-| Citation Quality | Are citations valid and present? | ≥ 0.80 |
-| Retrieval Relevance | Are retrieved chunks relevant? | ≥ 0.50 |
+| Metric              | Description                        | Threshold |
+| ------------------- | ---------------------------------- | --------- |
+| Faithfulness        | Is the answer grounded in sources? | ≥ 0.70    |
+| Correctness         | Does it match expected answer?     | ≥ 0.60    |
+| Citation Quality    | Are citations valid and present?   | ≥ 0.80    |
+| Retrieval Relevance | Are retrieved chunks relevant?     | ≥ 0.50    |
 
 ## 🔧 Configuration
 
@@ -266,6 +277,7 @@ This tool is for **educational purposes only**. It should not be considered as p
 ## Production Hardening
 
 ### Reliability
+
 - Configure request timeout and LLM retry controls:
   - `REQUEST_TIMEOUT_SECONDS`
   - `LLM_REQUEST_TIMEOUT_SECONDS`
@@ -275,11 +287,13 @@ This tool is for **educational purposes only**. It should not be considered as p
   - `python scripts/load_test.py --base-url http://localhost:8000 --requests 200 --concurrency 20 --api-key <key>`
 
 ### Security
+
 - Keep API auth enabled (`API_AUTH_ENABLED=true`).
 - Use hashed keys in production (`API_KEYS_HASHED`) and rotate keys regularly.
 - CI now runs `pip-audit`, `bandit`, and `gitleaks`.
 
 ### Observability
+
 - Structured logs: `LOG_FORMAT=json`
 - Request correlation headers: `X-Request-ID`, `X-Trace-ID`
 - Prometheus endpoint: `/metrics/prometheus`
@@ -287,6 +301,7 @@ This tool is for **educational purposes only**. It should not be considered as p
   - `docker compose -f docker/docker-compose.yml -f docker/docker-compose.monitoring.yml up -d`
 
 ### Evaluation Gate
+
 - CI enforces pass rate and metric floors:
   - pass rate >= 0.8
   - faithfulness >= 0.7
@@ -295,6 +310,7 @@ This tool is for **educational purposes only**. It should not be considered as p
   - retrieval relevance >= 0.5
 
 ### Operations and Compliance
+
 - Runbook: `docs/operations/runbook.md`
 - Backup/restore: `docs/operations/backup_restore.md`
 - Security operations: `docs/security/security_operations.md`

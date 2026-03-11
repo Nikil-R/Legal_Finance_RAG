@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # FastAPI Backend - RAG Pipeline
   api:
     build:
       context: ..
@@ -12,6 +13,9 @@ services:
       - GROQ_API_KEY=${GROQ_API_KEY}
       - CHROMA_PERSIST_DIR=/app/chroma_db
       - LOG_LEVEL=INFO
+      - ENVIRONMENT=${ENVIRONMENT:-local}
+      - API_AUTH_ENABLED=${API_AUTH_ENABLED:-false}
+      - API_KEYS=${API_KEYS:-}
     volumes:
       - chroma_data:/app/chroma_db
       - ../data:/app/data:ro
@@ -21,24 +25,43 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
+    networks:
+      - legalfinance-network
 
-  frontend:
+  # Chainlit Frontend - New UI layer (replaces Streamlit)
+  chainlit:
     build:
       context: ..
-      dockerfile: docker/Dockerfile.frontend
-    container_name: legalfinance-frontend
+      dockerfile: docker/Dockerfile.chainlit
+    container_name: legalfinance-chainlit
     ports:
       - "8501:8501"
     environment:
+      # Point to backend via Docker service name
       - API_BASE_URL=http://api:8000
+      # Optional: Provide API key if backend requires auth
+      - API_KEY=${API_KEY:-}
+      - API_KEY_HEADER=${API_KEY_HEADER:-x-api-key}
+      # Chainlit settings
+      - ENABLE_TELEMETRY=false
+      - ENVIRONMENT=${ENVIRONMENT:-local}
     depends_on:
       api:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - legalfinance-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   chroma_data:
+    driver: local
 
 networks:
-  default:
-    name: legalfinance-network
+  legalfinance-network:
+    driver: bridge
+

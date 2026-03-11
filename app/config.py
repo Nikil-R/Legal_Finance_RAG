@@ -46,8 +46,8 @@ class Settings(BaseSettings):
     CROSS_ENCODER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
     # --- Chunking ---
-    CHUNK_SIZE: int = 512
-    CHUNK_OVERLAP: int = 50
+    CHUNK_SIZE: int = 1024
+    CHUNK_OVERLAP: int = 200
 
     # --- Retrieval ---
     TOP_K_RETRIEVAL: int = 20
