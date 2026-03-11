@@ -48,7 +48,7 @@ class TestHealthEndpoints:
             assert key in data["components"], f"Missing component: {key}"
 
     def test_metrics_endpoint_schema(self, client):
-        data = client.get("/metrics").json()
+        data = client.get("/metrics/snapshot").json()
         assert "counters" in data
         assert "timings" in data
 

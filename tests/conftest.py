@@ -4,6 +4,7 @@ Pytest configuration and shared fixtures.
 
 import os
 import shutil
+import uuid
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -11,12 +12,27 @@ import pytest
 
 # ============ Environment Setup ============
 
+_LOCAL_TMP_ROOT = Path.home() / ".codex" / "memories" / "pytest_tmp_root"
+
+
+def _make_local_tmp_dir(prefix: str) -> Path:
+    _LOCAL_TMP_ROOT.mkdir(parents=True, exist_ok=True)
+    path = _LOCAL_TMP_ROOT / f"{prefix}{uuid.uuid4().hex[:10]}"
+    path.mkdir(parents=True, exist_ok=False)
+    return path
+
 
 def pytest_configure(config):
     """Configure pytest environment."""
     # Set test environment
     os.environ["TESTING"] = "true"
     os.environ["LOG_LEVEL"] = "WARNING"
+    os.environ["API_AUTH_ENABLED"] = "true"
+    os.environ["API_KEYS"] = "admin:admin_key_12345,query:query_key_67890"
+    os.environ["API_KEY_ROLES"] = "admin:admin,query:query"
+    os.environ["API_KEY_MIN_LENGTH"] = "1"
+    os.environ["API_REQUIRE_KEY_ID"] = "false"
+    os.environ["REJECT_DEFAULT_API_KEYS"] = "false"
 
     # Use test ChromaDB directory
     os.environ["CHROMA_PERSIST_DIR"] = "./test_chroma_db"
@@ -27,16 +43,18 @@ def pytest_unconfigure(config):
     # Clean up test directories
     test_chroma = Path("./test_chroma_db")
     if test_chroma.exists():
-        shutil.rmtree(test_chroma)
+        shutil.rmtree(test_chroma, ignore_errors=True)
+    if _LOCAL_TMP_ROOT.exists():
+        shutil.rmtree(_LOCAL_TMP_ROOT, ignore_errors=True)
 
 
 # ============ Fixtures ============
 
 
 @pytest.fixture(scope="session")
-def test_data_dir(tmp_path_factory):
+def test_data_dir():
     """Create temporary test data directory with sample documents."""
-    data_dir = tmp_path_factory.mktemp("data")
+    data_dir = _make_local_tmp_dir("data_")
 
     # Create domain subdirectories
     (data_dir / "raw" / "tax").mkdir(parents=True)
@@ -91,9 +109,19 @@ def test_data_dir(tmp_path_factory):
 
 
 @pytest.fixture(scope="session")
-def chroma_test_dir(tmp_path_factory):
+def chroma_test_dir():
     """Create temporary ChromaDB directory."""
-    return tmp_path_factory.mktemp("chroma")
+    return _make_local_tmp_dir("chroma_")
+
+
+@pytest.fixture
+def tmp_path():
+    """Workspace-local replacement for pytest tmp_path fixture on Windows sandbox."""
+    path = _make_local_tmp_dir("case_")
+    try:
+        yield path
+    finally:
+        shutil.rmtree(path, ignore_errors=True)
 
 
 @pytest.fixture

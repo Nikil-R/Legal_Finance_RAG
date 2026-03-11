@@ -9,8 +9,9 @@
 ## Deploy
 - Trigger `.github/workflows/deploy.yml`
 - Choose environment and image tag
-- Verify health: `GET /health`
-- Verify metrics: `GET /metrics/prometheus`
+- Trigger health check: `GET /health`
+- Trigger lightweight ready check: `GET /health/ready`
+- Verify metrics: `GET /metrics`
 
 ## Rollback
 - Trigger deploy workflow with `rollback_to=<previous_tag>`

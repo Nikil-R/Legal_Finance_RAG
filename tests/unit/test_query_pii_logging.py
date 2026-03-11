@@ -3,6 +3,7 @@ from __future__ import annotations
 from unittest.mock import MagicMock
 
 import pytest
+from starlette.requests import Request
 
 from app.api.models import QueryRequest, RetrievalOnlyRequest
 from app.api.routes import query as query_routes
@@ -30,9 +31,23 @@ class _DummyRetrievalPipeline:
         }
 
 
+def _make_request(path: str) -> Request:
+    return Request(
+        {
+            "type": "http",
+            "method": "POST",
+            "path": path,
+            "headers": [],
+            "client": ("testclient", 1234),
+            "scheme": "http",
+            "server": ("testserver", 80),
+        }
+    )
+
+
 @pytest.mark.asyncio
 async def test_query_logs_redacted_question(monkeypatch: pytest.MonkeyPatch) -> None:
-    request = QueryRequest(
+    query_request = QueryRequest(
         question="test@example.com 9876543210 details",
         domain="tax",
         include_sources=False,
@@ -42,9 +57,9 @@ async def test_query_logs_redacted_question(monkeypatch: pytest.MonkeyPatch) -> 
     monkeypatch.setattr(query_routes.settings, "PII_REDACTION_ENABLED", True)
     monkeypatch.setattr(query_routes.logger, "info", info_mock)
 
-    await query_routes.query(
-        request=request,
-        _=None,
+    await query_routes.query.__wrapped__(
+        query_request=query_request,
+        request=_make_request("/api/v1/query"),
         user=AuthenticatedUser(id="test-user"),
         pipeline=_DummyRagPipeline(),
     )
@@ -61,7 +76,7 @@ async def test_query_logs_redacted_question(monkeypatch: pytest.MonkeyPatch) -> 
 async def test_retrieval_logs_redacted_question(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    request = RetrievalOnlyRequest(
+    retrieval_request = RetrievalOnlyRequest(
         question="Email jane@corp.com PAN ABCDE1234F for details",
         domain="legal",
         top_k=3,
@@ -71,9 +86,10 @@ async def test_retrieval_logs_redacted_question(
     monkeypatch.setattr(query_routes.settings, "PII_REDACTION_ENABLED", True)
     monkeypatch.setattr(query_routes.logger, "info", info_mock)
 
-    await query_routes.retrieve_only(
-        request=request,
-        _=None,
+    await query_routes.retrieve_only.__wrapped__(
+        retrieval_request=retrieval_request,
+        request=_make_request("/api/v1/query/retrieve"),
+        user=AuthenticatedUser(id="test-user"),
         pipeline=_DummyRetrievalPipeline(),
     )
 

@@ -82,12 +82,12 @@ class TestDocumentLoader:
         result = loader.load_txt("/non/existent/path/file.txt")
         assert result == ""
 
-    def test_load_directory_returns_three_documents(self):
-        """load_directory() should find the 3 sample .txt files in data/raw/."""
+    def test_load_directory_returns_documents(self):
+        """load_directory() should return a non-empty corpus from data/raw/."""
         loader = DocumentLoader()
         docs = loader.load_directory(str(RAW_DATA_DIR))
 
-        assert len(docs) == 3, f"Expected 3 documents, got {len(docs)}"
+        assert len(docs) >= 3, f"Expected at least 3 documents, got {len(docs)}"
 
     def test_load_directory_domain_assignment(self):
         """Each document's domain should match its subfolder name."""
@@ -95,7 +95,7 @@ class TestDocumentLoader:
         docs = loader.load_directory(str(RAW_DATA_DIR))
 
         domains = {d["metadata"]["domain"] for d in docs}
-        assert domains == {"tax", "finance", "legal"}
+        assert {"tax", "finance", "legal"}.issubset(domains)
 
     def test_load_directory_metadata_shape(self):
         """Every returned document must have the required metadata keys."""

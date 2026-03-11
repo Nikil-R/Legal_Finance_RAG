@@ -5,8 +5,8 @@ Vector Similarity Search — queries ChromaDB using SentenceTransformer embeddin
 from __future__ import annotations
 
 import chromadb
-from sentence_transformers import SentenceTransformer
 
+from app.utils.lightweight_models import load_sentence_encoder
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -25,7 +25,11 @@ class VectorRetriever:
         collection_name: str = COLLECTION_NAME,
     ) -> None:
         logger.info("VectorRetriever: loading embedding model '%s' …", embedding_model)
-        self._encoder = SentenceTransformer(embedding_model, device="cpu")
+        self._encoder = load_sentence_encoder(
+            embedding_model,
+            device="cpu",
+            logger=logger,
+        )
 
         logger.info("VectorRetriever: connecting to ChromaDB at '%s' …", persist_dir)
         client = chromadb.PersistentClient(path=persist_dir)

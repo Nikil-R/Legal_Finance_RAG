@@ -12,10 +12,10 @@ from app.api.models import (
     StatsResponse,
 )
 from app.api.rate_limit import limiter
-from app.api.security_decorators import get_current_user, require_role
+from app.api.security import AuthenticatedUser, require_role
 from app.infra.system_ingestion_jobs import system_ingestion_job_store
 from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
-from app.models.auth import Role, User
+from app.models.auth import Role
 from app.observability import logger as obs_logger
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
@@ -48,7 +48,11 @@ def _maybe_invalidate_cache_for_job(record: dict) -> dict:
     summary="Get document statistics",
     description="Returns statistics about indexed documents including total counts and per-domain breakdown.",
 )
-async def get_stats() -> StatsResponse:
+async def get_stats(
+    _user: AuthenticatedUser = Depends(
+        require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+    )
+) -> StatsResponse:
     """
     Get statistics about indexed documents.
     """
@@ -96,11 +100,10 @@ async def get_stats() -> StatsResponse:
     """,
 )
 @limiter.limit("20/hour")
-@require_role(Role.INGEST, Role.ADMIN)
 async def ingest_documents(
     ingest_request: IngestRequest, 
     request: Request,
-    user: User = Depends(get_current_user)
+    user: AuthenticatedUser = Depends(require_role(Role.INGEST, Role.ADMIN))
 ) -> IngestJobResponse:
     """
     Trigger document ingestion asynchronously.
@@ -108,7 +111,7 @@ async def ingest_documents(
     logger.info(
         "System ingestion enqueue requested | clear_existing: %s", ingest_request.clear_existing
     )
-    logger.debug("User %s triggered system ingestion request", user.email)
+    logger.debug("User %s triggered system ingestion request", user.id)
 
     try:
         result = enqueue_system_ingestion_job(clear_existing=ingest_request.clear_existing)
@@ -116,7 +119,7 @@ async def ingest_documents(
             success=True,
             job_id=result["job_id"],
             status=result.get("status", "queued"),
-            clear_existing=bool(result.get("clear_existing", request.clear_existing)),
+            clear_existing=bool(result.get("clear_existing", ingest_request.clear_existing)),
             backend=result.get("backend"),
             message="Ingestion accepted. Poll job status endpoint for completion.",
         )
@@ -126,16 +129,17 @@ async def ingest_documents(
 
 
 @router.get("/ingest/jobs/{job_id}", response_model=IngestJobStatusResponse)
-@require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
 async def get_ingestion_job_status(
     job_id: str, 
     request: Request,
-    user: User = Depends(get_current_user)
+    user: AuthenticatedUser = Depends(
+        require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+    )
 ) -> IngestJobStatusResponse:
     """
     Get status of an asynchronous system-ingestion job.
     """
-    logger.debug("Ingestion status requested by %s for job %s", user.email, job_id)
+    logger.debug("Ingestion status requested by %s for job %s", user.id, job_id)
     record = system_ingestion_job_store.get_job(job_id)
     if record is None:
         raise HTTPException(status_code=404, detail="Ingestion job not found.")
@@ -165,7 +169,11 @@ async def get_ingestion_job_status(
     summary="List available domains",
     description="Returns list of available document domains.",
 )
-async def list_domains() -> dict:
+async def list_domains(
+    _user: AuthenticatedUser = Depends(
+        require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+    )
+) -> dict:
     """
     List available domains.
     """

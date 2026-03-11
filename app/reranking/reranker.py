@@ -9,8 +9,7 @@ from __future__ import annotations
 
 import time
 
-from sentence_transformers import CrossEncoder
-
+from app.utils.lightweight_models import load_cross_encoder
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -33,7 +32,11 @@ class CrossEncoderReranker:
 
         self.model_name = model_name
         logger.info("Loading cross-encoder model: '%s' …", model_name)
-        self._model = CrossEncoder(model_name, device="cpu")
+        self._model = load_cross_encoder(
+            model_name,
+            device="cpu",
+            logger=logger,
+        )
         logger.info("Cross-encoder model loaded.")
 
     # ------------------------------------------------------------------

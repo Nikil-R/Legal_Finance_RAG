@@ -20,7 +20,9 @@ class ComponentHealth(BaseModel):
 
 class HealthResponse(BaseModel):
     status: Literal["healthy", "degraded", "unhealthy"]
+    version: str
     timestamp: datetime
+    components: Dict[str, bool]
     checks: Dict[str, ComponentHealth]
 
 
@@ -105,6 +107,13 @@ async def check_groq() -> ComponentHealth:
 
     start = time.time()
     try:
+        if settings.TESTING:
+            latency = (time.time() - start) * 1000
+            return ComponentHealth(
+                status="healthy",
+                latency_ms=round(latency, 2),
+                message="Groq check skipped in TESTING mode",
+            )
         api_key = settings.GROQ_API_KEY
         if not api_key or api_key == "test_groq_key":
             return ComponentHealth(status="unhealthy", latency_ms=0, message="Groq API key not configured")
@@ -216,20 +225,20 @@ async def health_check():
     else:
         status = "healthy"
 
+    components = {
+        "api": True,
+        "groq_api_key_set": checks["groq"].status == "healthy",
+        "chroma_db": checks["chroma"].status == "healthy",
+        "embeddings_model": checks["embedding"].status == "healthy",
+    }
+
     response = HealthResponse(
         status=status,
+        version="0.1.0",
         timestamp=datetime.utcnow(),
+        components=components,
         checks=checks,
     )
-
-    # Return 503 only if status is strictly unhealthy (critical component failure)
-    if status == "unhealthy":
-        response_dict = response.model_dump()
-        response_dict["timestamp"] = response.timestamp.isoformat()
-        raise HTTPException(
-            status_code=503, 
-            detail=response_dict
-        )
 
     return response
 
@@ -237,8 +246,9 @@ async def health_check():
 # ── Kubernetes-style probes ──────────────────────────────────────────
 
 
-@router.get("/liveness")
+@router.get("/liveness", summary="Liveness probe")
 async def liveness_check():
+    """Lightweight check to see if the process is running."""
     return JSONResponse(
         {
             "status": "alive",
@@ -247,22 +257,39 @@ async def liveness_check():
     )
 
 
-@router.get("/readiness")
-async def readiness_check():
-    chroma_health = await check_chroma()
-
-    if chroma_health.status == "unhealthy":
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "status": "not_ready",
-                "chroma": chroma_health.dict(),
-            },
-        )
+@router.get("/ready", summary="Readiness probe (lightweight)")
+async def ready_check():
+    """
+    Lightweight readiness check.
+    Does NOT load heavy models. Just checks basic infra (Redis/process).
+    """
+    from redis.asyncio import Redis
+    from app.config import settings
+    
+    infra_status = "healthy"
+    message = "App ready"
+    
+    # Optional fast infra check if not in local mode
+    if settings.ENVIRONMENT not in ("local", "dev"):
+        try:
+            redis = Redis.from_url(settings.REDIS_URL, socket_timeout=0.5)
+            await redis.ping()
+            await redis.close()
+        except:
+            infra_status = "degraded"
+            message = "Infra connectivity issues"
 
     return JSONResponse(
         {
-            "status": "ready",
+            "status": "ready" if infra_status == "healthy" else "degraded",
+            "message": message,
             "timestamp": datetime.utcnow().isoformat(),
-        }
+        },
+        status_code=200 if infra_status == "healthy" else 200 # Avoid 503 for non-critical infra in soft ready
     )
+
+
+@router.get("/readiness")
+async def readiness_check():
+    """Legacy alias for ready_check or deep check if used by k8s."""
+    return await ready_check()

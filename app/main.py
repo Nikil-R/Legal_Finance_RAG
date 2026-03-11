@@ -24,6 +24,7 @@ from app.observability import (
     configure_metrics,
     configure_tracing,
     logger,
+    metrics,
     query_latency,
 )
 
@@ -87,6 +88,26 @@ def create_app() -> FastAPI:
             "version": "1.0.0",
             "status": "operational",
             "docs_url": "/docs",
+        }
+
+    @app.get("/metrics/snapshot")
+    async def metrics_snapshot():
+        """JSON metrics snapshot for lightweight checks/tests."""
+        return metrics.snapshot()
+
+    @app.get("/config")
+    async def public_config():
+        """Expose non-sensitive runtime configuration values."""
+        return {
+            "groq_model": settings.GROQ_MODEL,
+            "embedding_model": settings.EMBEDDING_MODEL,
+            "cross_encoder_model": settings.CROSS_ENCODER_MODEL,
+            "chunk_size": settings.CHUNK_SIZE,
+            "chunk_overlap": settings.CHUNK_OVERLAP,
+            "top_k_retrieval": settings.TOP_K_RETRIEVAL,
+            "top_k_rerank": settings.TOP_K_RERANK,
+            "temperature": settings.TEMPERATURE,
+            "api_auth_enabled": settings.API_AUTH_ENABLED,
         }
 
     return app

@@ -174,7 +174,7 @@ export async function sendQuery(
  */
 export async function uploadFile(file: File): Promise<UploadResponse> {
   try {
-    const uploadUrl = `${API_BASE_URL}/api/v2/upload`;
+    const uploadUrl = `${API_BASE_URL}/api/v2/user/upload`;
     console.log(`[Upload] Starting upload of ${file.name}`);
 
     const formData = new FormData();

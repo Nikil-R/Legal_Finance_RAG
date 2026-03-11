@@ -26,6 +26,7 @@ limiter = Limiter(
     default_limits=["1000/day", "100/hour"],
     storage_uri=storage_uri,
     strategy="fixed-window",
+    enabled=not settings.TESTING,
 )
 
 

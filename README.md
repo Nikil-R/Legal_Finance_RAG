@@ -26,8 +26,8 @@ An AI-powered Retrieval-Augmented Generation (RAG) system for Indian tax laws, f
 
 ```
 ┌─────────────────────┐     ┌─────────────────┐
-│   Chainlit          │────▶│    FastAPI      │
-│   Frontend (8501)   │◀────│    Backend      │
+│   Next.js           │────▶│    FastAPI      │
+│   Frontend (3000)   │◀────│    Backend      │
 │   (Web UI)          │     │    (8000)       │
 └─────────────────────┘     └────────┬────────┘
                                      │
@@ -50,7 +50,7 @@ An AI-powered Retrieval-Augmented Generation (RAG) system for Indian tax laws, f
                         └─────────────────┘
 ```
 
-> **Note:** As of March 2026, the frontend has been migrated from **Streamlit** to **Chainlit** for improved UX and enterprise capabilities. See [CHAINLIT_README.md](CHAINLIT_README.md) for migration details and setup instructions.
+> **Note:** As of March 2026, the frontend has been migrated to **Next.js 14+** for a premium, production-grade experience.
 
 ## 🚀 Quick Start
 
@@ -87,10 +87,12 @@ make ingest-clear
 # 2. Start the API server
 make run-api
 
-# 3. In another terminal, start the Chainlit frontend
-chainlit run chainlit_app/app.py --port 8501
+# 3. In another terminal, start the Next.js frontend
+cd frontend-nextjs
+npm install
+npm run dev
 
-# Open http://localhost:8501 in your browser
+# Open http://localhost:3000 in your browser
 ```
 
 For detailed Chainlit setup and configuration, see [CHAINLIT_README.md](CHAINLIT_README.md).
@@ -120,13 +122,11 @@ legal_finance_rag/
 │   ├── reranking/         # Cross-encoder reranking
 │   ├── generation/        # LLM generation with Groq
 │   └── prompts/           # Versioned prompt templates
-├── chainlit_app/          # ✨ Chainlit frontend (NEW)
-│   ├── app.py            # Main Chainlit application
-│   ├── api_client.py     # HTTP client to backend
-│   ├── config.py         # Configuration
-│   └── public/           # Branding assets
-├── chainlit.md           # Welcome screen markdown
-├── frontend/             # [DEPRECATED] Old Streamlit UI (kept for reference)
+├── frontend-nextjs/       # ✨ Next.js frontend (NEW)
+│   ├── app/              # App Router and pages
+│   ├── components/       # Shadcn/ui components
+│   ├── lib/              # API clients and utilities
+│   └── hooks/            # Custom React hooks
 ├── evaluation/           # Golden dataset and metrics
 ├── data/raw/             # Source documents by domain
 ├── tests/                # Test suite
@@ -218,9 +218,9 @@ EVAL_GATE_MIN_PASS_RATE=0.8
 
 ### Operations Endpoints
 
-- `GET /metrics`: in-memory counters + p95/p99 timing snapshots
-- `GET /metrics/prometheus`: Prometheus-formatted metrics
-- `GET /health`: includes component readiness
+- `GET /metrics`: Prometheus-formatted metrics
+- `GET /health`: deep component health (with model checks)
+- `GET /health/ready`: lightweight readiness check
 - `POST /api/v1/query` and `POST /api/v2/query`: equivalent versioned routes
 
 ### Evaluation Quality Gate

@@ -1,24 +1,34 @@
-FROM python:3.11-slim
+# Base image
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt streamlit requests
+COPY package*.json ./
+RUN npm install
 
-# Copy frontend code
-COPY frontend/ ./frontend/
+# Copy source and build
+COPY . .
+RUN npm run build
+
+# Production stage
+FROM node:20-slim AS runner
+
+WORKDIR /app
+
+# Copy built application
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
 
 # Set environment variables
-ENV PYTHONUNBUFFERED=1
+ENV NODE_ENV=production
+ENV PORT=3000
 ENV API_BASE_URL=http://api:8000
 
-# Expose Streamlit port
-EXPOSE 8501
+# Expose port
+EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8501/_stcore/health || exit 1
-
-# Run Streamlit
-CMD ["streamlit", "run", "frontend/app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
+# Run the application
+CMD ["npm", "run", "start"]

@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     API_AUTH_ENABLED: bool = True
     API_KEYS: str = ""
     API_KEYS_HASHED: str = ""
+    API_KEY_ROLES: str = ""
     API_KEY_MIN_LENGTH: int = 24
     API_REQUIRE_KEY_ID: bool = False
     API_KEY_HEADER_NAME: str = "x-api-key"

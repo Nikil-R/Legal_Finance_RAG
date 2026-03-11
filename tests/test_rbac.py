@@ -1,4 +1,5 @@
 import os
+from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -7,6 +8,12 @@ from fastapi.testclient import TestClient
 os.environ.setdefault("ENVIRONMENT", "local")
 os.environ.setdefault("GROQ_API_KEY", "local-test-key")
 os.environ.setdefault("REDIS_URL", "redis://localhost:6379/0")
+os.environ.setdefault("TESTING", "false")
+os.environ.setdefault("API_AUTH_ENABLED", "true")
+os.environ.setdefault("API_KEYS", "admin:admin_key_12345,query:query_key_67890")
+os.environ.setdefault("API_KEY_ROLES", "admin:admin,query:query")
+os.environ.setdefault("API_KEY_MIN_LENGTH", "1")
+os.environ.setdefault("REJECT_DEFAULT_API_KEYS", "false")
 
 from app.main import app  # noqa: E402
 
@@ -26,7 +33,7 @@ def _reset_rate_limits():
 def test_no_api_key_returns_401():
     response = client.post("/api/v1/query", json={"question": "test"})
     assert response.status_code == 401
-    assert "Missing X-API-Key" in response.json()["detail"]
+    assert "Invalid or missing API key" in response.json()["detail"]
 
 
 def test_invalid_api_key_returns_401():
@@ -50,19 +57,29 @@ def test_query_role_can_query():
 def test_query_role_cannot_upload():
     response = client.post(
         "/api/v1/documents/ingest",
-        files={"file": ("test.pdf", b"content", "application/pdf")},
+        json={"clear_existing": False},
         headers={"X-API-Key": "query_key_67890"},
     )
     assert response.status_code == 403
     assert "Forbidden" in response.json()["detail"]
 
 
-def test_admin_can_delete():
-    response = client.delete(
-        "/api/v1/documents/test123",
-        headers={"X-API-Key": "admin_key_12345"},
-    )
-    assert response.status_code == 200
+def test_admin_can_ingest():
+    with patch(
+        "app.api.routes.documents.enqueue_system_ingestion_job",
+        return_value={
+            "job_id": "rbac-job",
+            "status": "queued",
+            "backend": "local",
+            "clear_existing": False,
+        },
+    ):
+        response = client.post(
+            "/api/v1/documents/ingest",
+            json={"clear_existing": False},
+            headers={"X-API-Key": "admin_key_12345"},
+        )
+    assert response.status_code == 202
 
 
 @pytest.mark.usefixtures("_reset_limit_on_failure")

@@ -50,6 +50,11 @@ line_length = 88
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+norecursedirs = [
+    "tests/tmp_pytest",
+    ".tmp",
+    ".pytest_cache",
+]
 filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",

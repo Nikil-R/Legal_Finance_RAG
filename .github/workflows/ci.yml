@@ -172,7 +172,7 @@ jobs:
       - name: Build Frontend image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: frontend-nextjs
           file: docker/Dockerfile.frontend
           push: false
           tags: legalfinance-rag-frontend:test

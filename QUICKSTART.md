@@ -13,10 +13,10 @@ pip install -r requirements.txt
 # 2. Terminal 1 - Start the backend
 uvicorn app.main:app --reload --port 8000
 
-# 3. Terminal 2 - Start Chainlit
-chainlit run chainlit_app/app.py --port 8501
+# 3. Terminal 2 - Start Next.js
+cd frontend-nextjs && npm run dev
 
-# 4. Open browser to http://localhost:8501
+# 4. Open browser to http://localhost:3000
 ```
 
 ### Option 2: Docker Compose (Recommended for Testing Production Setup)

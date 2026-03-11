@@ -22,10 +22,10 @@ from app.api.models import (
     ValidationResult,
 )
 from app.api.rate_limit import limiter
-from app.api.security_decorators import get_current_user, require_role
+from app.api.security import AuthenticatedUser, require_role
 from app.config import settings
 from app.generation import RAGPipeline
-from app.models.auth import Role, User
+from app.models.auth import Role
 from app.observability import (
     logger as structlog_logger,
 )
@@ -72,11 +72,12 @@ async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
     """,
 )
 @limiter.limit("60/hour")
-@require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
 async def query(
     query_request: QueryRequest,
     request: Request,
-    user: User = Depends(get_current_user),
+    user: AuthenticatedUser = Depends(
+        require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+    ),
     pipeline: RAGPipeline = Depends(get_rag_pipeline),
 ) -> QueryResponse:
     """
@@ -216,7 +217,13 @@ async def query(
                 error=str(exc),
                 duration_ms=round(duration * 1000, 2),
             )
-            raise
+            return QueryResponse(
+                success=False,
+                question=processed_question,
+                domain=query_request.domain.value,
+                error=str(exc),
+                timestamp=datetime.now(timezone.utc),
+            )
 @router.post(
     "/retrieve",
     response_model=RetrievalResponse,
@@ -224,11 +231,12 @@ async def query(
     description="Returns the most relevant document chunks for a query, without generating an LLM response. Useful for debugging or custom processing.",
 )
 @limiter.limit("60/hour")
-@require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
 async def retrieve_only(
     retrieval_request: RetrievalOnlyRequest,
     request: Request,
-    user: User = Depends(get_current_user),
+    user: AuthenticatedUser = Depends(
+        require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
+    ),
     pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """

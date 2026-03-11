@@ -11,8 +11,8 @@ import math
 import time
 
 import chromadb
-from sentence_transformers import SentenceTransformer
 
+from app.utils.lightweight_models import load_sentence_encoder
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -41,7 +41,11 @@ class VectorStoreManager:
         t0 = time.time()
         # device="cpu" is explicit — avoids a slow CUDA probe on machines without GPU.
         # If you have an NVIDIA GPU: change to device="cuda" for 10-20x speedup.
-        self._encoder = SentenceTransformer(embedding_model, device="cpu")
+        self._encoder = load_sentence_encoder(
+            embedding_model,
+            device="cpu",
+            logger=logger,
+        )
         logger.info("Embedding model loaded in %.1fs.", time.time() - t0)
 
         logger.info("Connecting to ChromaDB at '%s' …", persist_dir)

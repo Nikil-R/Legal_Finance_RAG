@@ -37,7 +37,7 @@ else
     echo "  - Readiness: DEGRADED (this may be OK if starting up)"
 fi
 
-HEALTH_STATUS=$(curl -sf "$BASE_URL/health/health" | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('status','unknown'))" 2>/dev/null || echo "unknown")
+HEALTH_STATUS=$(curl -sf "$BASE_URL/health" | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('status','unknown'))" 2>/dev/null || echo "unknown")
 echo "  - Full health check: $HEALTH_STATUS"
 
 # 2. Security Tests
