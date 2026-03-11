@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import {
@@ -10,16 +10,23 @@ import {
   X,
   CheckCircle,
   Clock,
+  Files,
+  Inbox,
+  ShieldAlert,
+  HelpCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
 
-export function Sidebar() {
-  const { upload, isUploading, progress, error, uploadedFiles, clearError, clearFiles } =
-    useFileUpload();
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+export function Sidebar({ onClose }: SidebarProps) {
+  const { upload, isUploading, progress, error, uploadedFiles, clearError, clearFiles } = useFileUpload();
   const [localError, setLocalError] = useState<string | null>(null);
+  
   const [uploadHistory, setUploadHistory] = useState<
-    Array<{ name: string; status: 'success' | 'error' | 'pending' }>
+    Array<{ name: string; status: 'success' | 'error' | 'pending'; id: string }>
   >([]);
 
   const onDrop = useCallback(
@@ -27,34 +34,19 @@ export function Sidebar() {
       setLocalError(null);
       clearError();
 
-      if (acceptedFiles.length === 0) {
-        setLocalError('No valid files selected');
-        return;
-      }
-
       for (const file of acceptedFiles) {
+        const id = Math.random().toString(36).substring(7);
         try {
-          setUploadHistory((prev) => [
-            ...prev,
-            { name: file.name, status: 'pending' },
-          ]);
-
+          setUploadHistory((prev) => [{ name: file.name, status: 'pending', id }, ...prev]);
           await upload(file);
-
           setUploadHistory((prev) =>
-            prev.map((item) =>
-              item.name === file.name ? { ...item, status: 'success' } : item
-            )
+            prev.map((item) => item.id === id ? { ...item, status: 'success' } : item)
           );
         } catch (err) {
-          const errorMsg =
-            err instanceof Error ? err.message : 'Upload failed';
           setUploadHistory((prev) =>
-            prev.map((item) =>
-              item.name === file.name ? { ...item, status: 'error' } : item
-            )
+            prev.map((item) => item.id === id ? { ...item, status: 'error' } : item)
           );
-          setLocalError(errorMsg);
+          setLocalError('Upload failed. Please check backend.');
         }
       }
     },
@@ -67,240 +59,116 @@ export function Sidebar() {
     accept: {
       'application/pdf': ['.pdf'],
       'text/plain': ['.txt'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [
-        '.docx',
-      ],
-      'application/msword': ['.doc'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
     },
   });
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
-  };
-
   return (
-    <aside className="w-64 border-r border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col overflow-y-auto h-[calc(100vh-4rem)] shadow-sm">
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-slate-100">
-          Documents
-        </h2>
-        <p className="text-xs text-gray-600 dark:text-slate-500 mt-1">
-          Upload PDFs, TXT, or DOCX files
-        </p>
+    <div className="flex flex-col h-full bg-slate-900 border-r border-slate-800 text-slate-400">
+      {/* Sidebar Header */}
+      <div className="p-6 flex items-center justify-between border-b border-slate-800">
+        <div className="flex items-center gap-2">
+          <Files className="h-4 w-4 text-blue-500" />
+          <span className="text-xs font-bold uppercase tracking-widest text-white">Knowledge Base</span>
+        </div>
+        <button onClick={onClose} className="lg:hidden p-1 hover:bg-slate-800 rounded">
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
-      {/* Upload Zone */}
-      <div className="mb-8">
-        <div
-          {...getRootProps()}
-          className={cn(
-            'rounded-lg border-2 border-dashed p-6 text-center transition-all cursor-pointer',
-            isDragActive
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10'
-              : 'border-gray-300 dark:border-slate-600 hover:border-gray-400 dark:hover:border-slate-500',
-            isUploading && 'opacity-50 cursor-not-allowed',
-            error && 'border-red-300 dark:border-red-500/30'
-          )}
-        >
-          <input {...getInputProps()} />
-
-          {isDragActive ? (
-            <div className="space-y-2">
-              <Upload className="h-6 w-6 text-blue-500 mx-auto" />
-              <p className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                Drop files here
-              </p>
-            </div>
-          ) : isUploading ? (
+      <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-thin">
+        {/* Upload Hub */}
+        <div className="space-y-4">
+          <div
+            {...getRootProps()}
+            className={cn(
+              "relative group overflow-hidden rounded-2xl border-2 border-dashed transition-all p-6 text-center cursor-pointer",
+              isDragActive ? "border-blue-500 bg-blue-500/5" : "border-slate-800 hover:border-slate-700 hover:bg-slate-800/30",
+              isUploading && "opacity-50 cursor-wait"
+            )}
+          >
+            <input {...getInputProps()} />
             <div className="space-y-3">
-              <div className="inline-block">
-                <div className="relative h-12 w-12">
-                  <svg
-                    className="h-12 w-12 text-blue-600 dark:text-blue-400 animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
+              <div className="flex justify-center">
+                <div className="p-3 rounded-xl bg-slate-800 text-slate-400 group-hover:text-blue-500 transition-colors">
+                  <Upload className="h-6 w-6" />
                 </div>
               </div>
-              <p className="text-sm font-medium text-gray-700 dark:text-slate-300">
-                Uploading...
-              </p>
-              <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-                <div
-                  className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all"
-                  style={{ width: `${progress}%` }}
-                />
+              <div className="space-y-1">
+                <p className="text-xs font-bold text-white uppercase tracking-tight">Drop Documents</p>
+                <p className="text-[10px] text-slate-500 font-medium">PDF, DOCX, TXT • Max 50MB</p>
               </div>
-              <p className="text-xs font-medium text-gray-600 dark:text-slate-400">
-                {progress}%
-              </p>
             </div>
-          ) : (
-            <div className="space-y-2">
-              <Upload className="h-6 w-6 text-gray-400 dark:text-slate-400 mx-auto" />
-              <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-slate-300">
-                  Drag & drop files here
-                </p>
-                <p className="text-xs text-gray-600 dark:text-slate-500 mt-1">
-                  PDF, TXT, or DOCX • Max 200MB
-                </p>
+            
+            {isUploading && (
+              <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-6">
+                <div className="w-full space-y-3">
+                  <div className="flex justify-between text-[10px] font-bold uppercase text-blue-400">
+                    <span>Indexing...</span>
+                    <span>{progress}%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+                  </div>
+                </div>
               </div>
+            )}
+          </div>
+
+          {(localError || error) && (
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex gap-2 animate-message">
+              <ShieldAlert className="h-4 w-4 text-red-500 shrink-0" />
+              <p className="text-[10px] font-medium text-red-400 leading-normal">{localError || error}</p>
             </div>
           )}
         </div>
 
-        {/* Error Messages */}
-        {(localError || error) && (
-          <div className="mt-3 p-3 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 flex gap-2">
-            <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="text-xs text-red-700 dark:text-red-300">
-                {localError || error}
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setLocalError(null);
-                clearError();
-              }}
-              className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
-            >
-              <X className="h-4 w-4" />
-            </button>
+        {/* Upload Queue / Files */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Workspace Files</h3>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-bold">{uploadedFiles.length + uploadHistory.length}</span>
           </div>
-        )}
-      </div>
 
-      {/* Upload History */}
-      {uploadHistory.length > 0 && (
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-slate-100">
-              Upload Status
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 px-2 text-xs"
-              onClick={() => {
-                setUploadHistory([]);
-                clearFiles();
-              }}
-            >
-              Clear
-            </Button>
-          </div>
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {uploadHistory.map((item) => (
-              <div
-                key={item.name}
-                className={cn(
-                  'flex items-start gap-2 p-2 rounded-lg text-xs transition-colors',
-                  item.status === 'success'
-                    ? 'bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30'
-                    : item.status === 'error'
-                      ? 'bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30'
-                      : 'bg-yellow-50 dark:bg-yellow-500/10 border border-yellow-200 dark:border-yellow-500/30'
-                )}
-              >
-                {item.status === 'success' ? (
-                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
-                ) : item.status === 'error' ? (
-                  <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-                ) : (
-                  <Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5 animate-spin" />
-                )}
-                <div className="flex-1 min-w-0">
-                  <p
-                    className={cn(
-                      'font-medium truncate',
-                      item.status === 'success'
-                        ? 'text-green-700 dark:text-green-300'
-                        : item.status === 'error'
-                          ? 'text-red-700 dark:text-red-300'
-                          : 'text-yellow-700 dark:text-yellow-300'
-                    )}
-                  >
-                    {item.name}
-                  </p>
-                  <p
-                    className={cn(
-                      'text-xs truncate',
-                      item.status === 'success'
-                        ? 'text-green-600 dark:text-green-400'
-                        : item.status === 'error'
-                          ? 'text-red-600 dark:text-red-400'
-                          : 'text-yellow-600 dark:text-yellow-400'
-                    )}
-                  >
-                    {item.status === 'success'
-                      ? 'Successfully uploaded'
-                      : item.status === 'error'
-                        ? 'Upload failed'
-                        : 'Uploading...'}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Uploaded Files List */}
-      {uploadedFiles.length > 0 && (
-        <div className="mb-6">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-3">
-            Documents ({uploadedFiles.length})
-          </h3>
           <div className="space-y-2">
-            {uploadedFiles.map((file, index) => (
-              <div
-                key={`${file.name}-${index}`}
-                className="flex items-start gap-2 p-3 rounded-lg bg-gray-100 dark:bg-slate-800"
-              >
-                <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-gray-900 dark:text-slate-300 truncate">
-                    {file.name}
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-slate-500">
-                    {formatFileSize(file.size)}
-                  </p>
-                </div>
+            {/* Active/History uploads */}
+            {uploadHistory.map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-800/50">
+                 <div className="flex items-center gap-3 min-w-0">
+                    <FileText className={cn(
+                      "h-4 w-4 shrink-0",
+                      item.status === 'success' ? "text-green-500" : item.status === 'error' ? "text-red-500" : "text-blue-500 animate-pulse"
+                    )} />
+                    <span className="text-[11px] font-medium text-slate-300 truncate">{item.name}</span>
+                 </div>
+                 {item.status === 'pending' && <Clock className="h-3 w-3 text-slate-500 animate-spin" />}
+                 {item.status === 'success' && <CheckCircle className="h-3 w-3 text-green-500" />}
               </div>
             ))}
+
+            {/* Empty State */}
+            {uploadedFiles.length === 0 && uploadHistory.length === 0 && (
+              <div className="py-12 flex flex-col items-center justify-center border border-slate-800 rounded-2xl bg-slate-800/20 border-dashed">
+                <Inbox className="h-8 w-8 text-slate-700 mb-3" />
+                <p className="text-[10px] font-bold text-slate-600 uppercase">No context provided</p>
+              </div>
+            )}
           </div>
         </div>
-      )}
-
-      {/* Info Section */}
-      <div className="mt-auto pt-6 border-t border-gray-200 dark:border-slate-800">
-        <p className="text-xs text-gray-600 dark:text-slate-500 leading-relaxed">
-          Upload documents to provide context for more accurate and relevant
-          answers to your questions.
-        </p>
       </div>
-    </aside>
+
+      {/* Sidebar Footer */}
+      <div className="p-6 border-t border-slate-800 space-y-4">
+         <div className="flex items-center gap-3 group cursor-help">
+            <div className="h-8 w-8 rounded-lg bg-slate-800 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
+               <HelpCircle className="h-4 w-4 text-slate-500" />
+            </div>
+            <div>
+               <p className="text-[11px] font-bold text-slate-300">Data Privacy</p>
+               <p className="text-[9px] text-slate-500 font-medium">Local processing only</p>
+            </div>
+         </div>
+      </div>
+    </div>
   );
 }

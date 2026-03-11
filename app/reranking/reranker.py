@@ -33,7 +33,7 @@ class CrossEncoderReranker:
 
         self.model_name = model_name
         logger.info("Loading cross-encoder model: '%s' …", model_name)
-        self._model = CrossEncoder(model_name)
+        self._model = CrossEncoder(model_name, device="cpu")
         logger.info("Cross-encoder model loaded.")
 
     # ------------------------------------------------------------------

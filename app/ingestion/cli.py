@@ -25,7 +25,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--raw-dir",
-        default="data/raw",
+        default="data/core",
         metavar="PATH",
         help="Path to the raw documents directory (default: data/raw).",
     )

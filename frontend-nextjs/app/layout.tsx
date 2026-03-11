@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/Header';
 import { ToastProvider } from '@/components/ToastProvider';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'LegalFinance AI - Indian Legal & Finance Research Assistant',
+  title: 'LegalFinanceAI - Indian Legal & Finance RAG Engine',
   description:
-    'AI-powered research assistant for Indian legal and financial topics. Ask questions about taxes, law, and more.',
+    'Advanced AI-powered research assistant for Indian legal and financial documents. Get cited answers with compliance checks.',
   icons: {
     icon: '/favicon.ico',
   },
@@ -18,18 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth dark">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <meta name="theme-color" content="#020617" />
       </head>
-      <body className="bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 antialiased">
+      <body className={`${inter.className} bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-hidden h-screen`}>
         <ToastProvider>
-          <div className="flex flex-col h-screen">
-            <Header />
-            <main className="flex-1 overflow-hidden bg-gray-50 dark:bg-slate-950">
-              {children}
-            </main>
-          </div>
+           {children}
         </ToastProvider>
       </body>
     </html>

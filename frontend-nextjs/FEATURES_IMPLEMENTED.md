@@ -436,6 +436,94 @@ This document tracks all features implemented according to the comprehensive spe
 
 ---
 
+## ✨ Phase 12: UI/UX Improvements & Accessibility (Latest)
+
+### Header Glassmorphism
+
+- [x] Changed from `backdrop-blur-xl` to `backdrop-blur-md` (lower GPU impact)
+- [x] Added `@supports` fallback for devices without backdrop-filter support
+- [x] Improved performance on low-end devices (CA students, budget laptops/phones)
+- [x] Solid color fallback for unsupported browsers
+
+### Welcome Screen
+
+- [x] Static gradient background (removed animation)
+- [x] Added subtle glow animation only to logo orb (not full background)
+- [x] Professional appearance for legal/finance domain
+- [x] Reduced battery drain on mobile devices
+- [x] Starter cards always show subtitles (mobile-friendly)
+- [x] Subtle glow on hover for desktop with bright borders
+
+### Chat Experience
+
+- [x] Fade-in animation for message responses (instead of fake streaming cursor)
+- [x] Real streaming support ready (when backend implements SSE)
+- [x] Smooth animations for all message appearances
+- [x] Better UX than artificial typing effects
+
+### Scroll-to-Bottom Button
+
+- [x] Floating button appears when scrolled up >200px
+- [x] Shows "↓ New message" text with arrow icon
+- [x] Badge with count of new messages arrived while scrolled up
+- [x] Smooth scroll animation to bottom on click
+- [x] Fade-in/out animation on appearance
+- [x] Hidden when at bottom of chat
+
+### Message Timestamp Grouping
+
+- [x] Date separators between message groups
+- [x] Shows "Today", "Yesterday", or formatted date
+- [x] Styled line dividers with text in center
+- [x] Gradient effect on separator lines
+- [x] Helps orientation in long conversations
+
+### Copy Feedback System
+
+- [x] Icon changes from 📋 to ✅ for 2 seconds
+- [x] Toast notification: "Copied to clipboard" (success)
+- [x] Toast notification on copy failure (error state)
+- [x] Works for both messages and source excerpts
+- [x] Consistent feedback across app
+
+### Source Relevance Scoring
+
+- [x] Changed from color-coded (red/yellow/green) to blue-only progress bar
+- [x] No red color that creates false distrust
+- [x] Blue bar with varying opacity (bright for high scores, dimmer for lower)
+- [x] Percentage display alongside progress bar
+- [x] Never implies source is wrong/unreliable
+
+### Sidebar Collapse Functionality
+
+- [x] Toggle button to collapse/expand sidebar
+- [x] Collapsed state: 64px width with icon-only buttons
+- [x] Expanded state: 260px width with full content
+- [x] Smooth width transition (200ms)
+- [x] State persisted in localStorage
+- [x] Keyboard shortcut: Ctrl+B (or Cmd+B on Mac) to toggle
+- [x] Icon strip shows: Upload, History, Settings when collapsed
+- [x] Chat area smoothly expands when sidebar collapses
+
+### Accessibility & Motion Preferences
+
+- [x] `@media (prefers-reduced-motion: reduce)` support throughout
+- [x] All animations disabled for users with motion sensitivity
+- [x] Complies with WCAG accessibility guidelines
+- [x] Essential for users with vestibular disorders
+- [x] Improves experience for users on accessibility features
+
+### Animation Performance
+
+- [x] Subtle glow animation: 3s ease-in-out loop
+- [x] Fade-in animations: 0.3s ease-out
+- [x] Scroll button appearance: smooth fade-in-up
+- [x] All animations respect prefers-reduced-motion
+- [x] GPU-optimized animations
+- [x] No jank on low-end devices
+
+---
+
 ## 🚀 Ready for Production
 
 ✅ **All specification requirements have been implemented!**
@@ -448,6 +536,17 @@ The frontend is now ready for:
 - Vercel deployment
 - Self-hosted deployment
 - Production use
+
+### UI/UX Optimizations Applied
+
+✅ Low-end device friendly (reduced blur effects)
+✅ Motion sensitivity supported (prefers-reduced-motion)
+✅ Professional appearance (static backgrounds, animated accents)
+✅ Better chat UX (scroll button, timestamp grouping)
+✅ Clear feedback (toast notifications, icon changes)
+✅ No false distrust signals (blue-only bars)
+✅ Intuitive navigation (sidebar collapse, keyboard shortcuts)
+✅ Accessibility-first design (proper color contrast, no flashing)
 
 ---
 

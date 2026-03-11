@@ -8,6 +8,7 @@ Usage (from project root):
 
 from __future__ import annotations
 
+import time
 from collections import Counter
 
 from app.config import settings
@@ -18,7 +19,7 @@ from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-RAW_DATA_DIR = "data/raw"
+RAW_DATA_DIR = "data/core"
 
 
 def run_ingestion_pipeline(
@@ -48,6 +49,8 @@ def run_ingestion_pipeline(
         ``documents_loaded``, ``chunks_created``, ``chunks_stored``,
         ``domain_breakdown`` (Counter).
     """
+    t_pipeline_start = time.time()
+
     logger.info("=" * 60)
     logger.info("Starting LegalFinance RAG ingestion pipeline …")
     logger.info("  raw_dir        : %s", raw_dir)
@@ -55,8 +58,11 @@ def run_ingestion_pipeline(
     logger.info("=" * 60)
 
     # ── 1. Load ──────────────────────────────────────────────────────
+    t0 = time.time()
     loader = DocumentLoader()
     documents = loader.load_directory(raw_dir)
+    t_load = time.time() - t0
+    logger.info("⏱  STAGE 1 — Load: %.1fs | %d doc(s)", t_load, len(documents))
 
     if not documents:
         logger.warning("No documents found in '%s'. Pipeline aborted.", raw_dir)
@@ -68,13 +74,17 @@ def run_ingestion_pipeline(
         }
 
     # ── 2. Chunk ─────────────────────────────────────────────────────
+    t0 = time.time()
     chunker = DocumentChunker(
         chunk_size=settings.CHUNK_SIZE,
         chunk_overlap=settings.CHUNK_OVERLAP,
     )
     chunks = chunker.chunk_all(documents)
+    t_chunk = time.time() - t0
+    logger.info("⏱  STAGE 2 — Chunk: %.1fs | %d chunk(s)", t_chunk, len(chunks))
 
     # ── 3. Embed & Store ─────────────────────────────────────────────
+    t0 = time.time()
     vsm = VectorStoreManager(
         persist_dir=settings.CHROMA_PERSIST_DIR,
         embedding_model=settings.EMBEDDING_MODEL,
@@ -84,16 +94,20 @@ def run_ingestion_pipeline(
         vsm.clear_collection()
 
     stored = vsm.embed_and_store(chunks)
+    t_embed = time.time() - t0
+    logger.info("⏱  STAGE 3 — Embed+Store: %.1fs | %d chunk(s) stored", t_embed, stored)
 
     # ── 4. Summary ───────────────────────────────────────────────────
     domain_breakdown = dict(Counter(c["metadata"]["domain"] for c in chunks))
+    t_total = time.time() - t_pipeline_start
 
     logger.info("=" * 60)
     logger.info("Ingestion pipeline complete.")
-    logger.info("  Documents loaded  : %d", len(documents))
-    logger.info("  Chunks created    : %d", len(chunks))
-    logger.info("  Chunks stored     : %d", stored)
+    logger.info("  Documents loaded  : %d  (%.1fs)", len(documents), t_load)
+    logger.info("  Chunks created    : %d  (%.1fs)", len(chunks), t_chunk)
+    logger.info("  Chunks stored     : %d  (%.1fs)", stored, t_embed)
     logger.info("  Domain breakdown  : %s", domain_breakdown)
+    logger.info("  ⏱  TOTAL TIME    : %.1fs (%.1f min)", t_total, t_total / 60)
     logger.info("=" * 60)
 
     return {

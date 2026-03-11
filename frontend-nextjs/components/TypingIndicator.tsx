@@ -2,11 +2,10 @@
 
 export function TypingIndicator() {
   return (
-    <div className="flex gap-1 items-center">
-      <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full animate-bounce" />
-      <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-      <div className="h-2 w-2 bg-blue-600 dark:bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-      <span className="text-sm text-gray-600 dark:text-slate-400 ml-2">AI is thinking...</span>
+    <div className="flex gap-1 items-center px-4 py-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl rounded-tl-none shadow-sm w-fit animate-message">
+      <div className="typing-dot" style={{ animationDelay: '0ms' }} />
+      <div className="typing-dot" style={{ animationDelay: '200ms' }} />
+      <div className="typing-dot" style={{ animationDelay: '400ms' }} />
     </div>
   );
 }

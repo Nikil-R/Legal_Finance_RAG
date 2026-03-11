@@ -165,14 +165,15 @@ async def health_check():
     
     is_local = settings.ENVIRONMENT in ("local", "development", "dev")
     
-    # In local/dev mode, skip infrastructure checks (Redis, Celery)
-    # that require services not available on Windows
+    # Increase timeouts for model loading on startup, especially in local environments (OneDrive/slow disks)
+    model_timeout = 10.0 if is_local else 5.0
+    
     if is_local:
         tasks = await asyncio.gather(
-            _safe_check(check_chroma(), timeout=3.0),
+            _safe_check(check_chroma(), timeout=model_timeout),
             _safe_check(check_groq(), timeout=1.0),
-            _safe_check(check_embedding(), timeout=3.0),
-            _safe_check(check_reranker(), timeout=3.0),
+            _safe_check(check_embedding(), timeout=model_timeout),
+            _safe_check(check_reranker(), timeout=model_timeout),
         )
         checks = {
             "chroma": tasks[0],
@@ -183,14 +184,14 @@ async def health_check():
             "celery": ComponentHealth(status="healthy", latency_ms=0, message="Skipped (local mode)"),
         }
     else:
-        # Production: check everything
+        # Production: check everything with tighter timeouts
         tasks = await asyncio.gather(
             _safe_check(check_redis(), timeout=2.0),
             _safe_check(check_celery(), timeout=2.0),
             _safe_check(check_chroma(), timeout=3.0),
             _safe_check(check_groq(), timeout=1.0),
-            _safe_check(check_embedding(), timeout=3.0),
-            _safe_check(check_reranker(), timeout=3.0),
+            _safe_check(check_embedding(), timeout=5.0),
+            _safe_check(check_reranker(), timeout=5.0),
         )
         checks = {
             "redis": tasks[0],
@@ -202,7 +203,6 @@ async def health_check():
         }
 
     # Critical = must be healthy for system to work
-    # Auxiliary = nice-to-have, system still usable without them
     critical_checks = ["chroma", "embedding"]
     aux_checks = ["redis", "celery", "groq", "reranker"]
 
@@ -222,10 +222,14 @@ async def health_check():
         checks=checks,
     )
 
+    # Return 503 only if status is strictly unhealthy (critical component failure)
     if status == "unhealthy":
         response_dict = response.model_dump()
         response_dict["timestamp"] = response.timestamp.isoformat()
-        raise HTTPException(status_code=503, detail=response_dict)
+        raise HTTPException(
+            status_code=503, 
+            detail=response_dict
+        )
 
     return response
 

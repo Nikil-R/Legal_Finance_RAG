@@ -6,9 +6,11 @@
 import { QueryResponse, UploadResponse, HealthResponse } from './types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-const HEALTH_TIMEOUT = 10000; // 10s for health check (models may need to load)
-const QUERY_TIMEOUT = 180000; // 3 minutes for RAG queries
+const HEALTH_TIMEOUT = 30000;  // 30s — backend may be loading models or under ingestion load
+const QUERY_TIMEOUT = 180000;  // 3 minutes for RAG queries
 const UPLOAD_TIMEOUT = 120000; // 2 minutes for file uploads
+const HEALTH_RETRY_ATTEMPTS = 3;
+const HEALTH_RETRY_DELAY_MS = 3000; // 3s between retries
 
 // Log API configuration on module load
 if (typeof window !== 'undefined') {
@@ -55,30 +57,59 @@ async function fetchWithTimeout(
 }
 
 /**
- * Check backend health status
+ * Check backend health status with retry logic.
+ * Retries up to HEALTH_RETRY_ATTEMPTS times before reporting failure.
  */
 export async function checkHealth(): Promise<HealthResponse> {
-  try {
-    const healthUrl = `${API_BASE_URL}/health`;
-    console.log(`[Health Check] Checking: ${healthUrl}`);
-    
-    const response = await fetchWithTimeout(healthUrl, {
-      timeout: HEALTH_TIMEOUT,
-    });
+  let lastError: Error | null = null;
 
-    if (!response.ok) {
-      console.error(`[Health Check] HTTP ${response.status}`);
-      throw new ApiError(response.status, 'http_error', 'Backend health check failed');
+  for (let attempt = 1; attempt <= HEALTH_RETRY_ATTEMPTS; attempt++) {
+    try {
+      const healthUrl = `${API_BASE_URL}/health`;
+      if (attempt === 1) {
+        console.log(`[Health Check] Checking: ${healthUrl}`);
+      } else {
+        console.log(`[Health Check] Retry ${attempt}/${HEALTH_RETRY_ATTEMPTS}...`);
+      }
+
+      const response = await fetchWithTimeout(healthUrl, {
+        timeout: HEALTH_TIMEOUT,
+      });
+
+      if (!response.ok) {
+        console.error(`[Health Check] HTTP ${response.status}`);
+        throw new ApiError(response.status, 'http_error', `Backend returned HTTP ${response.status}`);
+      }
+
+      const data: HealthResponse = await response.json();
+      console.log('[Health Check] Backend status:', data.status);
+      return data;
+
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+
+      // If this is an HTTP error (not timeout/network), don't retry
+      if (error instanceof ApiError && error.errorType === 'http_error') {
+        throw error;
+      }
+
+      if (attempt < HEALTH_RETRY_ATTEMPTS) {
+        console.warn(
+          `[Health Check] Attempt ${attempt} failed: ${lastError.message}. ` +
+          `Retrying in ${HEALTH_RETRY_DELAY_MS / 1000}s...`
+        );
+        await new Promise(resolve => setTimeout(resolve, HEALTH_RETRY_DELAY_MS));
+      }
     }
-
-    const data: HealthResponse = await response.json();
-    console.log('[Health Check] Backend status:', data.status);
-    return data;
-  } catch (error) {
-    const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error(`[Health Check] Failed: ${errorMsg}`);
-    throw new ApiError(null, 'network_error', 'Cannot connect to backend');
   }
+
+  // All retries exhausted
+  const finalMsg = lastError?.message?.includes('timed out')
+    ? 'Backend is taking too long to respond. It may be loading models or processing data.'
+    : 'Cannot connect to backend. Please ensure the server is running on port 8000.';
+
+  console.error(`[Health Check] All ${HEALTH_RETRY_ATTEMPTS} attempts failed. ${finalMsg}`);
+  throw new ApiError(null, 'network_error', finalMsg);
 }
 
 /**

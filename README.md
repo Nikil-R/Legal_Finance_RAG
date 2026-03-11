@@ -199,7 +199,7 @@ GROQ_API_KEY=your-api-key
 
 # Optional (with defaults)
 GROQ_MODEL=llama-3.1-8b-instant
-CHUNK_SIZE=512
+CHUNK_SIZE=1024
 TOP_K_RETRIEVAL=20
 TOP_K_RERANK=5
 TEMPERATURE=0.0
