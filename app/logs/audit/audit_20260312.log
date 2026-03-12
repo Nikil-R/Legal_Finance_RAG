@@ -1,2 +1,40 @@
 2026-03-12 08:10:49 | INFO | TOOL_INVOKED | test_tool | user1 | Nonems
 2026-03-12 08:11:10 | INFO | TOOL_INVOKED | test_tool | user1 | Nonems
+2026-03-12 09:31:12 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:31:12 | ERROR | TOOL_FAILED | calculate_income_tax | anonymous | 8.060999998633633ms | ERROR: calculate_income_tax() got an unexpected keyword argument 'deductions'
+2026-03-12 09:31:54 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:31:54 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 27.33770000122604ms
+2026-03-12 09:31:54 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:31:54 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 12.021100001220475ms
+2026-03-12 09:35:51 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:35:51 | ERROR | TOOL_FAILED | calculate_income_tax | anonymous | 20.93559999957506ms | ERROR: calculate_income_tax() got an unexpected keyword argument 'deductions'
+2026-03-12 09:36:33 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:36:33 | ERROR | TOOL_FAILED | calculate_income_tax | anonymous | 4.378400000859983ms | ERROR: calculate_income_tax() got an unexpected keyword argument 'deductions'
+2026-03-12 09:37:24 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:37:24 | ERROR | TOOL_FAILED | calculate_income_tax | anonymous | 12.472700000216719ms | ERROR: calculate_income_tax() got an unexpected keyword argument 'deductions'
+2026-03-12 09:43:42 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 09:43:42 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 6.609700001718011ms
+2026-03-12 09:45:21 | INFO | TOOL_INVOKED | search_court_cases | anonymous | Nonems
+2026-03-12 09:45:21 | INFO | TOOL_COMPLETED | search_court_cases | anonymous | 43.94259999935457ms
+2026-03-12 10:02:10 | INFO | TOOL_INVOKED | search_court_cases | anonymous | Nonems
+2026-03-12 10:02:11 | INFO | TOOL_COMPLETED | search_court_cases | anonymous | 51.93490000056045ms
+2026-03-12 10:02:56 | INFO | TOOL_INVOKED | search_court_cases | anonymous | Nonems
+2026-03-12 10:02:56 | INFO | CACHE_HIT | search_court_cases | anonymous | Nonems
+2026-03-12 10:12:57 | INFO | TOOL_INVOKED | search_court_cases | anonymous | Nonems
+2026-03-12 10:12:58 | INFO | TOOL_COMPLETED | search_court_cases | anonymous | 77.61290000053123ms
+2026-03-12 10:13:35 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 10:13:36 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 28.648100000282284ms
+2026-03-12 10:14:54 | INFO | TOOL_INVOKED | lookup_gst_rate | anonymous | Nonems
+2026-03-12 10:14:54 | ERROR | TOOL_FAILED | lookup_gst_rate | anonymous | 27.039300000978983ms | ERROR: 'items'
+2026-03-12 10:15:26 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 10:15:26 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 18.84760000029928ms
+2026-03-12 10:15:55 | INFO | TOOL_INVOKED | search_court_cases | anonymous | Nonems
+2026-03-12 10:15:55 | INFO | TOOL_COMPLETED | search_court_cases | anonymous | 108.13260000031732ms
+2026-03-12 10:15:55 | INFO | TOOL_INVOKED | lookup_gst_rate | anonymous | Nonems
+2026-03-12 10:15:55 | ERROR | TOOL_FAILED | lookup_gst_rate | anonymous | 15.002100000856444ms | ERROR: 'items'
+2026-03-12 10:18:45 | INFO | TOOL_INVOKED | lookup_gst_rate | anonymous | Nonems
+2026-03-12 10:18:45 | ERROR | TOOL_FAILED | lookup_gst_rate | anonymous | 45.484700000088196ms | ERROR: 'items'
+2026-03-12 10:19:19 | INFO | TOOL_INVOKED | calculate_income_tax | anonymous | Nonems
+2026-03-12 10:19:19 | INFO | TOOL_COMPLETED | calculate_income_tax | anonymous | 18.519699999160366ms
+2026-03-12 10:49:37 | INFO | TOOL_INVOKED | lookup_gst_rate | anonymous | Nonems
+2026-03-12 10:49:37 | INFO | TOOL_COMPLETED | lookup_gst_rate | anonymous | 27.955699999438366ms

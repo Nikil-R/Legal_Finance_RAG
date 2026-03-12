@@ -1,5 +1,5 @@
 """
-Retrieval + reranking pipeline.
+Retrieval + reranking pipeline. (v1.1)
 """
 
 from __future__ import annotations
@@ -44,13 +44,19 @@ class RetrievalPipeline:
         self,
         query: str,
         domain: str = "all",
-        retrieval_top_k: int = 20,
-        rerank_top_k: int = 5,
-        min_relevance_score: float = 0.1,
+        retrieval_top_k: int | None = None,
+        rerank_top_k: int | None = None,
+        min_relevance_score: float = -5.0,
         session_id: str | None = None,
         owner_id: str | None = None,
     ) -> dict:
         pipeline_start = time.perf_counter()
+        
+        # Use settings if not provided
+        if retrieval_top_k is None:
+            retrieval_top_k = settings.TOP_K_RETRIEVAL
+        if rerank_top_k is None:
+            rerank_top_k = settings.TOP_K_RERANK
 
         query = query.strip() if query else ""
         if not query:
@@ -78,7 +84,7 @@ class RetrievalPipeline:
                 "No relevant documents found",
                 query,
                 domain,
-                retrieval_time_ms=round(retrieval_ms, 1),
+                retrieval_time_ms=round(float(retrieval_ms), 1),
                 rewritten_query=rewritten_query,
                 query_rewrite=rewrite_meta,
             )

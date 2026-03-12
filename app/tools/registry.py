@@ -60,6 +60,11 @@ class ToolRegistry:
                     "enum": ["below_60", "60_to_80", "above_80"],
                     "description": "Age category of the taxpayer",
                     "default": "below_60"
+                },
+                "deductions": {
+                    "type": "number",
+                    "description": "Total tax-saving deductions (Section 80C, 80D, etc.) mainly for Old Regime. Standard deduction is automatically applied.",
+                    "default": 0.0
                 }
             },
             required=["income"],

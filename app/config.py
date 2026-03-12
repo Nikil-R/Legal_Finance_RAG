@@ -1,4 +1,4 @@
-import logging
+import logging # Config v1.1
 from functools import lru_cache
 
 from pydantic import Field
@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     )
 
     # --- LLM ---
-    GROQ_MODEL: str = "llama-3.1-8b-instant"
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
     ENVIRONMENT: str = "local"
     TESTING: bool = False
     GROQ_API_KEY: str = Field(default="test_groq_key")
@@ -55,15 +55,15 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP: int = 200
 
     # --- Retrieval ---
-    TOP_K_RETRIEVAL: int = 20
-    TOP_K_RERANK: int = 5
+    TOP_K_RETRIEVAL: int = 10
+    TOP_K_RERANK: int = 3
 
     # --- Generation ---
     TEMPERATURE: float = 0.0
 
     # --- Guardrails ---
     ENABLE_GUARDRAILS: bool = True
-    GUARDRAIL_MIN_TOP_SCORE: float = 0.15
+    GUARDRAIL_MIN_TOP_SCORE: float = -5.0
     GUARDRAIL_MIN_RERANKED_CHUNKS: int = 1
     ENABLE_QUERY_REWRITE: bool = True
 

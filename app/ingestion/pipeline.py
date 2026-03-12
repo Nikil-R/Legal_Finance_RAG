@@ -19,7 +19,7 @@ from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-RAW_DATA_DIR = "data/core"
+RAW_DATA_DIR = "data"
 
 
 def run_ingestion_pipeline(

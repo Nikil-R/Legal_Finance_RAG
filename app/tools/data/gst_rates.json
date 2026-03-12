@@ -244,5 +244,21 @@
     "gst_rate": 0,
     "category": "Alcohol",
     "description": "Alcohol - GST does not apply (State VAT applies)"
+  },
+  {
+    "item": "Restaurant food services (non-AC)",
+    "category": "Services",
+    "hsn_sac": "996331",
+    "gst_rate": 5,
+    "description": "Food and beverage services in non-AC restaurants",
+    "notes": "5% GST without ITC; AC restaurants attract 18%"
+  },
+  {
+    "item": "Gold jewelry and ornaments",
+    "category": "Precious metals",
+    "hsn_sac": "7113",
+    "gst_rate": 3,
+    "description": "Gold jewelry, ornaments, and articles",
+    "notes": "3% GST on gold; making charges may attract 5%"
   }
 ]

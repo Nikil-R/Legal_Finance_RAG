@@ -44,7 +44,7 @@ class _FallbackRetrievalPipeline:
         domain: str = "all",
         retrieval_top_k: int = 20,
         rerank_top_k: int = 5,
-        min_relevance_score: float = 0.1,
+        min_relevance_score: float = -5.0,
         session_id: str | None = None,
         owner_id: str | None = None,
     ) -> dict:

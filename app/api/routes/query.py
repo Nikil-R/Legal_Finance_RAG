@@ -5,6 +5,7 @@ Query endpoints for the RAG system.
 import asyncio
 import time
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
@@ -24,16 +25,14 @@ from app.api.models import (
 from app.api.rate_limit import limiter
 from app.api.security import AuthenticatedUser, require_role
 from app.config import settings
-from app.generation import RAGPipeline
+from app.generation import RAGPipeline, ToolOrchestrator
 from app.models.auth import Role
-from app.observability import (
-    logger as structlog_logger,
-)
 from app.observability import (
     metrics,
     query_counter,
     query_latency,
     tracer,
+    logger as structlog_logger,
 )
 from app.reranking import RetrievalPipeline
 from app.utils.pii_redactor import redact_pii
@@ -45,7 +44,9 @@ logger = structlog_logger.bind(module="api.query")
 
 
 
-async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
+
+async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs) -> Any:
+    """Helper to run a sync function in a threadpool with a timeout."""
     return await asyncio.wait_for(
         run_in_threadpool(fn, *args, **kwargs),
         timeout=float(timeout_seconds),
@@ -118,7 +119,7 @@ async def query(
             if settings.ENABLE_TOOL_CALLING:
                 # NEW: Tool-augmented flow
                 # First get retrieval result for context chunks (Option A/Hybrid)
-                retrieval_result = await _run_with_timeout(
+                retrieval_result: Dict[str, Any] = await _run_with_timeout(
                     pipeline.retrieval_pipeline.run,
                     query=processed_question,
                     domain=query_request.domain.value,
@@ -128,12 +129,13 @@ async def query(
                 )
                 
                 # Run orchestrator
-                result = await _run_with_timeout(
-                    orchestrator.process_with_tools,
-                    question=processed_question,
-                    system_prompt=pipeline.generator.system_prompt,
-                    context_chunks=retrieval_result.get("sources", []) if retrieval_result["success"] else None,
-                    timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
+                result: Dict[str, Any] = await asyncio.wait_for(
+                    orchestrator.process_with_tools(
+                        question=processed_question,
+                        system_prompt=pipeline.generator.system_prompt,
+                        context_chunks=retrieval_result.get("sources", []) if retrieval_result.get("success") else None,
+                    ),
+                    timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
                 )
                 
                 # Map to RAG pipeline style result for response mapping
@@ -146,22 +148,22 @@ async def query(
                         used_tools=len(result.get("tool_calls_made", [])) > 0
                     )
                     
-                    result_formatted = {
+                    result_formatted: Dict[str, Any] = {
                         "success": True,
-                        "answer": result["answer"],
+                        "answer": str(result.get("answer", "")),
                         "sources": result.get("sources", []),
                         "validation": validation,
                         "metadata": {
-                            "model": result.get("model", "unknown"),
+                            "model": str(result.get("model", "unknown")),
                             "token_usage": result.get("usage", {}),
-                            "total_time_ms": result.get("duration_ms", 0.0),
+                            "total_time_ms": float(result.get("duration_ms", 0.0)),
                             "tool_calls": result.get("tool_calls_made", [])
                         }
                     }
                     result = result_formatted
             else:
                 # ORIGINAL: Traditional RAG flow
-                result = await _run_with_timeout(
+                result: Dict[str, Any] = await _run_with_timeout(
                     pipeline.run,
                     question=processed_question,
                     domain=query_request.domain.value,
@@ -173,46 +175,53 @@ async def query(
             if result["success"]:
                 sources = []
                 if query_request.include_sources:
-                    for src in result.get("sources", []):
-                        sources.append(
-                            SourceDocument(
-                                reference_id=src["reference_id"],
-                                source=src["source"],
-                                domain=src["domain"],
-                                relevance_score=src.get("relevance_score", src.get("rerank_score", 0.0)),
-                                origin=src.get("origin", "system"),
-                                excerpt=src.get("excerpt", src.get("content", "")[:200] + "..."),
-                                citation_spans=src.get("citation_spans", []),
-                            )
-                        )
+                    raw_sources = result.get("sources", [])
+                    if isinstance(raw_sources, list):
+                        for src in raw_sources:
+                            if isinstance(src, dict):
+                                sources.append(
+                                    SourceDocument(
+                                        reference_id=src.get("reference_id", 0),
+                                        source=src.get("source", "unknown"),
+                                        domain=src.get("domain", "unknown"),
+                                        relevance_score=float(src.get("relevance_score") or src.get("rerank_score") or 0.0),
+                                        origin=src.get("origin", "system"),
+                                        excerpt=src.get("excerpt", src.get("content", "")[:200] + "..."),
+                                        citation_spans=src.get("citation_spans", []),
+                                    )
+                                )
 
-                val = result.get("validation", {})
+                raw_val = result.get("validation")
+                val = raw_val if isinstance(raw_val, dict) else {}
                 validation = ValidationResult(
-                    overall_valid=val.get("overall_valid", True),
-                    has_citations=val.get("citations", {}).get("has_citations", False),
-                    has_disclaimer=val.get("disclaimer", {}).get("has_disclaimer", False),
-                    issues=val.get("issues", []),
+                    overall_valid=bool(val.get("overall_valid", True)),
+                    has_citations=bool(val.get("citations", {}).get("has_citations", False) if isinstance(val.get("citations"), dict) else False),
+                    has_disclaimer=bool(val.get("disclaimer", {}).get("has_disclaimer", False) if isinstance(val.get("disclaimer"), dict) else False),
+                    issues=list(val.get("issues", [])),
                 )
 
-                meta = result.get("metadata", {})
-                token_usage = meta.get("token_usage", {})
+                raw_meta = result.get("metadata")
+                meta = raw_meta if isinstance(raw_meta, dict) else {}
+                raw_token = meta.get("token_usage")
+                token_usage = raw_token if isinstance(raw_token, dict) else {}
+                
                 metadata = QueryMetadata(
-                    retrieval_candidates=meta.get("retrieval_candidates", 0),
-                    reranked_chunks=meta.get("reranked_chunks", 0),
-                    top_relevance_score=meta.get("top_relevance_score", 0.0),
-                    model=meta.get("model", "unknown"),
-                    prompt_version=meta.get("prompt_version", "v1"),
+                    retrieval_candidates=int(meta.get("retrieval_candidates", 0)),
+                    reranked_chunks=int(meta.get("reranked_chunks", 0)),
+                    top_relevance_score=float(meta.get("top_relevance_score", 0.0)),
+                    model=str(meta.get("model", "unknown")),
+                    prompt_version=str(meta.get("prompt_version", "v1")),
                     token_usage=TokenUsage(
-                        prompt_tokens=token_usage.get("prompt_tokens", 0),
-                        completion_tokens=token_usage.get("completion_tokens", 0),
-                        total_tokens=token_usage.get("total_tokens", 0),
+                        prompt_tokens=int(token_usage.get("prompt_tokens", 0)),
+                        completion_tokens=int(token_usage.get("completion_tokens", 0)),
+                        total_tokens=int(token_usage.get("total_tokens", 0)),
                     ),
-                    retrieval_time_ms=meta.get("retrieval_time_ms", 0),
-                    generation_time_ms=meta.get("generation_time_ms", 0),
-                    total_time_ms=meta.get("total_time_ms", 0),
-                    guardrails=meta.get("guardrails", {}),
-                    query_rewrite=meta.get("query_rewrite", {}),
-                    cache_hit=meta.get("cache_hit", False),
+                    retrieval_time_ms=float(meta.get("retrieval_time_ms", 0)),
+                    generation_time_ms=float(meta.get("generation_time_ms", 0)),
+                    total_time_ms=float(meta.get("total_time_ms", 0)),
+                    guardrails=dict(meta.get("guardrails", {})),
+                    query_rewrite=dict(meta.get("query_rewrite", {})),
+                    cache_hit=bool(meta.get("cache_hit", False)),
                 )
 
                 # Select disclaimer based on domain
@@ -243,7 +252,7 @@ async def query(
                 logger.info(
                     "query_completed",
                     user_id=user.id,
-                    duration_ms=round(duration * 1000, 2),
+                    duration_ms=round(float(duration) * 1000, 2),
                 )
                 return response
 
@@ -261,7 +270,7 @@ async def query(
             logger.error(
                 "Query timed out",
                 user_id=user.id,
-                duration_ms=round(duration * 1000, 2),
+                duration_ms=round(float(duration) * 1000, 2),
             )
             return QueryResponse(
                 success=False,
@@ -278,7 +287,7 @@ async def query(
                 "query_failed",
                 user_id=user.id,
                 error=str(exc),
-                duration_ms=round(duration * 1000, 2),
+                duration_ms=round(float(duration) * 1000, 2),
             )
             return QueryResponse(
                 success=False,
@@ -313,7 +322,7 @@ async def retrieve_only(
     logger.info("Retrieval request: '%s...'", processed_question[:50])
 
     try:
-        result = await _run_with_timeout(
+        result: Dict[str, Any] = await _run_with_timeout(
             pipeline.run,
             query=processed_question,
             domain=retrieval_request.domain.value,

@@ -16,7 +16,7 @@ from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-VALID_DOMAINS = {"tax", "finance", "legal", "all"}
+VALID_DOMAINS = {"tax", "finance", "legal", "real", "all"}
 
 
 class HybridRetriever:
@@ -112,7 +112,7 @@ class HybridRetriever:
         elapsed_ms = (time.perf_counter() - start) * 1_000
         logger.info(
             "HybridRetriever: query='%s…' | domain=%s | session=%s | results=%d | time=%.1fms.",
-            query[:50],
+            str(query)[:50],
             domain,
             session_id,
             len(top_results),
@@ -144,7 +144,7 @@ class HybridRetriever:
 
         total = col.count()
         domains: dict[str, int] = {}
-        for domain in ("tax", "finance", "legal"):
+        for domain in ("tax", "finance", "legal", "real"):
             try:
                 res = col.get(where={"domain": {"$eq": domain}}, include=[])
                 domains[domain] = len(res["ids"])

@@ -5,6 +5,7 @@ Main Generator — handles prompting LLMs and validating the final response.
 from __future__ import annotations
 
 import datetime
+from typing import Any, Dict, List, Optional
 
 from app.generation.llm_client import GroqClient
 from app.generation.response_validator import ResponseValidator
@@ -25,6 +26,11 @@ class RAGGenerator:
         logger.info(
             "RAGGenerator initialized with prompt version: %s", self.prompt_version
         )
+
+    @property
+    def system_prompt(self) -> str:
+        """Returns the system prompt according to current version."""
+        return self.prompt_manager.get_system_prompt(self.prompt_version)
 
     def generate(self, question: str, context: str, sources: list[dict]) -> dict:
         """

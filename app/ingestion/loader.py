@@ -4,6 +4,7 @@ Document Loader — reads PDF and TXT files from the data directory.
 
 from __future__ import annotations
 
+import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -41,6 +42,34 @@ class DocumentLoader:
             logger.warning("Could not read PDF '%s': %s", file_path, exc)
             return ""
 
+    def load_json(self, file_path: str) -> str:
+        """Read a JSON file and convert key fields to a text block."""
+        try:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
+                data = json.load(fh)
+            
+            # Combine common fields into a searchable text block
+            text_parts = []
+            if "title" in data: text_parts.append(f"Title: {data['title']}")
+            if "summary" in data: text_parts.append(f"Summary: {data['summary']}")
+            if "key_holdings" in data: 
+                holdings = "\n".join(data["key_holdings"]) if isinstance(data["key_holdings"], list) else str(data["key_holdings"])
+                text_parts.append(f"Key Holdings:\n{holdings}")
+            if "legal_principles" in data:
+                principles = ", ".join(data["legal_principles"]) if isinstance(data["legal_principles"], list) else str(data["legal_principles"])
+                text_parts.append(f"Legal Principles: {principles}")
+            if "relevance_to_legal_finance_system" in data:
+                text_parts.append(f"Business Relevance: {data['relevance_to_legal_finance_system']}")
+            
+            # If none of the above worked, just dump everything
+            if not text_parts:
+                return json.dumps(data, indent=2)
+                
+            return "\n\n".join(text_parts)
+        except Exception as exc:
+            logger.warning("Could not read JSON '%s': %s", file_path, exc)
+            return ""
+
     def load_txt(self, file_path: str) -> str:
         """Read a plain-text file."""
         try:
@@ -53,7 +82,7 @@ class DocumentLoader:
     def _load_single_file(self, file_path: Path, root: Path) -> dict | None:
         """Internal worker for parallel loading."""
         suffix = file_path.suffix.lower()
-        if suffix not in {".pdf", ".txt"}:
+        if suffix not in {".pdf", ".txt", ".json"}:
             return None
 
         try:
@@ -66,6 +95,8 @@ class DocumentLoader:
         t0 = time.time()
         if suffix == ".pdf":
             content = self.load_pdf(str(file_path))
+        elif suffix == ".json":
+            content = self.load_json(str(file_path))
         else:
             content = self.load_txt(str(file_path))
         elapsed = time.time() - t0
@@ -93,7 +124,7 @@ class DocumentLoader:
             return []
 
         all_files = [f for f in root.rglob("*") if f.is_file()]
-        eligible = [f for f in all_files if f.suffix.lower() in {".pdf", ".txt"}]
+        eligible = [f for f in all_files if f.suffix.lower() in {".pdf", ".txt", ".json"}]
 
         logger.info(
             "Found %d eligible file(s) in '%s'. Loading (workers=%d) …",

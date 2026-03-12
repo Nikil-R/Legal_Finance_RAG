@@ -12,68 +12,90 @@ def search_court_cases(
 ) -> Dict[str, Any]:
     """
     Search through Indian court judgments and legal precedents.
-    
-    Args:
-        query: Main search query (citation, case name, or keywords)
-        case_keywords: Additional keywords to filter by
-        court_name: Specific court (Supreme Court, High Court, etc.)
-        date_range: {"from": "YYYY-MM-DD", "to": "YYYY-MM-DD"}
-        num_results: Number of results to return
-    
-    Returns:
-        Dictionary with search results and case details
+    Scans both the central database and individual case files.
     """
     try:
-        data_path = Path(__file__).parent.parent / "data" / "court_cases.json"
-        with open(data_path, "r") as f:
-            data = json.load(f)
+        all_cases = []
         
+        # 1. Load from central data file
+        central_path = Path(__file__).parent.parent / "data" / "court_cases.json"
+        if central_path.exists():
+            with open(central_path, "r", encoding="utf-8") as f:
+                central_data = json.load(f)
+                all_cases.extend(central_data.get("cases", []))
+        
+        # 2. Load from individual case files (e.g., in data/real/court_cases)
+        # Assuming project root is 3 levels up from this file: app/tools/implementations/court_case_search.py
+        real_cases_dir = Path(__file__).parent.parent.parent.parent / "data" / "real" / "court_cases"
+        if real_cases_dir.exists():
+            for json_file in real_cases_dir.glob("*.json"):
+                try:
+                    with open(json_file, "r", encoding="utf-8") as f:
+                        case_data = json.load(f)
+                        if isinstance(case_data, dict):
+                            # Avoid duplicates if they are already in the central file
+                            if not any(c.get("case_id") == case_data.get("case_id") for c in all_cases):
+                                all_cases.append(case_data)
+                except Exception:
+                    continue
+
         results = []
-        query_lower = query.lower()
+        query_lower = str(query).lower()
         
         # Search through cases
-        for case in data["cases"]:
+        for case in all_cases:
+            if not isinstance(case, dict):
+                continue
+                
             # Basic relevance scoring
-            relevance_score = 0
+            relevance_score: float = 0.0
             
             # Check citation match
-            if query_lower in case["citation"].lower():
-                relevance_score += 10
+            citation = str(case.get("citation", "")).lower()
+            if query_lower in citation:
+                relevance_score += 10.0
             
-            # Check case name match
-            if query_lower in case["case_name"].lower():
-                relevance_score += 8
+            # Check title match
+            title = str(case.get("title", "") or case.get("case_name", "")).lower()
+            if query_lower in title:
+                relevance_score += 8.0
             
-            # Check legal issues
-            for issue in case["legal_issues"]:
-                if query_lower in issue.lower():
-                    relevance_score += 3
+            # Check legal principles / subcategories
+            principles = case.get("legal_principles", []) or case.get("legal_issues", []) or case.get("subcategories", [])
+            if isinstance(principles, list):
+                for principle in principles:
+                    if query_lower in str(principle).lower():
+                        relevance_score += 3.0
             
-            # Check keywords
-            if query_lower in case.get("relevance_keywords", []):
-                relevance_score += 5
+            # Check summary
+            summary = str(case.get("summary", "")).lower()
+            if query_lower in summary:
+                relevance_score += 4.0
             
             # Court name filter
-            if court_name and court_name.lower() not in case["court"].lower():
+            actual_court = str(case.get("court", "")).lower()
+            if court_name and court_name.lower() not in actual_court:
                 continue
             
             # Date range filter
-            if date_range:
-                case_date = case["judgment_date"]
-                if date_range.get("from") and case_date < date_range["from"]:
+            decision_date = str(case.get("decision_date") or case.get("judgment_date") or "")
+            if date_range and decision_date:
+                from_date = str(date_range.get("from", ""))
+                to_date = str(date_range.get("to", ""))
+                if from_date and decision_date < from_date:
                     continue
-                if date_range.get("to") and case_date > date_range["to"]:
+                if to_date and decision_date > to_date:
                     continue
             
             # Additional keywords filter
             if case_keywords:
-                keyword_matches = 0
+                kw_matches = 0
+                principles_str = " ".join(map(str, principles)) if isinstance(principles, list) else str(principles)
+                combined_text = (title + " " + principles_str + " " + summary).lower()
                 for keyword in case_keywords:
-                    kw_lower = keyword.lower()
-                    if (kw_lower in case["case_name"].lower() or 
-                        kw_lower in " ".join(case["legal_issues"]).lower()):
-                        keyword_matches += 1
-                relevance_score += keyword_matches * 2
+                    if str(keyword).lower() in combined_text:
+                        kw_matches += 1
+                relevance_score += float(kw_matches) * 2.0
             
             if relevance_score > 0:
                 results.append({
@@ -82,26 +104,24 @@ def search_court_cases(
                 })
         
         # Sort by relevance score
-        results.sort(key=lambda x: x["score"], reverse=True)
+        results.sort(key=lambda x: float(x.get("score", 0.0)), reverse=True)
         results = results[:num_results]
         
         # Format results
         formatted_results = []
         for item in results:
-            case = item["case"]
+            case = item.get("case", {})
+            score = float(item.get("score", 0.0))
             formatted_results.append({
-                "citation": case["citation"],
-                "case_name": case["case_name"],
-                "court": case["court"],
-                "judgment_date": case["judgment_date"],
-                "judges": case["judges"],
-                "legal_issues": case["legal_issues"],
-                "ratio_decidendi": case["ratio_decidendi"],
-                "key_principles": case["key_principles"],
-                "impact_level": case["impact_level"],
-                "area_of_law": case["area_of_law"],
-                "key_excerpts": case["excerpts"][:2],  # Top 2 excerpts
-                "relevance_score": item["score"]
+                "citation": str(case.get("citation", "N/A")),
+                "case_name": str(case.get("title") or case.get("case_name", "N/A")),
+                "court": str(case.get("court", "N/A")),
+                "judgment_date": str(case.get("decision_date") or case.get("judgment_date", "N/A")),
+                "judges": list(case.get("judges", [])),
+                "legal_issues": list(case.get("legal_principles", []) or case.get("legal_issues", [])),
+                "ratio_decidendi": str(case.get("summary", "N/A")),
+                "key_principles": list(case.get("key_holdings", []) or case.get("key_principles", [])),
+                "relevance_score": score
             })
         
         return {
@@ -109,12 +129,13 @@ def search_court_cases(
             "query": query,
             "results_count": len(formatted_results),
             "cases": formatted_results,
-            "summary": f"Found {len(formatted_results)} relevant court cases",
-            "next_steps": "Use case citations for further legal research or consult a lawyer for case-specific advice"
+            "summary": f"Found {len(formatted_results)} relevant court cases across central and local repositories.",
+            "next_steps": "Review the case summaries or citations for legal research."
         }
         
     except Exception as e:
+        import traceback
         return {
             "success": False,
-            "error": str(e)
+            "error": f"{str(e)}\n{traceback.format_exc()}"
         }
