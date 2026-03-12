@@ -77,7 +77,7 @@ class Settings(BaseSettings):
     API_PORT: int = 8000
     API_BASE_URL: str = "http://localhost:8000"
     CORS_ORIGINS: str = "*"
-    API_AUTH_ENABLED: bool = True
+    API_AUTH_ENABLED: bool = False
     API_KEYS: str = ""
     API_KEYS_HASHED: str = ""
     API_KEY_ROLES: str = ""
