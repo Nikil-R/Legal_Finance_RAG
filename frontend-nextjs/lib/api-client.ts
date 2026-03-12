@@ -7,10 +7,12 @@ import { QueryResponse, UploadResponse, HealthResponse } from './types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 const HEALTH_TIMEOUT = 30000;  // 30s — backend may be loading models or under ingestion load
-const QUERY_TIMEOUT = 180000;  // 3 minutes for RAG queries
+const QUERY_TIMEOUT = 90000;   // 90 seconds for RAG queries
 const UPLOAD_TIMEOUT = 120000; // 2 minutes for file uploads
 const HEALTH_RETRY_ATTEMPTS = 3;
+const QUERY_RETRY_ATTEMPTS = 2; // Retry on slow queries or network hiccups
 const HEALTH_RETRY_DELAY_MS = 3000; // 3s between retries
+const QUERY_RETRY_DELAY_MS = 2000;  // 2s between query retries
 
 // Log API configuration on module load
 if (typeof window !== 'undefined') {
@@ -119,54 +121,74 @@ export async function sendQuery(
   question: string,
   sessionId: string
 ): Promise<QueryResponse> {
-  try {
-    const queryUrl = `${API_BASE_URL}/api/v2/query`;
-    console.log(`[Query] Sending to ${queryUrl}`);
+  let lastError: any = null;
 
-    const response = await fetchWithTimeout(queryUrl, {
-      method: 'POST',
-      body: JSON.stringify({
-        question,
-        session_id: sessionId,
-      }),
-      timeout: QUERY_TIMEOUT,
-    });
+  for (let attempt = 1; attempt <= QUERY_RETRY_ATTEMPTS; attempt++) {
+    try {
+      const queryUrl = `${API_BASE_URL}/api/v2/query`;
+      if (attempt > 1) {
+        console.log(`[Query] Retry attempt ${attempt}/${QUERY_RETRY_ATTEMPTS}...`);
+      } else {
+        console.log(`[Query] Sending to ${queryUrl}`);
+      }
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMsg =
-        errorData.error || errorData.detail || `HTTP ${response.status}`;
-      console.error(`[Query] HTTP ${response.status}: ${errorMsg}`);
+      const response = await fetchWithTimeout(queryUrl, {
+        method: 'POST',
+        body: JSON.stringify({
+          question,
+          session_id: sessionId,
+          use_tools: true, // Ensuring tools are requested
+        }),
+        timeout: QUERY_TIMEOUT,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMsg = errorData.error || errorData.detail || `HTTP ${response.status}`;
+        console.error(`[Query] HTTP ${response.status}: ${errorMsg}`);
+        
+        throw new ApiError(
+          response.status,
+          errorData.error_type || 'http_error',
+          errorMsg
+        );
+      }
+
+      const data: QueryResponse = await response.json();
+      console.log('[Query] Response received:', {
+        question: question.substring(0, 30) + (question.length > 30 ? '...' : ''),
+        sourceCount: data.sources?.length || 0,
+        status: data.success,
+      });
       
-      throw new ApiError(
-        response.status,
-        errorData.error_type || 'http_error',
-        errorMsg
-      );
-    }
+      return data;
 
-    const data: QueryResponse = await response.json();
-    console.log('[Query] Response received:', {
-      question,
-      sourceCount: data.sources?.length || 0,
-      status: data.success,
-    });
-    
-    return data;
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
+    } catch (error) {
+      lastError = error;
+      
+      // If it's a structural API error (like 404 or 400), don't bother retrying
+      if (error instanceof ApiError && error.statusCode && error.statusCode < 500) {
+        throw error;
+      }
+
+      if (attempt < QUERY_RETRY_ATTEMPTS) {
+        const pause = QUERY_RETRY_DELAY_MS * attempt;
+        console.warn(`[Query] Attempt ${attempt} failed: ${error instanceof Error ? error.message : 'Unknown error'}. Retrying in ${pause / 1000}s...`);
+        await new Promise(resolve => setTimeout(resolve, pause));
+      }
     }
-    
-    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-    console.error(`[Query] Failed: ${errorMsg}`);
-    
-    if (errorMsg.includes('timed out')) {
-      throw new ApiError(null, 'timeout', 'The request took too long. Please try again.');
-    }
-    
-    throw new ApiError(null, 'network_error', 'Cannot connect to backend');
   }
+
+  // If we're here, all retries failed
+  if (lastError instanceof ApiError) {
+    throw lastError;
+  }
+  
+  const errorMsg = lastError instanceof Error ? lastError.message : 'Unknown error';
+  if (errorMsg.includes('timed out')) {
+    throw new ApiError(null, 'timeout', 'The backend is taking too long to process this query. It may be warming up.');
+  }
+  throw new ApiError(null, 'network_error', 'Cannot connect to the search engine. Please check your connection.');
 }
 
 /**

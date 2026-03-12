@@ -93,9 +93,17 @@ export default function Home() {
                 ))}
                 
                 {isLoading && (
-                  <div className="flex gap-4">
-                     <div className="h-9 w-9" /> {/* Spacer for avatar */}
-                     <TypingIndicator />
+                  <div className="flex flex-col gap-2">
+                    {messages.filter(m => m.role === 'assistant').length === 0 && (
+                      <div className="max-w-md ml-12 p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded-lg border border-blue-100 dark:border-blue-800 animate-pulse">
+                        ⏰ First query can take 30-60s while the backend wakes up and loads models. 
+                        Subsequent queries will be much faster!
+                      </div>
+                    )}
+                    <div className="flex gap-4">
+                      <div className="h-9 w-9" /> {/* Spacer for avatar */}
+                      <TypingIndicator />
+                    </div>
                   </div>
                 )}
                 
