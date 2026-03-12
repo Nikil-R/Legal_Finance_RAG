@@ -83,6 +83,14 @@ async def load_application():
         
     except Exception as e:
         print(f"⚠️ Documents router failed: {e}")
+
+    try:
+        from app.api.routes.user_documents import router as user_documents_router
+        app.include_router(user_documents_router, prefix="/api/v2", tags=["user_documents"])
+        print("✅ Loaded user documents router")
+        
+    except Exception as e:
+        print(f"⚠️ User documents router failed: {e}")
     
     print("🎉 Application fully loaded!")
 
