@@ -1,0 +1,30 @@
+{
+  "case_id": "rbi_bank_regulation_2022",
+  "title": "Reserve Bank of India v. Jayantilal N. Mistry",
+  "citation": "(2016) 3 SCC 525",
+  "year": 2016,
+  "decision_date": "2015-12-16",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "parties": { "petitioner": "Reserve Bank of India", "respondent": "Jayantilal N. Mistry" },
+  "category": "Financial Regulation",
+  "subcategories": ["RBI Transparency", "RTI Act", "Banking Information", "Fiduciary Relationship"],
+  "legal_principles": ["RBI's fiduciary duty to banks does not override RTI obligations", "Public interest in banking transparency"],
+  "relevant_articles": [],
+  "relevant_acts": ["Right to Information Act 2005", "Reserve Bank of India Act"],
+  "summary": "RBI resisted RTI disclosure of bank inspection reports citing Section 8(1)(e) of RTI Act (fiduciary relationship). Supreme Court held that RBI does not stand in a fiduciary relationship with banks — it is a regulator, not an advisor. Therefore, inspection reports and related information must be disclosed under RTI Act, subject to specific exemptions.",
+  "key_holdings": [
+    "RBI is not in a fiduciary relationship with banks — it is a regulator",
+    "Section 8(1)(e) exemption (fiduciary relationship) does not protect RBI from RTI disclosures",
+    "Inspector General/RBI reports can be disclosed unless specifically exempted",
+    "Public interest in banking transparency outweighs confidentiality claims",
+    "RTI Act applies fully to RBI's regulatory activities"
+  ],
+  "why_important": "Significant for banking transparency and RTI rights of citizens to access banking regulatory information.",
+  "practice_areas": ["Banking regulation", "RTI law", "Financial regulation"],
+  "source_url": "https://indiankanoon.org/doc/1099491/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["RBI", "RTI", "banking-transparency", "fiduciary", "inspection-reports", "2016"],
+  "relevance_to_legal_finance_system": "Relevant to banking compliance, RBI inspection obligations, and financial transparency requirements."
+}

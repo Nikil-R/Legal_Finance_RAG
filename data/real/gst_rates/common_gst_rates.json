@@ -1,0 +1,248 @@
+[
+  {
+    "item_id": "gst_001",
+    "item_name": "Packaged Rice",
+    "hsn_code": "1006",
+    "gst_rate": 5,
+    "category": "Food Items",
+    "description": "Rice in packaged form, typically in polythene bags",
+    "notes": "Exemption available for rice in bulk for mid-day meal scheme"
+  },
+  {
+    "item_id": "gst_002",
+    "item_name": "Wheat/Flour",
+    "hsn_code": "1001",
+    "gst_rate": 5,
+    "category": "Food Items",
+    "description": "Wheat and wheat flour",
+    "notes": "Zero rate for wheat to flour conversion, 5% for packaged flour"
+  },
+  {
+    "item_id": "gst_003",
+    "item_name": "Packaged Bread",
+    "hsn_code": "1905",
+    "gst_rate": 5,
+    "category": "Food Items",
+    "description": "Bread in packaged form including cookies and biscuits"
+  },
+  {
+    "item_id": "gst_004",
+    "item_name": "Milk",
+    "hsn_code": "0401",
+    "gst_rate": 0,
+    "category": "Food Items",
+    "description": "Natural milk (cow/buffalo)",
+    "notes": "Completely exempt from GST"
+  },
+  {
+    "item_id": "gst_005",
+    "item_name": "Curd/Yogurt",
+    "hsn_code": "0403",
+    "gst_rate": 5,
+    "category": "Food Items",
+    "description": "Packaged curd/yogurt"
+  },
+  {
+    "item_id": "gst_006",
+    "item_name": "Restaurant Service - Non-AC",
+    "hsn_code": "9963",
+    "gst_rate": 5,
+    "category": "Services",
+    "description": "Food served at restaurants without air conditioning"
+  },
+  {
+    "item_id": "gst_007",
+    "item_name": "Restaurant Service - AC",
+    "hsn_code": "9963",
+    "gst_rate": 5,
+    "category": "Services",
+    "description": "Food served at air-conditioned restaurants"
+  },
+  {
+    "item_id": "gst_008",
+    "item_name": "Pizza (Restaurant)",
+    "hsn_code": "2106",
+    "gst_rate": 5,
+    "category": "Services",
+    "description": "Pizza as restaurant service",
+    "notes": "5% if served at non-AC; 5% if AC (changed from 18%)"
+  },
+  {
+    "item_id": "gst_009",
+    "item_name": "Medicines",
+    "hsn_code": "3004",
+    "gst_rate": 0,
+    "category": "Healthcare",
+    "description": "Most medicines and vaccines",
+    "notes": "Completely exempt from GST"
+  },
+  {
+    "item_id": "gst_010",
+    "item_name": "Hospital Services",
+    "hsn_code": "9619",
+    "gst_rate": 0,
+    "category": "Healthcare",
+    "description": "Hospital treatment and diagnostic services"
+  },
+  {
+    "item_id": "gst_011",
+    "item_name": "Mobile Phone",
+    "hsn_code": "8517",
+    "gst_rate": 12,
+    "category": "Electronics",
+    "description": "Mobile handsets (not including accessories)"
+  },
+  {
+    "item_id": "gst_012",
+    "item_name": "Laptop/Tablet",
+    "hsn_code": "8471",
+    "gst_rate": 12,
+    "category": "Electronics",
+    "description": "Portable automatic data processing machine/laptop"
+  },
+  {
+    "item_id": "gst_013",
+    "item_name": "Television",
+    "hsn_code": "8528",
+    "gst_rate": 12,
+    "category": "Electronics",
+    "description": "Television sets"
+  },
+  {
+    "item_id": "gst_014",
+    "item_name": "Microwave Oven",
+    "hsn_code": "8516",
+    "gst_rate": 12,
+    "category": "Electronics",
+    "description": "Microwave ovens"
+  },
+  {
+    "item_id": "gst_015",
+    "item_name": "Refrigerator",
+    "hsn_code": "8418",
+    "gst_rate": 12,
+    "category": "Electronics",
+    "description": "Refrigeration equipment"
+  },
+  {
+    "item_id": "gst_016",
+    "item_name": "Clothing - Cotton",
+    "hsn_code": "6204",
+    "gst_rate": 5,
+    "category": "Daily Use",
+    "description": "Cotton clothing items"
+  },
+  {
+    "item_id": "gst_017",
+    "item_name": "Footwear",
+    "hsn_code": "6401",
+    "gst_rate": 5,
+    "category": "Daily Use",
+    "description": "Shoes and footwear"
+  },
+  {
+    "item_id": "gst_018",
+    "item_name": "Cosmetics",
+    "hsn_code": "3304",
+    "gst_rate": 12,
+    "category": "Daily Use",
+    "description": "Cosmetics and beauty products"
+  },
+  {
+    "item_id": "gst_019",
+    "item_name": "Car - Petrol/Diesel",
+    "hsn_code": "8703",
+    "gst_rate": 28,
+    "category": "Vehicles",
+    "description": "Motor cars for transport (petrol/diesel)",
+    "notes": "28% GST (highest slab)"
+  },
+  {
+    "item_id": "gst_020",
+    "item_name": "Motorcycle",
+    "hsn_code": "8711",
+    "gst_rate": 28,
+    "category": "Vehicles",
+    "description": "Two/three wheeled motorcycles"
+  },
+  {
+    "item_id": "gst_021",
+    "item_name": "Train Travel - Common Class",
+    "hsn_code": "4910",
+    "gst_rate": 0,
+    "category": "Transport",
+    "description": "Train travel for common class"
+  },
+  {
+    "item_id": "gst_022",
+    "item_name": "Train Travel - Non-Common Class",
+    "hsn_code": "4910",
+    "gst_rate": 5,
+    "category": "Transport",
+    "description": "Train travel for higher classes"
+  },
+  {
+    "item_id": "gst_023",
+    "item_name": "Air Travel - Domestic",
+    "hsn_code": "4911",
+    "gst_rate": 5,
+    "category": "Transport",
+    "description": "Domestic airline tickets"
+  },
+  {
+    "item_id": "gst_024",
+    "item_name": "Hotel Room - Up to ₹7500/night",
+    "hsn_code": "9604",
+    "gst_rate": 12,
+    "category": "Services",
+    "description": "Hotel accommodation up to ₹7500 per night"
+  },
+  {
+    "item_id": "gst_025",
+    "item_name": "Hotel Room - Above ₹7500/night",
+    "hsn_code": "9604",
+    "gst_rate": 28,
+    "category": "Services",
+    "description": "Hotel accommodation above ₹7500 per night"
+  },
+  {
+    "item_id": "gst_026",
+    "item_name": "Consulting Services",
+    "hsn_code": "9609",
+    "gst_rate": 18,
+    "category": "Services",
+    "description": "Professional consulting, legal, accounting services"
+  },
+  {
+    "item_id": "gst_027",
+    "item_name": "Education - School/College",
+    "hsn_code": "9001",
+    "gst_rate": 0,
+    "category": "Education",
+    "description": "Education services at schools and colleges"
+  },
+  {
+    "item_id": "gst_028",
+    "item_name": "Online Education",
+    "hsn_code": "9001",
+    "gst_rate": 0,
+    "category": "Education",
+    "description": "Online education services"
+  },
+  {
+    "item_id": "gst_029",
+    "item_name": "Gold/Diamond - Jewelry",
+    "hsn_code": "7113",
+    "gst_rate": 3,
+    "category": "Luxury",
+    "description": "Gold and diamond jewelry"
+  },
+  {
+    "item_id": "gst_030",
+    "item_name": "Alcohol - Spirits",
+    "hsn_code": "2208",
+    "gst_rate": 0,
+    "category": "Alcohol",
+    "description": "Alcohol - GST does not apply (State VAT applies)"
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "case_id": "ayyasamy_arbitration_2016",
+  "title": "A. Ayyasamy v. A. Paramasivam",
+  "citation": "(2016) 10 SCC 386",
+  "year": 2016,
+  "decision_date": "2016-09-28",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "judges": ["Justice A.K. Sikri", "Justice A.M. Khanwilkar"],
+  "parties": { "petitioner": "A. Ayyasamy", "respondent": "A. Paramasivam" },
+  "category": "Arbitration Law",
+  "subcategories": ["Arbitrability", "Fraud", "Section 8 Arbitration Act", "Commercial Disputes"],
+  "legal_principles": ["Fraud allegations do not automatically make dispute non-arbitrable", "Serious allegations of fraud — court jurisdiction reserved", "Commercial disputes with fraud preferred to be arbitrated"],
+  "relevant_articles": [],
+  "relevant_acts": ["Arbitration and Conciliation Act 1996 Section 8"],
+  "summary": "Held that mere allegations of fraud do not make a dispute non-arbitrable and courts cannot refuse to refer parties to arbitration on that ground alone. Only complex, serious fraud allegations that require detailed investigation warrant court proceedings. Simple fraud allegations in commercial disputes should be referred to arbitration.",
+  "key_holdings": [
+    "Mere allegation of fraud does not oust arbitral jurisdiction",
+    "Courts should refer commercial disputes with fraud allegations to arbitration unless fraud is serious and complex",
+    "Serious fraud — where public interest is involved or where fraud pervades the entire contract — may not be arbitrable",
+    "Strong pro-arbitration policy of Indian courts"
+  ],
+  "why_important": "Landmark judgment on arbitrability of fraud disputes. Promotes alternative dispute resolution in commercial matters.",
+  "practice_areas": ["Arbitration law", "Commercial law", "Contract law"],
+  "source_url": "https://indiankanoon.org/doc/130117268/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["arbitration", "fraud", "arbitrability", "section-8", "commercial-dispute", "2016"],
+  "relevance_to_legal_finance_system": "Relevant to financial contract disputes, banking fraud cases, and arbitration clauses in commercial agreements."
+}

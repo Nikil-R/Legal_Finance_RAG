@@ -1,0 +1,29 @@
+{
+  "case_id": "el_v_state_of_tn_tax_2004",
+  "title": "Commissioner of Income Tax v. Calcutta Knitwears",
+  "citation": "(2014) 6 SCC 444",
+  "year": 2014,
+  "decision_date": "2014-03-20",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "parties": { "petitioner": "Commissioner of Income Tax, Ludhiana", "respondent": "Calcutta Knitwears" },
+  "category": "Tax Law",
+  "subcategories": ["Income Tax", "Section 133A Survey", "Business Income", "Assessment"],
+  "legal_principles": ["Survey statements are not conclusive admissions", "Right to retract statements made during survey", "Voluntary disclosure vs. coercion"],
+  "relevant_articles": [],
+  "relevant_acts": ["Income Tax Act 1961 Section 133A"],
+  "summary": "The Supreme Court held that statements recorded during a survey under Section 133A of Income Tax Act cannot be used as conclusive admissions. Assessee has right to retract such statements and department must independently verify income through evidence.",
+  "key_holdings": [
+    "Statement recorded under Section 133A during survey is not a sworn statement",
+    "Assessee can retract statement made during survey",
+    "Tax authorities cannot solely rely on survey statements — must corroborate with other evidence",
+    "Voluntary disclosure has evidentiary value but is not conclusive"
+  ],
+  "why_important": "Protects taxpayers from coerced admissions during income tax surveys. Clarifies evidentiary weight of survey statements.",
+  "practice_areas": ["Income tax law", "Tax litigation", "Assessment proceedings"],
+  "source_url": "https://indiankanoon.org/doc/193517773/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["income-tax", "section-133A", "survey", "retraction", "assessment", "2014"],
+  "relevance_to_legal_finance_system": "Directly relevant to tax assessment, audit compliance, and rights of taxpayers during IT surveys."
+}

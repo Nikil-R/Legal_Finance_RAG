@@ -1,0 +1,35 @@
+{
+  "case_id": "phoenix_arc_ibc_2021",
+  "title": "Committee of Creditors of Essar Steel India Ltd. v. Satish Kumar Gupta",
+  "citation": "(2020) 8 SCC 531",
+  "year": 2019,
+  "decision_date": "2019-11-15",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "judges": ["Justice R.F. Nariman", "Justice S. Ravindra Bhat", "Justice V. Ramasubramanian"],
+  "parties": { "petitioner": "Committee of Creditors of Essar Steel India Ltd.", "respondent": "Satish Kumar Gupta (Resolution Professional)" },
+  "category": "Insolvency Law",
+  "subcategories": ["IBC", "CIRP", "Resolution Plan", "CoC Powers", "Operational Creditors"],
+  "legal_principles": ["Commercial wisdom of Committee of Creditors is paramount", "Courts cannot interfere with CoC business decisions", "Distinction between financial and operational creditors in waterfall"],
+  "relevant_articles": [],
+  "relevant_acts": ["Insolvency and Bankruptcy Code 2016"],
+  "summary": "Landmark IBC case. Supreme Court held that the NCLAT erred in directing equal treatment of operational and financial creditors in the Essar Steel resolution plan. Affirmed that the Committee of Creditors' (CoC) commercial wisdom on distribution under resolution plan is supreme and cannot be interfered with by courts or NCLT/NCLAT, except on specified limited grounds. Also set 330-day outer limit for CIRP completion.",
+  "key_holdings": [
+    "Commercial wisdom of CoC is paramount and cannot be substituted by NCLT/NCLAT",
+    "Operational creditors do not have equal rights as financial creditors in distribution",
+    "Resolution plan must ensure operational creditors receive at least liquidation value",
+    "CIRP must be completed within 330 days including litigation time",
+    "Section 29A disqualification of promoters/connected persons upheld"
+  ],
+  "key_quotes": [
+    "The commercial wisdom of the CoC has been given paramount status with no judicial interference.",
+    "Dissenting financial creditors must be given liquidation value as minimum."
+  ],
+  "why_important": "Definitive ruling on IBC resolution process, CoC's powers, and creditor hierarchy. Essential for understanding India's insolvency framework.",
+  "practice_areas": ["Insolvency law", "Corporate law", "Banking law", "Creditor rights"],
+  "source_url": "https://indiankanoon.org/doc/186901891/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["IBC", "insolvency", "Essar-Steel", "CoC", "resolution-plan", "2019"],
+  "relevance_to_legal_finance_system": "Directly relevant to banking NPA resolution, debt restructuring, and creditor rights under IBC."
+}

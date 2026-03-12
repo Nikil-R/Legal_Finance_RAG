@@ -1,0 +1,29 @@
+{
+  "case_id": "phoenix_sebi_insider_trading_2020",
+  "title": "SEBI v. Kishore R. Ajmera",
+  "citation": "(2016) 6 SCC 368",
+  "year": 2016,
+  "decision_date": "2016-03-20",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "parties": { "petitioner": "Securities and Exchange Board of India", "respondent": "Kishore R. Ajmera" },
+  "category": "Securities Law",
+  "subcategories": ["Insider Trading", "SEBI Investigation", "Market Manipulation", "Civil Penalty"],
+  "legal_principles": ["Preponderance of evidence in SEBI proceedings", "Circumstantial evidence sufficient for insider trading", "SEBI's investigative powers"],
+  "relevant_articles": [],
+  "relevant_acts": ["SEBI (Prohibition of Insider Trading) Regulations 1992", "SEBI Act 1992"],
+  "summary": "SEBI held trader guilty of insider trading based on circumstantial evidence — trading in shares of a company immediately before announcement of merger, having connection to persons in possession of unpublished price-sensitive information (UPSI). Supreme Court upheld SEBI's order and affirmed that circumstantial evidence and preponderance of probability standard applies in SEBI proceedings (not 'beyond reasonable doubt').",
+  "key_holdings": [
+    "SEBI proceedings are quasi-judicial — preponderance of probability standard applies (not criminal 'beyond reasonable doubt')",
+    "Circumstantial evidence is sufficient to prove insider trading",
+    "Connections to UPSI holders combined with suspicious trading patterns establishes guilt",
+    "SEBI can impose civil penalties based on circumstantial chain of evidence"
+  ],
+  "why_important": "Clarified the evidentiary standard in SEBI proceedings. Confirmed SEBI can use circumstantial evidence to prove insider trading — significant for securities law enforcement.",
+  "practice_areas": ["Securities law", "Insider trading", "SEBI regulation", "Capital markets"],
+  "source_url": "https://indiankanoon.org/doc/72618001/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["SEBI", "insider-trading", "UPSI", "circumstantial-evidence", "capital-markets", "2016"],
+  "relevance_to_legal_finance_system": "Critical for understanding SEBI compliance and insider trading laws applicable to listed companies."
+}

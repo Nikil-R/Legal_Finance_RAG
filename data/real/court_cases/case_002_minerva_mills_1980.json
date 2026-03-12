@@ -1,0 +1,35 @@
+{
+  "case_id": "minerva_mills_1980",
+  "title": "Minerva Mills Ltd. v. Union of India",
+  "citation": "AIR 1980 SC 1789",
+  "year": 1980,
+  "decision_date": "1980-07-31",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice Y.V. Chandrachud", "Justice P.N. Bhagwati", "Justice A.C. Gupta", "Justice N.L. Untwalia", "Justice P.S. Kailasam"],
+  "parties": { "petitioner": "Minerva Mills Ltd.", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["Basic Structure Doctrine", "Fundamental Rights", "Directive Principles"],
+  "legal_principles": ["Basic Structure Doctrine", "Harmony between Fundamental Rights and DPSP", "Limited Amending Power"],
+  "relevant_articles": ["Article 31C", "Article 368", "Articles 14, 19, 21"],
+  "relevant_acts": ["42nd Constitutional Amendment Act 1976"],
+  "vote": { "majority": 4, "minority": 1, "decision": "Majority" },
+  "summary": "Struck down clauses 4 and 5 of the 42nd Constitutional Amendment which had sought to give absolute primacy to Directive Principles over Fundamental Rights and to immunise constitutional amendments from judicial review. The Court reaffirmed the Basic Structure Doctrine from Kesavananda Bharati and held that the balance between Fundamental Rights and Directive Principles is itself part of the basic structure.",
+  "key_holdings": [
+    "Balance between Fundamental Rights (Part III) and Directive Principles (Part IV) is part of the basic structure",
+    "Parliament cannot abrogate Fundamental Rights to implement Directive Principles",
+    "Judicial review of constitutional amendments is preserved",
+    "Clauses 4 and 5 of 42nd Amendment declared unconstitutional"
+  ],
+  "key_quotes": [
+    "The Constitution is founded on a nice balance between Part III and Part IV. To destroy that balance is to destroy an essential element of the Constitution.",
+    "Courts are the guardians of the Constitution."
+  ],
+  "why_important": "Reaffirmed and strengthened Kesavananda Bharati's basic structure doctrine. Struck down attempts to give Parliament unlimited amending power and immunise amendments from judicial review.",
+  "practice_areas": ["Constitutional law", "Fundamental rights", "Administrative law"],
+  "source_url": "https://indiankanoon.org/doc/1765/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["basic-structure", "42nd-amendment", "fundamental-rights", "directive-principles", "judicial-review", "1980"],
+  "relevance_to_legal_finance_system": "Important for understanding limits on government power that may impact financial regulations and tax laws."
+}

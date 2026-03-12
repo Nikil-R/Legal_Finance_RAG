@@ -1,0 +1,30 @@
+{
+  "case_id": "aban_offshore_2015",
+  "title": "Commissioner of Income Tax v. Reliance Industries Ltd.",
+  "citation": "(2019) 14 SCC 652",
+  "year": 2019,
+  "decision_date": "2019-10-31",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "parties": { "petitioner": "Commissioner of Income Tax", "respondent": "Reliance Industries Ltd." },
+  "category": "Tax Law",
+  "subcategories": ["Income Tax", "Depreciation", "Section 32", "Block of Assets"],
+  "legal_principles": ["Depreciation on block of assets", "Written Down Value method", "Section 32 Income Tax Act"],
+  "relevant_articles": [],
+  "relevant_acts": ["Income Tax Act 1961 Section 32"],
+  "summary": "Clarified the treatment of depreciation under Section 32 of the Income Tax Act for 'block of assets'. Held that the written down value (WDV) of the entire block must be calculated and depreciation applies to the block as a whole, not individual assets. Where WDV becomes nil or negative, no depreciation is allowable.",
+  "key_holdings": [
+    "Depreciation under Section 32 applies to 'block of assets' as a whole",
+    "Written Down Value (WDV) calculated for the entire block",
+    "When WDV becomes zero or negative, no depreciation is admissible",
+    "Short-term capital gain/loss on sale of asset calculated by reference to the block",
+    "Slump sale provisions and depreciation interact differently from individual asset sales"
+  ],
+  "why_important": "Definitive ruling on depreciation calculations for businesses. Directly impacts income tax computation for all businesses with fixed assets.",
+  "practice_areas": ["Income tax law", "Corporate tax", "Depreciation", "Accounting"],
+  "source_url": "https://indiankanoon.org/doc/62903789/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["depreciation", "section-32", "block-of-assets", "WDV", "income-tax", "2019"],
+  "relevance_to_legal_finance_system": "Directly relevant to tax calculations for businesses — depreciation claims affect taxable income."
+}

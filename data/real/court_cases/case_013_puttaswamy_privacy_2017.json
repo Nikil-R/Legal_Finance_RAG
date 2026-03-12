@@ -1,0 +1,36 @@
+{
+  "case_id": "puttaswamy_privacy_2017",
+  "title": "Justice K.S. Puttaswamy v. Union of India (Right to Privacy Case)",
+  "citation": "(2017) 10 SCC 1",
+  "year": 2017,
+  "decision_date": "2017-08-24",
+  "court": "Supreme Court of India",
+  "bench_size": 9,
+  "judges": ["Chief Justice J.S. Khehar", "Justice J. Chelameswar", "Justice S.A. Bobde", "Justice R.K. Agrawal", "Justice R.F. Nariman", "Justice A.M. Sapre", "Justice D.Y. Chandrachud", "Justice S.K. Kaul", "Justice S.A. Nazeer"],
+  "parties": { "petitioner": "Justice K.S. Puttaswamy (Retd)", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["Right to Privacy", "Fundamental Rights", "Aadhaar", "Data Protection"],
+  "legal_principles": ["Right to privacy is a fundamental right", "Informational self-determination", "Data protection as right"],
+  "relevant_articles": ["Article 21", "Article 14", "Article 19"],
+  "relevant_acts": ["Aadhaar Act 2016", "Personal Data Protection Bills"],
+  "vote": { "majority": 9, "minority": 0, "decision": "Unanimous" },
+  "summary": "9-judge bench unanimously declared that the right to privacy is a fundamental right under Article 21. Overruled M.P. Sharma (1954) and Kharak Singh (1962) which had held privacy is not a fundamental right. Paved the way for Aadhaar challenge and India's Personal Data Protection framework.",
+  "key_holdings": [
+    "Right to privacy is a fundamental right protected under Article 21",
+    "Privacy includes autonomy over personal choices, informational privacy, and bodily integrity",
+    "State can restrict privacy only through law, legitimate aim, and proportionality",
+    "Data protection is a facet of right to privacy",
+    "Private entities can also violate privacy rights"
+  ],
+  "key_quotes": [
+    "Privacy is the ultimate expression of the sanctity of the individual.",
+    "The right to be let alone is the beginning of all freedom."
+  ],
+  "why_important": "Landmark unanimous ruling declaring privacy a fundamental right. Foundation for India's data protection law and restraints on Aadhaar-based surveillance.",
+  "practice_areas": ["Constitutional law", "Data privacy", "Technology law", "Financial regulation"],
+  "source_url": "https://indiankanoon.org/doc/91938676/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["privacy", "fundamental-right", "aadhaar", "data-protection", "article-21", "2017"],
+  "relevance_to_legal_finance_system": "foundational for financial data privacy — bank account linking, PAN-Aadhaar, and RBI data localisation requirements."
+}

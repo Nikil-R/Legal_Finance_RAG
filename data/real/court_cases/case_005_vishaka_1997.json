@@ -1,0 +1,36 @@
+{
+  "case_id": "vishaka_1997",
+  "title": "Vishaka v. State of Rajasthan",
+  "citation": "AIR 1997 SC 3011",
+  "year": 1997,
+  "decision_date": "1997-08-13",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "judges": ["Chief Justice J.S. Verma", "Justice Sujata V. Manohar", "Justice B.N. Kirpal"],
+  "parties": { "petitioner": "Vishaka & Ors", "respondent": "State of Rajasthan" },
+  "category": "Constitutional Law",
+  "subcategories": ["Sexual Harassment", "Workplace Rights", "Women's Rights", "Writ Jurisdiction"],
+  "legal_principles": ["Supreme Court's power to issue guidelines in absence of legislation", "CEDAW applicability", "Gender equality as fundamental right"],
+  "relevant_articles": ["Article 14", "Article 15", "Article 19(1)(g)", "Article 21"],
+  "relevant_acts": ["Prevention of Sexual Harassment at Workplace Act 2013 (later enacted)"],
+  "vote": { "majority": 3, "minority": 0, "decision": "Unanimous" },
+  "summary": "Filed following gang rape of social activist Bhanwari Devi. The Supreme Court filled a legislative vacuum by issuing the 'Vishaka Guidelines' — binding directions on employers to prevent and address sexual harassment at the workplace. The guidelines remained in force until POSH Act 2013 was enacted.",
+  "key_holdings": [
+    "Sexual harassment at workplace violates Articles 14, 15, 19(1)(g), and 21",
+    "Court can issue binding guidelines to fill legislative vacuum",
+    "Employers have a duty to prevent sexual harassment",
+    "Internal Complaints Committees to be established",
+    "International obligations (CEDAW) can inform domestic law"
+  ],
+  "key_quotes": [
+    "Gender equality includes protection from sexual harassment.",
+    "Where legislation is absent, the Supreme Court can issue binding guidelines."
+  ],
+  "why_important": "Landmark judgment creating sexual harassment framework at workplace; directly led to enactment of POSH Act 2013. Established that courts can fill legislative gaps on human rights issues.",
+  "practice_areas": ["Constitutional law", "Employment law", "Human rights", "Gender justice"],
+  "source_url": "https://indiankanoon.org/doc/1031794/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["sexual-harassment", "workplace", "women-rights", "POSH", "vishaka-guidelines", "1997"],
+  "relevance_to_legal_finance_system": "Relevant to HR compliance obligations for companies — POSH compliance is a legal mandate for all organisations."
+}

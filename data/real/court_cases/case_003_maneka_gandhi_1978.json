@@ -1,0 +1,35 @@
+{
+  "case_id": "maneka_gandhi_1978",
+  "title": "Maneka Gandhi v. Union of India",
+  "citation": "AIR 1978 SC 597",
+  "year": 1978,
+  "decision_date": "1978-01-25",
+  "court": "Supreme Court of India",
+  "bench_size": 7,
+  "judges": ["Justice M.H. Beg", "Justice Y.V. Chandrachud", "Justice V.R. Krishna Iyer", "Justice P.N. Bhagwati", "Justice N.L. Untwalia", "Justice S. Murtaza Fazal Ali", "Justice P.S. Kailasam"],
+  "parties": { "petitioner": "Maneka Gandhi", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["Right to Life", "Personal Liberty", "Passports"],
+  "legal_principles": ["Expanded Article 21", "Procedure Established by Law", "Due Process", "Interconnectedness of Fundamental Rights"],
+  "relevant_articles": ["Article 21", "Article 14", "Article 19"],
+  "relevant_acts": ["Passports Act 1967"],
+  "vote": { "majority": 6, "minority": 1, "decision": "Majority" },
+  "summary": "The government impounded the petitioner's passport without giving reasons. The Court expanded the scope of Article 21 (Right to Life and Personal Liberty) to include the right to go abroad. It held that 'procedure established by law' must be right, just, and fair — not arbitrary, fanciful, or oppressive. The case linked Articles 14, 19, and 21 as a 'golden triangle' of rights.",
+  "key_holdings": [
+    "Right to travel abroad is part of 'personal liberty' under Article 21",
+    "'Procedure established by law' must satisfy standards of natural justice",
+    "Articles 14, 19, and 21 are not mutually exclusive — they form an integrated charter of rights",
+    "Any law affecting personal liberty must be just, fair, and reasonable"
+  ],
+  "key_quotes": [
+    "The law must be right, just and fair and not arbitrary, fanciful or oppressive.",
+    "Basic rights cluster around man in his individual capacity and in his social life."
+  ],
+  "why_important": "Landmark expansion of Article 21 beyond mere physical liberty. Established that fundamental rights are interlinked and that state action must satisfy substantive due process.",
+  "practice_areas": ["Constitutional law", "Human rights", "Administrative law"],
+  "source_url": "https://indiankanoon.org/doc/1766147/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["article-21", "personal-liberty", "due-process", "golden-triangle", "passports", "1978"],
+  "relevance_to_legal_finance_system": "Establishes procedural fairness standards relevant to tax enforcement and financial penalty proceedings."
+}

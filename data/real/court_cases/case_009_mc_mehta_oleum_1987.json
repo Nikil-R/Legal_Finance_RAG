@@ -1,0 +1,35 @@
+{
+  "case_id": "mc_mehta_1987",
+  "title": "M.C. Mehta v. Union of India (Oleum Gas Leak Case)",
+  "citation": "AIR 1987 SC 1086",
+  "year": 1987,
+  "decision_date": "1986-12-20",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice P.N. Bhagwati", "Justice R.S. Pathak", "Justice G.L. Oza", "Justice M.M. Dutt", "Justice E.S. Venkataramaiah"],
+  "parties": { "petitioner": "M.C. Mehta", "respondent": "Union of India" },
+  "category": "Environmental Law",
+  "subcategories": ["Absolute Liability", "Polluter Pays", "Environmental Protection", "PIL"],
+  "legal_principles": ["Absolute Liability (Indian variant)", "Polluter Pays Principle", "Public Interest Litigation"],
+  "relevant_articles": ["Article 21", "Article 32"],
+  "relevant_acts": ["Environment Protection Act 1986", "Factories Act"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "Following the oleum gas leak from Shriram Foods and Fertiliser Industries in Delhi, M.C. Mehta filed a PIL. The Supreme Court laid down the doctrine of Absolute Liability: an enterprise engaged in hazardous activity is absolutely liable to pay compensation if any harm results — with no exceptions as under the English rule of strict liability from Rylands v. Fletcher.",
+  "key_holdings": [
+    "Absolute liability doctrine: no exceptions apply to enterprises causing harm through hazardous activity",
+    "Enterprise must be absolutely liable, regardless of whether harm occurred despite all precautions",
+    "Amount of compensation should be commensurate with the magnitude and capacity of enterprise",
+    "Public interest litigation is a powerful tool to enforce environmental rights"
+  ],
+  "key_quotes": [
+    "We are of the view that an enterprise which is engaged in a hazardous or inherently dangerous industry... owes an absolute and non-delegable duty to the community.",
+    "We do not think that the rule of strict liability as evolved in Rylands v Fletcher is adequate for modern conditions."
+  ],
+  "why_important": "Created India's unique doctrine of absolute liability for hazardous industries — stronger than English strict liability. Foundation of modern Indian environmental law.",
+  "practice_areas": ["Environmental law", "Industrial law", "Tort law", "PIL"],
+  "source_url": "https://indiankanoon.org/doc/1486418/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["absolute-liability", "environmental-law", "oleum-gas", "PIL", "hazardous-industry", "1987"],
+  "relevance_to_legal_finance_system": "Environmental liability principles affect corporate financial reporting, insurance, and compliance costs."
+}

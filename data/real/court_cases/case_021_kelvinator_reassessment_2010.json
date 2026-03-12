@@ -1,0 +1,33 @@
+{
+  "case_id": "aditya_birla_nuvo_2011",
+  "title": "Commissioner of Income Tax v. Kelvinator of India Ltd.",
+  "citation": "(2010) 2 SCC 723",
+  "year": 2010,
+  "decision_date": "2010-01-05",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "parties": { "petitioner": "Commissioner of Income Tax", "respondent": "Kelvinator of India Ltd." },
+  "category": "Tax Law",
+  "subcategories": ["Income Tax", "Reassessment", "Section 147", "Change of Opinion"],
+  "legal_principles": ["Reopening of assessment requires tangible new material", "Change of opinion not grounds for reassessment", "Section 147 scope after 2001 amendment"],
+  "relevant_articles": [],
+  "relevant_acts": ["Income Tax Act 1961 Sections 147, 148"],
+  "summary": "Supreme Court held that after the 2001 amendment to Section 147, the Assessing Officer cannot reopen a completed assessment merely on the basis of a 'change of opinion'. There must be 'tangible material' to form the belief that income has escaped assessment. This remains the leading case on Section 147 reassessment.",
+  "key_holdings": [
+    "Post-2001, Section 147 requires 'tangible material' for reopening — mere change of opinion is not sufficient",
+    "Where assessment was made under Section 143(3), there is a presumption against reopening without new material",
+    "AO cannot act as a review authority on his own completed assessment",
+    "Distinction between 'formation of belief' and 'change of opinion'"
+  ],
+  "key_quotes": [
+    "After the 1989 amendment, the power to reopen is much wider, but one important safeguard is that there must be 'tangible material' to support the belief.",
+    "Reason to believe is not the same as reason to suspect."
+  ],
+  "why_important": "The most-cited Supreme Court judgment on income tax reassessment. Prevents arbitrary reopening of completed assessments by tax department.",
+  "practice_areas": ["Income tax law", "Tax litigation", "Reassessment"],
+  "source_url": "https://indiankanoon.org/doc/749946/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["income-tax", "section-147", "reassessment", "change-of-opinion", "tangible-material", "2010"],
+  "relevance_to_legal_finance_system": "Very directly relevant — governs when Income Tax department can reopen completed assessments. Critical for tax planning."
+}

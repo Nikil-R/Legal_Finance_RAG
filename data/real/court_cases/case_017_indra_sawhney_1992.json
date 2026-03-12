@@ -1,0 +1,29 @@
+{
+  "case_id": "indra_sawhney_1992",
+  "title": "Indra Sawhney v. Union of India (Mandal Commission Case)",
+  "citation": "AIR 1993 SC 477",
+  "year": 1992,
+  "decision_date": "1992-11-16",
+  "court": "Supreme Court of India",
+  "bench_size": 9,
+  "parties": { "petitioner": "Indra Sawhney & Ors", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["OBC Reservation", "Mandal Commission", "Creamy Layer", "Article 16(4)"],
+  "legal_principles": ["50% ceiling on reservations", "Creamy layer exclusion", "No reservation in promotions"],
+  "relevant_articles": ["Article 16(4)", "Article 16(4A)"],
+  "summary": "Upheld 27% OBC reservation recommended by Mandal Commission but imposed 50% cap on total reservations and excluded 'creamy layer' (economically advanced OBCs) from benefits. Struck down 10% reservation for economically backward among forward castes.",
+  "key_holdings": [
+    "Total reservation cannot exceed 50% (except in extraordinary circumstances)",
+    "Creamy layer among OBCs must be excluded from reservation benefits",
+    "Reservation in promotions not permitted (Article 16(4A) added later)",
+    "Economically backward among forward castes reservation struck down",
+    "27% OBC reservation upheld"
+  ],
+  "why_important": "Definitive judgment on OBC reservation; set 50% ceiling and creamy layer doctrine still governing reservation law today.",
+  "practice_areas": ["Constitutional law", "Reservation law", "Employment law"],
+  "source_url": "https://indiankanoon.org/doc/1363234/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["OBC", "reservation", "mandal", "creamy-layer", "50-percent-cap", "1992"],
+  "relevance_to_legal_finance_system": "OBC reservation impacts government procurement policies and public sector employment compliance."
+}

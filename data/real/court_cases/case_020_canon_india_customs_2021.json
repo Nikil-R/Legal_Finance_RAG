@@ -1,0 +1,30 @@
+{
+  "case_id": "canon_india_2021",
+  "title": "Canon India Pvt. Ltd. v. Commissioner of Customs",
+  "citation": "(2021) 5 SCC 536",
+  "year": 2021,
+  "decision_date": "2021-03-09",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "judges": ["Justice S. Ravindra Bhat", "Justice Hemant Gupta"],
+  "parties": { "petitioner": "Canon India Pvt. Ltd.", "respondent": "Commissioner of Customs" },
+  "category": "Tax Law / Customs Law",
+  "subcategories": ["Customs", "Search and Seizure", "Customs Act Section 110", "Officer Jurisdiction"],
+  "legal_principles": ["Proper officer jurisdiction in customs matters", "Section 28 demand must be by proper officer who first assessed"],
+  "relevant_articles": [],
+  "relevant_acts": ["Customs Act 1962 Sections 17, 28, 110"],
+  "summary": "Supreme Court quashed customs demand notices issued by DRI (Directorate of Revenue Intelligence) officers against Canon India for alleged evasion on camera imports. Held that DRI officers who had not assessed the goods at the time of import cannot issue demand notices under Section 28 of the Customs Act — only the 'proper officer' who assessed the goods has such jurisdiction.",
+  "key_holdings": [
+    "DRI officer who did not assess goods cannot issue demand notice under Section 28 of Customs Act",
+    "Jurisdiction of 'proper officer' under Section 28 is that officer who first assessed the goods",
+    "Demand by a non-proper officer is without jurisdiction and void",
+    "Customs Act amended prospectively to address this (Finance Act 2022)"
+  ],
+  "why_important": "Led to Finance Act 2022 amendment empowering DRI officers retrospectively. Significant for customs duty evasion cases.",
+  "practice_areas": ["Customs law", "Tax litigation", "Indirect tax"],
+  "source_url": "https://indiankanoon.org/doc/30127108/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["customs", "DRI", "section-28", "proper-officer", "jurisdiction", "2021"],
+  "relevance_to_legal_finance_system": "Directly relevant to customs duty disputes, import compliance, and DRI notices for importers."
+}

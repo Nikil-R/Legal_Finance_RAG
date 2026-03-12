@@ -1,0 +1,36 @@
+{
+  "case_id": "navtej_singh_johar_2018",
+  "title": "Navtej Singh Johar v. Union of India",
+  "citation": "(2018) 10 SCC 1",
+  "year": 2018,
+  "decision_date": "2018-09-06",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice Dipak Misra", "Justice R.F. Nariman", "Justice A.M. Khanwilkar", "Justice D.Y. Chandrachud", "Justice Indu Malhotra"],
+  "parties": { "petitioner": "Navtej Singh Johar & Ors", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["LGBTQ Rights", "Section 377 IPC", "Privacy", "Dignity"],
+  "legal_principles": ["Right to privacy includes sexual orientation", "Dignity as constitutional value", "State cannot criminalise consensual adult behaviour"],
+  "relevant_articles": ["Article 14", "Article 15", "Article 19", "Article 21"],
+  "relevant_acts": ["Indian Penal Code Section 377"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "Unanimously decriminalised consensual same-sex relations among adults by reading down Section 377 IPC. Overruled Suresh Kumar Koushal (2013) which had reinstated Section 377. The Court held that criminalising consensual adult same-sex conduct violates Articles 14, 15, 19, and 21.",
+  "key_holdings": [
+    "Section 377 IPC unconstitutional to the extent it criminalises consensual adult same-sex conduct",
+    "Sexual orientation is a protected ground under Article 15 (discrimination)",
+    "Right to privacy includes right to one's sexual orientation",
+    "Criminalising consensual adult relationships violates dignity and autonomy under Article 21",
+    "Suresh Kumar Koushal (2013) overruled"
+  ],
+  "key_quotes": [
+    "An individual's sexual orientation is a natural phenomenon.",
+    "History owes an apology to members of the LGBT community."
+  ],
+  "why_important": "Landmark judgment decriminalising homosexuality in India. Affirmed dignity and autonomy as core constitutional values.",
+  "practice_areas": ["Constitutional law", "Human rights", "Criminal law"],
+  "source_url": "https://indiankanoon.org/doc/168671544/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["lgbtq", "section-377", "privacy", "dignity", "decriminalisation", "2018"],
+  "relevance_to_legal_finance_system": "Anti-discrimination compliance obligations for employers now extend to sexual orientation under evolving law."
+}

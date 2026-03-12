@@ -1,0 +1,35 @@
+{
+  "case_id": "unni_krishnan_1993",
+  "title": "Unni Krishnan J.P. v. State of Andhra Pradesh",
+  "citation": "AIR 1993 SC 2178",
+  "year": 1993,
+  "decision_date": "1993-02-04",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Justice B.P. Jeevan Reddy", "Justice R.M. Sahai", "Justice S. Mohan", "Justice J.S. Verma", "Justice S. Ratnavel Pandian"],
+  "parties": { "petitioner": "Unni Krishnan J.P. & Ors", "respondent": "State of Andhra Pradesh & Ors" },
+  "category": "Constitutional Law",
+  "subcategories": ["Right to Education", "Fundamental Rights", "Private Institutions"],
+  "legal_principles": ["Right to education as fundamental right", "Regulation of private educational institutions", "Article 21 expanded"],
+  "relevant_articles": ["Article 21", "Article 41", "Article 45"],
+  "relevant_acts": ["Constitution of India"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "The Supreme Court held that right to education up to age 14 is a fundamental right under Article 21, read with Articles 41 and 45 of the Directive Principles. It also laid down a scheme (fee structure) for private engineering and medical colleges. Later, the 86th Constitutional Amendment (2002) gave explicit recognition to right to education, leading to the Right to Education Act 2009.",
+  "key_holdings": [
+    "Right to education up to age 14 is a fundamental right under Article 21",
+    "State must provide free and compulsory education up to 14 years",
+    "Private educational institutions can charge fees but not capitation fees (profiteering prohibited)",
+    "Education is not a business; it is a charitable activity"
+  ],
+  "key_quotes": [
+    "Right to education flows directly from right to life.",
+    "Capitation fee amounts to commercialisation of education which is opposed to our constitutional scheme."
+  ],
+  "why_important": "Recognised right to education as fundamental right — paved way for 86th Amendment and Right to Education Act 2009. Regulated capitation fees in private colleges.",
+  "practice_areas": ["Constitutional law", "Education law", "Right to life"],
+  "source_url": "https://indiankanoon.org/doc/58735/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["right-to-education", "article-21", "capitation-fee", "private-colleges", "1993"],
+  "relevance_to_legal_finance_system": "Relevant to education-related tax exemptions (Section 10 of Income Tax Act) and compliance requirements for educational institutions."
+}

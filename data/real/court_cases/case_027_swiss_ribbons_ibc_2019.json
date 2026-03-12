@@ -1,0 +1,31 @@
+{
+  "case_id": "swiss_ribbons_ibc_2019",
+  "title": "Swiss Ribbons Pvt. Ltd. v. Union of India",
+  "citation": "(2019) 4 SCC 17",
+  "year": 2019,
+  "decision_date": "2019-01-25",
+  "court": "Supreme Court of India",
+  "bench_size": 2,
+  "judges": ["Justice R.F. Nariman", "Justice Navin Sinha"],
+  "parties": { "petitioner": "Swiss Ribbons Pvt. Ltd.", "respondent": "Union of India" },
+  "category": "Insolvency Law",
+  "subcategories": ["IBC Constitutionality", "Financial Creditors vs Operational Creditors", "Insolvency Resolution"],
+  "legal_principles": ["IBC is constitutionally valid", "Distinction between financial and operational creditors is reasonable", "Resolution preferred over liquidation"],
+  "relevant_articles": ["Article 14"],
+  "relevant_acts": ["Insolvency and Bankruptcy Code 2016"],
+  "summary": "Constitutional validity of IBC upheld. The Court held that the differentiation between financial creditors (banks/NBFCs) and operational creditors (suppliers/employees) is constitutionally valid and based on intelligible differentia. IBC's object of revival and resolution over liquidation upheld.",
+  "key_holdings": [
+    "IBC is constitutionally valid",
+    "Distinction between financial and operational creditors is constitutionally valid under Article 14",
+    "Resolution preferred over liquidation serves legitimate state aim",
+    "Section 29A disqualification of promoters is valid",
+    "Time-bound CIRP process is constitutionally valid"
+  ],
+  "why_important": "Upheld the constitutional validity of IBC — foundational judgment for India's insolvency regime.",
+  "practice_areas": ["Insolvency law", "Constitutional law", "Banking law"],
+  "source_url": "https://indiankanoon.org/doc/109659890/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["IBC", "constitutionality", "financial-creditors", "operational-creditors", "2019"],
+  "relevance_to_legal_finance_system": "Foundation for understanding India's insolvency law, NPA resolution, and creditor hierarchy."
+}

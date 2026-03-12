@@ -1,0 +1,36 @@
+{
+  "case_id": "sabarimala_2018",
+  "title": "Indian Young Lawyers Association v. State of Kerala (Sabarimala Case)",
+  "citation": "(2018) 9 SCC 1",
+  "year": 2018,
+  "decision_date": "2018-09-28",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice Dipak Misra", "Justice A.M. Khanwilkar", "Justice R.F. Nariman", "Justice D.Y. Chandrachud", "Justice Indu Malhotra"],
+  "parties": { "petitioner": "Indian Young Lawyers Association", "respondent": "State of Kerala" },
+  "category": "Constitutional Law",
+  "subcategories": ["Religious Practices", "Gender Equality", "Fundamental Rights", "Right to Worship"],
+  "legal_principles": ["Constitutional morality over social morality", "Gender equality as fundamental right", "Exclusion based on physiological characteristics is unconstitutional"],
+  "relevant_articles": ["Article 14", "Article 15", "Article 17", "Article 25", "Article 26"],
+  "relevant_acts": ["Kerala Hindu Places of Public Worship (Authorisation of Entry) Act 1965"],
+  "vote": { "majority": 4, "minority": 1, "decision": "4:1 majority" },
+  "summary": "The Supreme Court (4:1) struck down the practice of excluding women aged 10-50 from entering the Sabarimala temple. The majority held this practice violated Articles 14, 15, and 17 (untouchability), and that 'constitutional morality' must prevail over popular religious morality.",
+  "key_holdings": [
+    "Exclusion of women from temple based on biological/physiological characteristics is unconstitutional",
+    "Constitutional morality must prevail over popular morality",
+    "Right to worship is guaranteed to all, regardless of gender",
+    "Exclusionary religious practices that violate fundamental rights are not protected under Article 26",
+    "Dissent (Justice Indu Malhotra): Courts should not interfere in matters of religion"
+  ],
+  "key_quotes": [
+    "Devotion cannot be subjected to notions of purity and pollution based on physiological phenomena.",
+    "Constitutional morality is not natural to a society; it has to be cultivated."
+  ],
+  "why_important": "Landmark judgment on intersection of religious freedom and gender equality. Generated significant social debate. Review petitions referred to 9-judge bench.",
+  "practice_areas": ["Constitutional law", "Religion law", "Gender justice"],
+  "source_url": "https://indiankanoon.org/doc/117138/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["sabarimala", "gender-equality", "religious-freedom", "article-25", "constitutional-morality", "2018"],
+  "relevance_to_legal_finance_system": "Demonstrates how constitutional rights interact with institutional practices — relevant to compliance frameworks."
+}

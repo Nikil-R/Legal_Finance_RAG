@@ -1,0 +1,35 @@
+{
+  "case_id": "indira_gandhi_v_raj_narain_1975",
+  "title": "Indira Nehru Gandhi v. Raj Narain",
+  "citation": "AIR 1975 SC 2299",
+  "year": 1975,
+  "decision_date": "1975-11-07",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice A.N. Ray", "Justice H.R. Khanna", "Justice K.K. Mathew", "Justice M.H. Beg", "Justice Y.V. Chandrachud"],
+  "parties": { "petitioner": "Indira Nehru Gandhi", "respondent": "Raj Narain" },
+  "category": "Constitutional Law",
+  "subcategories": ["Election Law", "Basic Structure", "Free and Fair Elections"],
+  "legal_principles": ["Free and fair elections as basic structure", "Rule of law", "Separation of powers"],
+  "relevant_articles": ["Article 329A", "Article 368"],
+  "relevant_acts": ["39th Constitutional Amendment Act 1975"],
+  "vote": { "majority": 4, "minority": 1, "decision": "Majority" },
+  "summary": "After Allahabad High Court found PM Indira Gandhi guilty of corrupt practices in elections, the 39th Amendment retroactively validated her election and placed disputes regarding PM's election beyond judicial review. Supreme Court struck down the amendment as violating free and fair elections — part of the basic structure.",
+  "key_holdings": [
+    "Free and fair elections are part of the basic structure of the Constitution",
+    "Parliament cannot validate its own elections retrospectively",
+    "Rule of law and separation of powers are basic structure elements",
+    "Clause 4 of 39th Amendment struck down as unconstitutional"
+  ],
+  "key_quotes": [
+    "Democracy postulates that free and fair elections must be held.",
+    "Rule of law is the basic feature of our Constitution."
+  ],
+  "why_important": "Applied and extended basic structure doctrine to election law. Led directly to declaration of Emergency in 1975.",
+  "practice_areas": ["Constitutional law", "Election law"],
+  "source_url": "https://indiankanoon.org/doc/1735815/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["elections", "basic-structure", "rule-of-law", "39th-amendment", "emergency", "1975"],
+  "relevance_to_legal_finance_system": "Establishes that legislative overreach cannot validate improper financial or administrative decisions retrospectively."
+}

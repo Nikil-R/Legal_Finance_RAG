@@ -1,0 +1,35 @@
+{
+  "case_id": "olga_tellis_1985",
+  "title": "Olga Tellis v. Bombay Municipal Corporation",
+  "citation": "AIR 1986 SC 180",
+  "year": 1985,
+  "decision_date": "1985-07-10",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice Y.V. Chandrachud", "Justice D.A. Desai", "Justice O. Chinnappa Reddy", "Justice E.S. Venkataramaih", "Justice Ranganath Misra"],
+  "parties": { "petitioner": "Olga Tellis & Ors (Pavement dwellers)", "respondent": "Bombay Municipal Corporation" },
+  "category": "Constitutional Law",
+  "subcategories": ["Right to Life", "Livelihood", "Pavement Dwellers"],
+  "legal_principles": ["Right to livelihood as part of Right to Life", "Natural justice before eviction"],
+  "relevant_articles": ["Article 21", "Article 39(a)", "Article 41"],
+  "relevant_acts": ["Bombay Municipal Corporation Act"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "Pavement dwellers challenged eviction from Bombay's footpaths. The Court held that the right to livelihood is included in the right to life under Article 21 because no person can live without the means of living (livelihood). The state cannot deprive a person of livelihood without following a just and fair procedure.",
+  "key_holdings": [
+    "Right to livelihood is part of the right to life under Article 21",
+    "Eviction without opportunity to be heard violates Article 21",
+    "Pavement dwellers cannot be evicted without alternative arrangements",
+    "The sweep of the right to life is wide and far-reaching"
+  ],
+  "key_quotes": [
+    "The right to life includes the right to livelihood.",
+    "An easement like right has been acquired over footpaths by pavement dwellers."
+  ],
+  "why_important": "Established right to livelihood as a constitutional right under Article 21. Foundation for numerous public interest litigations on housing and employment rights.",
+  "practice_areas": ["Constitutional law", "Human rights", "Urban law"],
+  "source_url": "https://indiankanoon.org/doc/709776/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["right-to-livelihood", "article-21", "pavement-dwellers", "eviction", "1985"],
+  "relevance_to_legal_finance_system": "Right to livelihood impacts labour law and employment-related financial decisions."
+}

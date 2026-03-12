@@ -1,0 +1,34 @@
+{
+  "case_id": "ayakar_gst_2023",
+  "title": "Mohit Minerals Pvt. Ltd. v. Union of India",
+  "citation": "(2022) 10 SCC 700",
+  "year": 2022,
+  "decision_date": "2022-05-19",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "judges": ["Justice D.Y. Chandrachud", "Justice Surya Kant", "Justice Vikram Nath"],
+  "parties": { "petitioner": "Mohit Minerals Pvt. Ltd.", "respondent": "Union of India" },
+  "category": "Tax Law",
+  "subcategories": ["GST", "IGST", "Ocean Freight", "Reverse Charge Mechanism"],
+  "legal_principles": ["Double taxation not permissible", "GST Council recommendations are not binding law", "Limits of government notification power"],
+  "relevant_articles": [],
+  "relevant_acts": ["Integrated Goods and Services Tax Act 2017", "GST Act"],
+  "summary": "Struck down the government notification levying IGST on ocean freight for imported goods on reverse charge basis. The Court held this amounted to double taxation (freight included in CIF value already taxed through Customs). Also held that GST Council recommendations are recommendatory and not binding — Parliament and state legislatures retain legislative power.",
+  "key_holdings": [
+    "IGST on ocean freight under reverse charge mechanism on CIF imports is unconstitutional (double taxation)",
+    "GST Council recommendations are recommendatory and not binding on Parliament or state legislatures",
+    "Constitutional scheme preserves sovereignty of Parliament and state legislatures",
+    "Notification imposing IGST on ocean freight struck down"
+  ],
+  "key_quotes": [
+    "The GST Council is a recommendatory body and its recommendations do not have the force of law.",
+    "Double taxation of the same economic activity is impermissible."
+  ],
+  "why_important": "Landmark GST case clarifying power of GST Council and striking down double taxation on ocean freight. Highly relevant to importers.",
+  "practice_areas": ["GST law", "Customs law", "Tax litigation", "Indirect tax"],
+  "source_url": "https://indiankanoon.org/doc/8930023/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["GST", "IGST", "ocean-freight", "double-taxation", "GST-council", "2022"],
+  "relevance_to_legal_finance_system": "Directly relevant to GST compliance, import tax planning, and understanding limits of GST Council authority."
+}

@@ -1,0 +1,35 @@
+{
+  "case_id": "shah_bano_1985",
+  "title": "Mohd. Ahmed Khan v. Shah Bano Begum",
+  "citation": "AIR 1985 SC 945",
+  "year": 1985,
+  "decision_date": "1985-04-23",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice Y.V. Chandrachud", "Justice D.A. Desai", "Justice O. Chinnappa Reddy", "Justice E.S. Venkataramaiah", "Justice Ranganath Misra"],
+  "parties": { "petitioner": "Mohd. Ahmed Khan (Husband)", "respondent": "Shah Bano Begum (Wife)" },
+  "category": "Family Law / Personal Law",
+  "subcategories": ["Muslim Personal Law", "Maintenance", "Divorced Muslim Women", "Uniform Civil Code"],
+  "legal_principles": ["Section 125 CrPC applies to all citizens regardless of religion", "Personal law cannot override secular law"],
+  "relevant_articles": ["Article 44 (Uniform Civil Code)", "Article 15"],
+  "relevant_acts": ["Criminal Procedure Code Section 125", "Muslim Personal Law", "Muslim Women (Protection of Rights on Divorce) Act 1986"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "Shah Bano, a divorced Muslim woman, claimed maintenance under Section 125 CrPC. Husband claimed Muslim personal law (mehr was sufficient). Supreme Court held that Section 125 CrPC applies to all Indian citizens regardless of religion and upheld Shah Bano's right to maintenance. Court also commented on the desirability of a Uniform Civil Code.",
+  "key_holdings": [
+    "Section 125 CrPC applies to all citizens regardless of religion",
+    "Divorced Muslim women are entitled to maintenance under CrPC",
+    "Payment of mehr does not absolve husband of maintenance obligation",
+    "Court expressed desirability of Uniform Civil Code under Article 44"
+  ],
+  "key_quotes": [
+    "Section 125 of the Code of Criminal Procedure is a secular provision which applies to all communities.",
+    "It is a matter of regret that Article 44 has remained a dead letter."
+  ],
+  "why_important": "Generated enormous controversy and led to enactment of Muslim Women (Protection of Rights on Divorce) Act 1986 by Congress government, partly overturning the ruling. Sparked debate on uniform civil code.",
+  "practice_areas": ["Family law", "Personal law", "Criminal law", "Maintenance"],
+  "source_url": "https://indiankanoon.org/doc/823221/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["maintenance", "muslim-women", "section-125-crpc", "personal-law", "uniform-civil-code", "1985"],
+  "relevance_to_legal_finance_system": "Financial obligations in personal law (maintenance, alimony) have income tax and financial planning implications."
+}

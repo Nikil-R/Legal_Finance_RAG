@@ -1,0 +1,27 @@
+{
+  "case_id": "state_of_madras_v_champakam_1951",
+  "title": "State of Madras v. Champakam Dorairajan",
+  "citation": "AIR 1951 SC 226",
+  "year": 1951,
+  "decision_date": "1951-04-09",
+  "court": "Supreme Court of India",
+  "bench_size": 6,
+  "parties": { "petitioner": "State of Madras", "respondent": "Champakam Dorairajan" },
+  "category": "Constitutional Law",
+  "subcategories": ["Reservation", "Caste-based Discrimination", "Education", "Communal G.O."],
+  "legal_principles": ["Article 15 prohibition on caste discrimination", "First Constitutional Amendment"],
+  "relevant_articles": ["Article 15(1)", "Article 29(2)", "Article 46"],
+  "summary": "Supreme Court struck down Madras Communal G.O. fixing seats in state educational institutions based on religion and caste. It was the first case where Supreme Court struck down a law for violating fundamental rights. Led directly to First Constitutional Amendment adding Article 15(4) allowing reservations.",
+  "key_holdings": [
+    "Communal G.O. reserving seats by caste/religion violates Article 15(1) and 29(2)",
+    "Directive Principles (Article 46) cannot override Fundamental Rights",
+    "First Constitution Amendment then added Article 15(4) to enable reservations"
+  ],
+  "why_important": "First case striking down law for violating FRs; directly caused First Constitutional Amendment adding positive discrimination clause.",
+  "practice_areas": ["Constitutional law", "Education law", "Reservation law"],
+  "source_url": "https://indiankanoon.org/doc/109659/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["reservation", "caste", "article-15", "discrimination", "education", "1951"],
+  "relevance_to_legal_finance_system": "Reservation law impacts HR hiring costs, compliance obligations, and government contract eligibility."
+}

@@ -1,0 +1,2048 @@
+{
+  "cases": [
+    {
+      "case_id": "minerva_mills_1980",
+      "title": "Minerva Mills Ltd. v. Union of India",
+      "citation": "AIR 1980 SC 1789",
+      "year": 1980,
+      "decision_date": "1980-07-31",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice Y.V. Chandrachud",
+        "Justice P.N. Bhagwati",
+        "Justice A.C. Gupta",
+        "Justice N.L. Untwalia",
+        "Justice P.S. Kailasam"
+      ],
+      "parties": {
+        "petitioner": "Minerva Mills Ltd.",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Basic Structure Doctrine",
+        "Fundamental Rights",
+        "Directive Principles"
+      ],
+      "legal_principles": [
+        "Basic Structure Doctrine",
+        "Harmony between Fundamental Rights and DPSP",
+        "Limited Amending Power"
+      ],
+      "relevant_articles": [
+        "Article 31C",
+        "Article 368",
+        "Articles 14, 19, 21"
+      ],
+      "relevant_acts": [
+        "42nd Constitutional Amendment Act 1976"
+      ],
+      "vote": {
+        "majority": 4,
+        "minority": 1,
+        "decision": "Majority"
+      },
+      "summary": "Struck down clauses 4 and 5 of the 42nd Constitutional Amendment which had sought to give absolute primacy to Directive Principles over Fundamental Rights and to immunise constitutional amendments from judicial review. The Court reaffirmed the Basic Structure Doctrine from Kesavananda Bharati and held that the balance between Fundamental Rights and Directive Principles is itself part of the basic structure.",
+      "key_holdings": [
+        "Balance between Fundamental Rights (Part III) and Directive Principles (Part IV) is part of the basic structure",
+        "Parliament cannot abrogate Fundamental Rights to implement Directive Principles",
+        "Judicial review of constitutional amendments is preserved",
+        "Clauses 4 and 5 of 42nd Amendment declared unconstitutional"
+      ],
+      "key_quotes": [
+        "The Constitution is founded on a nice balance between Part III and Part IV. To destroy that balance is to destroy an essential element of the Constitution.",
+        "Courts are the guardians of the Constitution."
+      ],
+      "why_important": "Reaffirmed and strengthened Kesavananda Bharati's basic structure doctrine. Struck down attempts to give Parliament unlimited amending power and immunise amendments from judicial review.",
+      "practice_areas": [
+        "Constitutional law",
+        "Fundamental rights",
+        "Administrative law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1765/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "basic-structure",
+        "42nd-amendment",
+        "fundamental-rights",
+        "directive-principles",
+        "judicial-review",
+        "1980"
+      ],
+      "relevance_to_legal_finance_system": "Important for understanding limits on government power that may impact financial regulations and tax laws."
+    },
+    {
+      "case_id": "maneka_gandhi_1978",
+      "title": "Maneka Gandhi v. Union of India",
+      "citation": "AIR 1978 SC 597",
+      "year": 1978,
+      "decision_date": "1978-01-25",
+      "court": "Supreme Court of India",
+      "bench_size": 7,
+      "judges": [
+        "Justice M.H. Beg",
+        "Justice Y.V. Chandrachud",
+        "Justice V.R. Krishna Iyer",
+        "Justice P.N. Bhagwati",
+        "Justice N.L. Untwalia",
+        "Justice S. Murtaza Fazal Ali",
+        "Justice P.S. Kailasam"
+      ],
+      "parties": {
+        "petitioner": "Maneka Gandhi",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Right to Life",
+        "Personal Liberty",
+        "Passports"
+      ],
+      "legal_principles": [
+        "Expanded Article 21",
+        "Procedure Established by Law",
+        "Due Process",
+        "Interconnectedness of Fundamental Rights"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 14",
+        "Article 19"
+      ],
+      "relevant_acts": [
+        "Passports Act 1967"
+      ],
+      "vote": {
+        "majority": 6,
+        "minority": 1,
+        "decision": "Majority"
+      },
+      "summary": "The government impounded the petitioner's passport without giving reasons. The Court expanded the scope of Article 21 (Right to Life and Personal Liberty) to include the right to go abroad. It held that 'procedure established by law' must be right, just, and fair \u00e2\u20ac\u201d not arbitrary, fanciful, or oppressive. The case linked Articles 14, 19, and 21 as a 'golden triangle' of rights.",
+      "key_holdings": [
+        "Right to travel abroad is part of 'personal liberty' under Article 21",
+        "'Procedure established by law' must satisfy standards of natural justice",
+        "Articles 14, 19, and 21 are not mutually exclusive \u00e2\u20ac\u201d they form an integrated charter of rights",
+        "Any law affecting personal liberty must be just, fair, and reasonable"
+      ],
+      "key_quotes": [
+        "The law must be right, just and fair and not arbitrary, fanciful or oppressive.",
+        "Basic rights cluster around man in his individual capacity and in his social life."
+      ],
+      "why_important": "Landmark expansion of Article 21 beyond mere physical liberty. Established that fundamental rights are interlinked and that state action must satisfy substantive due process.",
+      "practice_areas": [
+        "Constitutional law",
+        "Human rights",
+        "Administrative law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1766147/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "article-21",
+        "personal-liberty",
+        "due-process",
+        "golden-triangle",
+        "passports",
+        "1978"
+      ],
+      "relevance_to_legal_finance_system": "Establishes procedural fairness standards relevant to tax enforcement and financial penalty proceedings."
+    },
+    {
+      "case_id": "sr_bommai_1994",
+      "title": "S.R. Bommai v. Union of India",
+      "citation": "AIR 1994 SC 1918",
+      "year": 1994,
+      "decision_date": "1994-03-11",
+      "court": "Supreme Court of India",
+      "bench_size": 9,
+      "judges": [
+        "Justice M.N. Venkatachaliah",
+        "Justice J.S. Verma",
+        "Justice P.B. Sawant",
+        "Justice K. Ramaswamy",
+        "Justice S.R. Pandian",
+        "Justice A.M. Ahmadi",
+        "Justice Kuldip Singh",
+        "Justice B.P. Jeevan Reddy",
+        "Justice S.C. Agrawal"
+      ],
+      "parties": {
+        "petitioner": "S.R. Bommai",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "President's Rule",
+        "Federalism",
+        "Article 356",
+        "Secularism"
+      ],
+      "legal_principles": [
+        "Federalism",
+        "Secularism as Basic Structure",
+        "Limits of President's Rule",
+        "Judicial Review of Article 356"
+      ],
+      "relevant_articles": [
+        "Article 356",
+        "Article 74",
+        "Article 164"
+      ],
+      "relevant_acts": [
+        "Constitution of India"
+      ],
+      "vote": {
+        "majority": 9,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "The Supreme Court ruled that imposition of President's Rule under Article 356 is subject to judicial review. The court held secularism and federalism are essential features of the basic structure of the Constitution. It restrained the arbitrary misuse of Article 356 by requiring the President's satisfaction to be based on relevant material.",
+      "key_holdings": [
+        "Imposition of President's Rule under Article 356 is subject to judicial review",
+        "Secularism is a basic feature of the Constitution",
+        "Federalism is part of the basic structure",
+        "Floor test must be held before recommending President's Rule",
+        "Court can restore dismissed government if imposition was unconstitutional"
+      ],
+      "key_quotes": [
+        "Secularism is the basic feature of the Constitution.",
+        "The floor of the House is the place to test majority."
+      ],
+      "why_important": "Drastically curtailed arbitrary use of Article 356 by the Union government against state governments. Firmly established secularism and federalism as basic structure elements.",
+      "practice_areas": [
+        "Constitutional law",
+        "Administrative law",
+        "Political law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/60799/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "article-356",
+        "presidents-rule",
+        "federalism",
+        "secularism",
+        "basic-structure",
+        "1994"
+      ],
+      "relevance_to_legal_finance_system": "Relevant to centre-state financial relations and GST council disputes under cooperative federalism."
+    },
+    {
+      "case_id": "vishaka_1997",
+      "title": "Vishaka v. State of Rajasthan",
+      "citation": "AIR 1997 SC 3011",
+      "year": 1997,
+      "decision_date": "1997-08-13",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Chief Justice J.S. Verma",
+        "Justice Sujata V. Manohar",
+        "Justice B.N. Kirpal"
+      ],
+      "parties": {
+        "petitioner": "Vishaka & Ors",
+        "respondent": "State of Rajasthan"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Sexual Harassment",
+        "Workplace Rights",
+        "Women's Rights",
+        "Writ Jurisdiction"
+      ],
+      "legal_principles": [
+        "Supreme Court's power to issue guidelines in absence of legislation",
+        "CEDAW applicability",
+        "Gender equality as fundamental right"
+      ],
+      "relevant_articles": [
+        "Article 14",
+        "Article 15",
+        "Article 19(1)(g)",
+        "Article 21"
+      ],
+      "relevant_acts": [
+        "Prevention of Sexual Harassment at Workplace Act 2013 (later enacted)"
+      ],
+      "vote": {
+        "majority": 3,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Filed following gang rape of social activist Bhanwari Devi. The Supreme Court filled a legislative vacuum by issuing the 'Vishaka Guidelines' \u00e2\u20ac\u201d binding directions on employers to prevent and address sexual harassment at the workplace. The guidelines remained in force until POSH Act 2013 was enacted.",
+      "key_holdings": [
+        "Sexual harassment at workplace violates Articles 14, 15, 19(1)(g), and 21",
+        "Court can issue binding guidelines to fill legislative vacuum",
+        "Employers have a duty to prevent sexual harassment",
+        "Internal Complaints Committees to be established",
+        "International obligations (CEDAW) can inform domestic law"
+      ],
+      "key_quotes": [
+        "Gender equality includes protection from sexual harassment.",
+        "Where legislation is absent, the Supreme Court can issue binding guidelines."
+      ],
+      "why_important": "Landmark judgment creating sexual harassment framework at workplace; directly led to enactment of POSH Act 2013. Established that courts can fill legislative gaps on human rights issues.",
+      "practice_areas": [
+        "Constitutional law",
+        "Employment law",
+        "Human rights",
+        "Gender justice"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1031794/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "sexual-harassment",
+        "workplace",
+        "women-rights",
+        "POSH",
+        "vishaka-guidelines",
+        "1997"
+      ],
+      "relevance_to_legal_finance_system": "Relevant to HR compliance obligations for companies \u00e2\u20ac\u201d POSH compliance is a legal mandate for all organisations."
+    },
+    {
+      "case_id": "indira_gandhi_v_raj_narain_1975",
+      "title": "Indira Nehru Gandhi v. Raj Narain",
+      "citation": "AIR 1975 SC 2299",
+      "year": 1975,
+      "decision_date": "1975-11-07",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice A.N. Ray",
+        "Justice H.R. Khanna",
+        "Justice K.K. Mathew",
+        "Justice M.H. Beg",
+        "Justice Y.V. Chandrachud"
+      ],
+      "parties": {
+        "petitioner": "Indira Nehru Gandhi",
+        "respondent": "Raj Narain"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Election Law",
+        "Basic Structure",
+        "Free and Fair Elections"
+      ],
+      "legal_principles": [
+        "Free and fair elections as basic structure",
+        "Rule of law",
+        "Separation of powers"
+      ],
+      "relevant_articles": [
+        "Article 329A",
+        "Article 368"
+      ],
+      "relevant_acts": [
+        "39th Constitutional Amendment Act 1975"
+      ],
+      "vote": {
+        "majority": 4,
+        "minority": 1,
+        "decision": "Majority"
+      },
+      "summary": "After Allahabad High Court found PM Indira Gandhi guilty of corrupt practices in elections, the 39th Amendment retroactively validated her election and placed disputes regarding PM's election beyond judicial review. Supreme Court struck down the amendment as violating free and fair elections \u00e2\u20ac\u201d part of the basic structure.",
+      "key_holdings": [
+        "Free and fair elections are part of the basic structure of the Constitution",
+        "Parliament cannot validate its own elections retrospectively",
+        "Rule of law and separation of powers are basic structure elements",
+        "Clause 4 of 39th Amendment struck down as unconstitutional"
+      ],
+      "key_quotes": [
+        "Democracy postulates that free and fair elections must be held.",
+        "Rule of law is the basic feature of our Constitution."
+      ],
+      "why_important": "Applied and extended basic structure doctrine to election law. Led directly to declaration of Emergency in 1975.",
+      "practice_areas": [
+        "Constitutional law",
+        "Election law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1735815/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "elections",
+        "basic-structure",
+        "rule-of-law",
+        "39th-amendment",
+        "emergency",
+        "1975"
+      ],
+      "relevance_to_legal_finance_system": "Establishes that legislative overreach cannot validate improper financial or administrative decisions retrospectively."
+    },
+    {
+      "case_id": "olga_tellis_1985",
+      "title": "Olga Tellis v. Bombay Municipal Corporation",
+      "citation": "AIR 1986 SC 180",
+      "year": 1985,
+      "decision_date": "1985-07-10",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice Y.V. Chandrachud",
+        "Justice D.A. Desai",
+        "Justice O. Chinnappa Reddy",
+        "Justice E.S. Venkataramaih",
+        "Justice Ranganath Misra"
+      ],
+      "parties": {
+        "petitioner": "Olga Tellis & Ors (Pavement dwellers)",
+        "respondent": "Bombay Municipal Corporation"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Right to Life",
+        "Livelihood",
+        "Pavement Dwellers"
+      ],
+      "legal_principles": [
+        "Right to livelihood as part of Right to Life",
+        "Natural justice before eviction"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 39(a)",
+        "Article 41"
+      ],
+      "relevant_acts": [
+        "Bombay Municipal Corporation Act"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Pavement dwellers challenged eviction from Bombay's footpaths. The Court held that the right to livelihood is included in the right to life under Article 21 because no person can live without the means of living (livelihood). The state cannot deprive a person of livelihood without following a just and fair procedure.",
+      "key_holdings": [
+        "Right to livelihood is part of the right to life under Article 21",
+        "Eviction without opportunity to be heard violates Article 21",
+        "Pavement dwellers cannot be evicted without alternative arrangements",
+        "The sweep of the right to life is wide and far-reaching"
+      ],
+      "key_quotes": [
+        "The right to life includes the right to livelihood.",
+        "An easement like right has been acquired over footpaths by pavement dwellers."
+      ],
+      "why_important": "Established right to livelihood as a constitutional right under Article 21. Foundation for numerous public interest litigations on housing and employment rights.",
+      "practice_areas": [
+        "Constitutional law",
+        "Human rights",
+        "Urban law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/709776/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "right-to-livelihood",
+        "article-21",
+        "pavement-dwellers",
+        "eviction",
+        "1985"
+      ],
+      "relevance_to_legal_finance_system": "Right to livelihood impacts labour law and employment-related financial decisions."
+    },
+    {
+      "case_id": "union_carbide_bhopal_1989",
+      "title": "Union Carbide Corporation v. Union of India",
+      "citation": "AIR 1990 SC 273",
+      "year": 1989,
+      "decision_date": "1989-02-14",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice R.S. Pathak",
+        "Justice E.S. Venkataramaiah",
+        "Justice S. Mukharji",
+        "Justice M.M. Dutt",
+        "Justice S.R. Pandian"
+      ],
+      "parties": {
+        "petitioner": "Union Carbide Corporation (USA)",
+        "respondent": "Union of India"
+      },
+      "category": "Tort Law / Constitutional Law",
+      "subcategories": [
+        "Industrial Disaster",
+        "Absolute Liability",
+        "Compensation",
+        "Bhopal Gas Tragedy"
+      ],
+      "legal_principles": [
+        "Absolute Liability (Rylands v Fletcher evolved)",
+        "Parens Patriae",
+        "Settlement in public interest"
+      ],
+      "relevant_articles": [
+        "Article 32",
+        "Article 21"
+      ],
+      "relevant_acts": [
+        "Bhopal Gas Leak Disaster (Processing of Claims) Act 1985"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Settlement of \u00e2\u201a\u00b9715 crore (USD 470 million) for victims of the 1984 Bhopal gas tragedy that killed thousands. The Court approved the settlement between UCC and Government of India acting as parens patriae for victims. It also made doctrine of absolute liability applicable \u00e2\u20ac\u201d industrial enterprises engaged in hazardous activities are absolutely liable for harm caused.",
+      "key_holdings": [
+        "Doctrine of absolute liability applies to enterprises engaged in hazardous activities",
+        "Government can act as parens patriae to represent disaster victims",
+        "Courts have jurisdiction to approve class-action type settlements",
+        "Amount of compensation must be 'just, equitable and reasonable'"
+      ],
+      "key_quotes": [
+        "Enterprises which are engaged in hazardous activity owe an absolute and non-delegable duty to the community.",
+        "There are no exceptions to the principle of absolute liability."
+      ],
+      "why_important": "Established absolute liability doctrine (stronger than strict liability from Rylands v Fletcher). Set precedent for corporate liability in industrial disasters. Led to Environment Protection Act and related legislation.",
+      "practice_areas": [
+        "Tort law",
+        "Environmental law",
+        "Corporate liability",
+        "Insurance"
+      ],
+      "source_url": "https://indiankanoon.org/doc/596049/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "absolute-liability",
+        "bhopal",
+        "industrial-disaster",
+        "corporate-liability",
+        "settlement",
+        "1989"
+      ],
+      "relevance_to_legal_finance_system": "Absolute liability doctrine directly impacts corporate insurance requirements and financial risk provisioning."
+    },
+    {
+      "case_id": "mc_mehta_1987",
+      "title": "M.C. Mehta v. Union of India (Oleum Gas Leak Case)",
+      "citation": "AIR 1987 SC 1086",
+      "year": 1987,
+      "decision_date": "1986-12-20",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice P.N. Bhagwati",
+        "Justice R.S. Pathak",
+        "Justice G.L. Oza",
+        "Justice M.M. Dutt",
+        "Justice E.S. Venkataramaiah"
+      ],
+      "parties": {
+        "petitioner": "M.C. Mehta",
+        "respondent": "Union of India"
+      },
+      "category": "Environmental Law",
+      "subcategories": [
+        "Absolute Liability",
+        "Polluter Pays",
+        "Environmental Protection",
+        "PIL"
+      ],
+      "legal_principles": [
+        "Absolute Liability (Indian variant)",
+        "Polluter Pays Principle",
+        "Public Interest Litigation"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 32"
+      ],
+      "relevant_acts": [
+        "Environment Protection Act 1986",
+        "Factories Act"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Following the oleum gas leak from Shriram Foods and Fertiliser Industries in Delhi, M.C. Mehta filed a PIL. The Supreme Court laid down the doctrine of Absolute Liability: an enterprise engaged in hazardous activity is absolutely liable to pay compensation if any harm results \u00e2\u20ac\u201d with no exceptions as under the English rule of strict liability from Rylands v. Fletcher.",
+      "key_holdings": [
+        "Absolute liability doctrine: no exceptions apply to enterprises causing harm through hazardous activity",
+        "Enterprise must be absolutely liable, regardless of whether harm occurred despite all precautions",
+        "Amount of compensation should be commensurate with the magnitude and capacity of enterprise",
+        "Public interest litigation is a powerful tool to enforce environmental rights"
+      ],
+      "key_quotes": [
+        "We are of the view that an enterprise which is engaged in a hazardous or inherently dangerous industry... owes an absolute and non-delegable duty to the community.",
+        "We do not think that the rule of strict liability as evolved in Rylands v Fletcher is adequate for modern conditions."
+      ],
+      "why_important": "Created India's unique doctrine of absolute liability for hazardous industries \u00e2\u20ac\u201d stronger than English strict liability. Foundation of modern Indian environmental law.",
+      "practice_areas": [
+        "Environmental law",
+        "Industrial law",
+        "Tort law",
+        "PIL"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1486418/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "absolute-liability",
+        "environmental-law",
+        "oleum-gas",
+        "PIL",
+        "hazardous-industry",
+        "1987"
+      ],
+      "relevance_to_legal_finance_system": "Environmental liability principles affect corporate financial reporting, insurance, and compliance costs."
+    },
+    {
+      "case_id": "unni_krishnan_1993",
+      "title": "Unni Krishnan J.P. v. State of Andhra Pradesh",
+      "citation": "AIR 1993 SC 2178",
+      "year": 1993,
+      "decision_date": "1993-02-04",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Justice B.P. Jeevan Reddy",
+        "Justice R.M. Sahai",
+        "Justice S. Mohan",
+        "Justice J.S. Verma",
+        "Justice S. Ratnavel Pandian"
+      ],
+      "parties": {
+        "petitioner": "Unni Krishnan J.P. & Ors",
+        "respondent": "State of Andhra Pradesh & Ors"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Right to Education",
+        "Fundamental Rights",
+        "Private Institutions"
+      ],
+      "legal_principles": [
+        "Right to education as fundamental right",
+        "Regulation of private educational institutions",
+        "Article 21 expanded"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 41",
+        "Article 45"
+      ],
+      "relevant_acts": [
+        "Constitution of India"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "The Supreme Court held that right to education up to age 14 is a fundamental right under Article 21, read with Articles 41 and 45 of the Directive Principles. It also laid down a scheme (fee structure) for private engineering and medical colleges. Later, the 86th Constitutional Amendment (2002) gave explicit recognition to right to education, leading to the Right to Education Act 2009.",
+      "key_holdings": [
+        "Right to education up to age 14 is a fundamental right under Article 21",
+        "State must provide free and compulsory education up to 14 years",
+        "Private educational institutions can charge fees but not capitation fees (profiteering prohibited)",
+        "Education is not a business; it is a charitable activity"
+      ],
+      "key_quotes": [
+        "Right to education flows directly from right to life.",
+        "Capitation fee amounts to commercialisation of education which is opposed to our constitutional scheme."
+      ],
+      "why_important": "Recognised right to education as fundamental right \u00e2\u20ac\u201d paved way for 86th Amendment and Right to Education Act 2009. Regulated capitation fees in private colleges.",
+      "practice_areas": [
+        "Constitutional law",
+        "Education law",
+        "Right to life"
+      ],
+      "source_url": "https://indiankanoon.org/doc/58735/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "right-to-education",
+        "article-21",
+        "capitation-fee",
+        "private-colleges",
+        "1993"
+      ],
+      "relevance_to_legal_finance_system": "Relevant to education-related tax exemptions (Section 10 of Income Tax Act) and compliance requirements for educational institutions."
+    },
+    {
+      "case_id": "sabarimala_2018",
+      "title": "Indian Young Lawyers Association v. State of Kerala (Sabarimala Case)",
+      "citation": "(2018) 9 SCC 1",
+      "year": 2018,
+      "decision_date": "2018-09-28",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice Dipak Misra",
+        "Justice A.M. Khanwilkar",
+        "Justice R.F. Nariman",
+        "Justice D.Y. Chandrachud",
+        "Justice Indu Malhotra"
+      ],
+      "parties": {
+        "petitioner": "Indian Young Lawyers Association",
+        "respondent": "State of Kerala"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Religious Practices",
+        "Gender Equality",
+        "Fundamental Rights",
+        "Right to Worship"
+      ],
+      "legal_principles": [
+        "Constitutional morality over social morality",
+        "Gender equality as fundamental right",
+        "Exclusion based on physiological characteristics is unconstitutional"
+      ],
+      "relevant_articles": [
+        "Article 14",
+        "Article 15",
+        "Article 17",
+        "Article 25",
+        "Article 26"
+      ],
+      "relevant_acts": [
+        "Kerala Hindu Places of Public Worship (Authorisation of Entry) Act 1965"
+      ],
+      "vote": {
+        "majority": 4,
+        "minority": 1,
+        "decision": "4:1 majority"
+      },
+      "summary": "The Supreme Court (4:1) struck down the practice of excluding women aged 10-50 from entering the Sabarimala temple. The majority held this practice violated Articles 14, 15, and 17 (untouchability), and that 'constitutional morality' must prevail over popular religious morality.",
+      "key_holdings": [
+        "Exclusion of women from temple based on biological/physiological characteristics is unconstitutional",
+        "Constitutional morality must prevail over popular morality",
+        "Right to worship is guaranteed to all, regardless of gender",
+        "Exclusionary religious practices that violate fundamental rights are not protected under Article 26",
+        "Dissent (Justice Indu Malhotra): Courts should not interfere in matters of religion"
+      ],
+      "key_quotes": [
+        "Devotion cannot be subjected to notions of purity and pollution based on physiological phenomena.",
+        "Constitutional morality is not natural to a society; it has to be cultivated."
+      ],
+      "why_important": "Landmark judgment on intersection of religious freedom and gender equality. Generated significant social debate. Review petitions referred to 9-judge bench.",
+      "practice_areas": [
+        "Constitutional law",
+        "Religion law",
+        "Gender justice"
+      ],
+      "source_url": "https://indiankanoon.org/doc/117138/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "sabarimala",
+        "gender-equality",
+        "religious-freedom",
+        "article-25",
+        "constitutional-morality",
+        "2018"
+      ],
+      "relevance_to_legal_finance_system": "Demonstrates how constitutional rights interact with institutional practices \u00e2\u20ac\u201d relevant to compliance frameworks."
+    },
+    {
+      "case_id": "navtej_singh_johar_2018",
+      "title": "Navtej Singh Johar v. Union of India",
+      "citation": "(2018) 10 SCC 1",
+      "year": 2018,
+      "decision_date": "2018-09-06",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice Dipak Misra",
+        "Justice R.F. Nariman",
+        "Justice A.M. Khanwilkar",
+        "Justice D.Y. Chandrachud",
+        "Justice Indu Malhotra"
+      ],
+      "parties": {
+        "petitioner": "Navtej Singh Johar & Ors",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "LGBTQ Rights",
+        "Section 377 IPC",
+        "Privacy",
+        "Dignity"
+      ],
+      "legal_principles": [
+        "Right to privacy includes sexual orientation",
+        "Dignity as constitutional value",
+        "State cannot criminalise consensual adult behaviour"
+      ],
+      "relevant_articles": [
+        "Article 14",
+        "Article 15",
+        "Article 19",
+        "Article 21"
+      ],
+      "relevant_acts": [
+        "Indian Penal Code Section 377"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Unanimously decriminalised consensual same-sex relations among adults by reading down Section 377 IPC. Overruled Suresh Kumar Koushal (2013) which had reinstated Section 377. The Court held that criminalising consensual adult same-sex conduct violates Articles 14, 15, 19, and 21.",
+      "key_holdings": [
+        "Section 377 IPC unconstitutional to the extent it criminalises consensual adult same-sex conduct",
+        "Sexual orientation is a protected ground under Article 15 (discrimination)",
+        "Right to privacy includes right to one's sexual orientation",
+        "Criminalising consensual adult relationships violates dignity and autonomy under Article 21",
+        "Suresh Kumar Koushal (2013) overruled"
+      ],
+      "key_quotes": [
+        "An individual's sexual orientation is a natural phenomenon.",
+        "History owes an apology to members of the LGBT community."
+      ],
+      "why_important": "Landmark judgment decriminalising homosexuality in India. Affirmed dignity and autonomy as core constitutional values.",
+      "practice_areas": [
+        "Constitutional law",
+        "Human rights",
+        "Criminal law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/168671544/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "lgbtq",
+        "section-377",
+        "privacy",
+        "dignity",
+        "decriminalisation",
+        "2018"
+      ],
+      "relevance_to_legal_finance_system": "Anti-discrimination compliance obligations for employers now extend to sexual orientation under evolving law."
+    },
+    {
+      "case_id": "puttaswamy_privacy_2017",
+      "title": "Justice K.S. Puttaswamy v. Union of India (Right to Privacy Case)",
+      "citation": "(2017) 10 SCC 1",
+      "year": 2017,
+      "decision_date": "2017-08-24",
+      "court": "Supreme Court of India",
+      "bench_size": 9,
+      "judges": [
+        "Chief Justice J.S. Khehar",
+        "Justice J. Chelameswar",
+        "Justice S.A. Bobde",
+        "Justice R.K. Agrawal",
+        "Justice R.F. Nariman",
+        "Justice A.M. Sapre",
+        "Justice D.Y. Chandrachud",
+        "Justice S.K. Kaul",
+        "Justice S.A. Nazeer"
+      ],
+      "parties": {
+        "petitioner": "Justice K.S. Puttaswamy (Retd)",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Right to Privacy",
+        "Fundamental Rights",
+        "Aadhaar",
+        "Data Protection"
+      ],
+      "legal_principles": [
+        "Right to privacy is a fundamental right",
+        "Informational self-determination",
+        "Data protection as right"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 14",
+        "Article 19"
+      ],
+      "relevant_acts": [
+        "Aadhaar Act 2016",
+        "Personal Data Protection Bills"
+      ],
+      "vote": {
+        "majority": 9,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "9-judge bench unanimously declared that the right to privacy is a fundamental right under Article 21. Overruled M.P. Sharma (1954) and Kharak Singh (1962) which had held privacy is not a fundamental right. Paved the way for Aadhaar challenge and India's Personal Data Protection framework.",
+      "key_holdings": [
+        "Right to privacy is a fundamental right protected under Article 21",
+        "Privacy includes autonomy over personal choices, informational privacy, and bodily integrity",
+        "State can restrict privacy only through law, legitimate aim, and proportionality",
+        "Data protection is a facet of right to privacy",
+        "Private entities can also violate privacy rights"
+      ],
+      "key_quotes": [
+        "Privacy is the ultimate expression of the sanctity of the individual.",
+        "The right to be let alone is the beginning of all freedom."
+      ],
+      "why_important": "Landmark unanimous ruling declaring privacy a fundamental right. Foundation for India's data protection law and restraints on Aadhaar-based surveillance.",
+      "practice_areas": [
+        "Constitutional law",
+        "Data privacy",
+        "Technology law",
+        "Financial regulation"
+      ],
+      "source_url": "https://indiankanoon.org/doc/91938676/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "privacy",
+        "fundamental-right",
+        "aadhaar",
+        "data-protection",
+        "article-21",
+        "2017"
+      ],
+      "relevance_to_legal_finance_system": "foundational for financial data privacy \u00e2\u20ac\u201d bank account linking, PAN-Aadhaar, and RBI data localisation requirements."
+    },
+    {
+      "case_id": "bandhua_mukti_morcha_1984",
+      "title": "Bandhua Mukti Morcha v. Union of India",
+      "citation": "AIR 1984 SC 802",
+      "year": 1984,
+      "decision_date": "1983-12-16",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Justice P.N. Bhagwati",
+        "Justice R.S. Pathak",
+        "Justice A. Sen"
+      ],
+      "parties": {
+        "petitioner": "Bandhua Mukti Morcha (Bonded Labour Liberation Front)",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law / Labour Law",
+      "subcategories": [
+        "Bonded Labour",
+        "Right to Life",
+        "Article 23",
+        "PIL"
+      ],
+      "legal_principles": [
+        "Article 23 prohibits forced labour",
+        "Right to live with human dignity",
+        "Epistolary jurisdiction of Supreme Court"
+      ],
+      "relevant_articles": [
+        "Article 21",
+        "Article 23",
+        "Article 24"
+      ],
+      "relevant_acts": [
+        "Bonded Labour System (Abolition) Act 1976"
+      ],
+      "vote": {
+        "majority": 3,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Bandhua Mukti Morcha wrote letters to the Supreme Court about bonded labourers in Haryana quarries. The Court treated the letters as writ petitions (epistolary jurisdiction) and ordered release of bonded labourers. Held that right to live with dignity is a part of right to life under Article 21 and bonded labour violates this right.",
+      "key_holdings": [
+        "Bonded labour is unconstitutional under Article 23",
+        "Right to live with human dignity is part of Article 21",
+        "Court's epistolary jurisdiction allows letters to be treated as PILs",
+        "State must rehabilitate released bonded labourers",
+        "Minimum wage violation amounts to forced labour under Article 23"
+      ],
+      "key_quotes": [
+        "Article 21 includes the right to live with basic human dignity.",
+        "Letters addressed to the court can be treated as writ petitions."
+      ],
+      "why_important": "Expanded the scope of PIL by allowing letters to be treated as petitions. Linked minimum wage compliance to Article 23's prohibition on forced labour.",
+      "practice_areas": [
+        "Labour law",
+        "Constitutional law",
+        "Human rights",
+        "PIL"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1742261/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "bonded-labour",
+        "article-23",
+        "PIL",
+        "minimum-wage",
+        "dignity",
+        "1984"
+      ],
+      "relevance_to_legal_finance_system": "Minimum wage compliance is a legal obligation with tax and financial implications for employers."
+    },
+    {
+      "case_id": "shah_bano_1985",
+      "title": "Mohd. Ahmed Khan v. Shah Bano Begum",
+      "citation": "AIR 1985 SC 945",
+      "year": 1985,
+      "decision_date": "1985-04-23",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "judges": [
+        "Chief Justice Y.V. Chandrachud",
+        "Justice D.A. Desai",
+        "Justice O. Chinnappa Reddy",
+        "Justice E.S. Venkataramaiah",
+        "Justice Ranganath Misra"
+      ],
+      "parties": {
+        "petitioner": "Mohd. Ahmed Khan (Husband)",
+        "respondent": "Shah Bano Begum (Wife)"
+      },
+      "category": "Family Law / Personal Law",
+      "subcategories": [
+        "Muslim Personal Law",
+        "Maintenance",
+        "Divorced Muslim Women",
+        "Uniform Civil Code"
+      ],
+      "legal_principles": [
+        "Section 125 CrPC applies to all citizens regardless of religion",
+        "Personal law cannot override secular law"
+      ],
+      "relevant_articles": [
+        "Article 44 (Uniform Civil Code)",
+        "Article 15"
+      ],
+      "relevant_acts": [
+        "Criminal Procedure Code Section 125",
+        "Muslim Personal Law",
+        "Muslim Women (Protection of Rights on Divorce) Act 1986"
+      ],
+      "vote": {
+        "majority": 5,
+        "minority": 0,
+        "decision": "Unanimous"
+      },
+      "summary": "Shah Bano, a divorced Muslim woman, claimed maintenance under Section 125 CrPC. Husband claimed Muslim personal law (mehr was sufficient). Supreme Court held that Section 125 CrPC applies to all Indian citizens regardless of religion and upheld Shah Bano's right to maintenance. Court also commented on the desirability of a Uniform Civil Code.",
+      "key_holdings": [
+        "Section 125 CrPC applies to all citizens regardless of religion",
+        "Divorced Muslim women are entitled to maintenance under CrPC",
+        "Payment of mehr does not absolve husband of maintenance obligation",
+        "Court expressed desirability of Uniform Civil Code under Article 44"
+      ],
+      "key_quotes": [
+        "Section 125 of the Code of Criminal Procedure is a secular provision which applies to all communities.",
+        "It is a matter of regret that Article 44 has remained a dead letter."
+      ],
+      "why_important": "Generated enormous controversy and led to enactment of Muslim Women (Protection of Rights on Divorce) Act 1986 by Congress government, partly overturning the ruling. Sparked debate on uniform civil code.",
+      "practice_areas": [
+        "Family law",
+        "Personal law",
+        "Criminal law",
+        "Maintenance"
+      ],
+      "source_url": "https://indiankanoon.org/doc/823221/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "maintenance",
+        "muslim-women",
+        "section-125-crpc",
+        "personal-law",
+        "uniform-civil-code",
+        "1985"
+      ],
+      "relevance_to_legal_finance_system": "Financial obligations in personal law (maintenance, alimony) have income tax and financial planning implications."
+    },
+    {
+      "case_id": "state_of_madras_v_champakam_1951",
+      "title": "State of Madras v. Champakam Dorairajan",
+      "citation": "AIR 1951 SC 226",
+      "year": 1951,
+      "decision_date": "1951-04-09",
+      "court": "Supreme Court of India",
+      "bench_size": 6,
+      "parties": {
+        "petitioner": "State of Madras",
+        "respondent": "Champakam Dorairajan"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Reservation",
+        "Caste-based Discrimination",
+        "Education",
+        "Communal G.O."
+      ],
+      "legal_principles": [
+        "Article 15 prohibition on caste discrimination",
+        "First Constitutional Amendment"
+      ],
+      "relevant_articles": [
+        "Article 15(1)",
+        "Article 29(2)",
+        "Article 46"
+      ],
+      "summary": "Supreme Court struck down Madras Communal G.O. fixing seats in state educational institutions based on religion and caste. It was the first case where Supreme Court struck down a law for violating fundamental rights. Led directly to First Constitutional Amendment adding Article 15(4) allowing reservations.",
+      "key_holdings": [
+        "Communal G.O. reserving seats by caste/religion violates Article 15(1) and 29(2)",
+        "Directive Principles (Article 46) cannot override Fundamental Rights",
+        "First Constitution Amendment then added Article 15(4) to enable reservations"
+      ],
+      "why_important": "First case striking down law for violating FRs; directly caused First Constitutional Amendment adding positive discrimination clause.",
+      "practice_areas": [
+        "Constitutional law",
+        "Education law",
+        "Reservation law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/109659/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "reservation",
+        "caste",
+        "article-15",
+        "discrimination",
+        "education",
+        "1951"
+      ],
+      "relevance_to_legal_finance_system": "Reservation law impacts HR hiring costs, compliance obligations, and government contract eligibility."
+    },
+    {
+      "case_id": "indra_sawhney_1992",
+      "title": "Indra Sawhney v. Union of India (Mandal Commission Case)",
+      "citation": "AIR 1993 SC 477",
+      "year": 1992,
+      "decision_date": "1992-11-16",
+      "court": "Supreme Court of India",
+      "bench_size": 9,
+      "parties": {
+        "petitioner": "Indra Sawhney & Ors",
+        "respondent": "Union of India"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "OBC Reservation",
+        "Mandal Commission",
+        "Creamy Layer",
+        "Article 16(4)"
+      ],
+      "legal_principles": [
+        "50% ceiling on reservations",
+        "Creamy layer exclusion",
+        "No reservation in promotions"
+      ],
+      "relevant_articles": [
+        "Article 16(4)",
+        "Article 16(4A)"
+      ],
+      "summary": "Upheld 27% OBC reservation recommended by Mandal Commission but imposed 50% cap on total reservations and excluded 'creamy layer' (economically advanced OBCs) from benefits. Struck down 10% reservation for economically backward among forward castes.",
+      "key_holdings": [
+        "Total reservation cannot exceed 50% (except in extraordinary circumstances)",
+        "Creamy layer among OBCs must be excluded from reservation benefits",
+        "Reservation in promotions not permitted (Article 16(4A) added later)",
+        "Economically backward among forward castes reservation struck down",
+        "27% OBC reservation upheld"
+      ],
+      "why_important": "Definitive judgment on OBC reservation; set 50% ceiling and creamy layer doctrine still governing reservation law today.",
+      "practice_areas": [
+        "Constitutional law",
+        "Reservation law",
+        "Employment law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1363234/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "OBC",
+        "reservation",
+        "mandal",
+        "creamy-layer",
+        "50-percent-cap",
+        "1992"
+      ],
+      "relevance_to_legal_finance_system": "OBC reservation impacts government procurement policies and public sector employment compliance."
+    },
+    {
+      "case_id": "el_v_state_of_tn_tax_2004",
+      "title": "Commissioner of Income Tax v. Calcutta Knitwears",
+      "citation": "(2014) 6 SCC 444",
+      "year": 2014,
+      "decision_date": "2014-03-20",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "parties": {
+        "petitioner": "Commissioner of Income Tax, Ludhiana",
+        "respondent": "Calcutta Knitwears"
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "Income Tax",
+        "Section 133A Survey",
+        "Business Income",
+        "Assessment"
+      ],
+      "legal_principles": [
+        "Survey statements are not conclusive admissions",
+        "Right to retract statements made during survey",
+        "Voluntary disclosure vs. coercion"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Income Tax Act 1961 Section 133A"
+      ],
+      "summary": "The Supreme Court held that statements recorded during a survey under Section 133A of Income Tax Act cannot be used as conclusive admissions. Assessee has right to retract such statements and department must independently verify income through evidence.",
+      "key_holdings": [
+        "Statement recorded under Section 133A during survey is not a sworn statement",
+        "Assessee can retract statement made during survey",
+        "Tax authorities cannot solely rely on survey statements \u00e2\u20ac\u201d must corroborate with other evidence",
+        "Voluntary disclosure has evidentiary value but is not conclusive"
+      ],
+      "why_important": "Protects taxpayers from coerced admissions during income tax surveys. Clarifies evidentiary weight of survey statements.",
+      "practice_areas": [
+        "Income tax law",
+        "Tax litigation",
+        "Assessment proceedings"
+      ],
+      "source_url": "https://indiankanoon.org/doc/193517773/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "income-tax",
+        "section-133A",
+        "survey",
+        "retraction",
+        "assessment",
+        "2014"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to tax assessment, audit compliance, and rights of taxpayers during IT surveys."
+    },
+    {
+      "case_id": "ayakar_gst_2023",
+      "title": "Mohit Minerals Pvt. Ltd. v. Union of India",
+      "citation": "(2022) 10 SCC 700",
+      "year": 2022,
+      "decision_date": "2022-05-19",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Justice D.Y. Chandrachud",
+        "Justice Surya Kant",
+        "Justice Vikram Nath"
+      ],
+      "parties": {
+        "petitioner": "Mohit Minerals Pvt. Ltd.",
+        "respondent": "Union of India"
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "GST",
+        "IGST",
+        "Ocean Freight",
+        "Reverse Charge Mechanism"
+      ],
+      "legal_principles": [
+        "Double taxation not permissible",
+        "GST Council recommendations are not binding law",
+        "Limits of government notification power"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Integrated Goods and Services Tax Act 2017",
+        "GST Act"
+      ],
+      "summary": "Struck down the government notification levying IGST on ocean freight for imported goods on reverse charge basis. The Court held this amounted to double taxation (freight included in CIF value already taxed through Customs). Also held that GST Council recommendations are recommendatory and not binding \u00e2\u20ac\u201d Parliament and state legislatures retain legislative power.",
+      "key_holdings": [
+        "IGST on ocean freight under reverse charge mechanism on CIF imports is unconstitutional (double taxation)",
+        "GST Council recommendations are recommendatory and not binding on Parliament or state legislatures",
+        "Constitutional scheme preserves sovereignty of Parliament and state legislatures",
+        "Notification imposing IGST on ocean freight struck down"
+      ],
+      "key_quotes": [
+        "The GST Council is a recommendatory body and its recommendations do not have the force of law.",
+        "Double taxation of the same economic activity is impermissible."
+      ],
+      "why_important": "Landmark GST case clarifying power of GST Council and striking down double taxation on ocean freight. Highly relevant to importers.",
+      "practice_areas": [
+        "GST law",
+        "Customs law",
+        "Tax litigation",
+        "Indirect tax"
+      ],
+      "source_url": "https://indiankanoon.org/doc/8930023/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "GST",
+        "IGST",
+        "ocean-freight",
+        "double-taxation",
+        "GST-council",
+        "2022"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to GST compliance, import tax planning, and understanding limits of GST Council authority."
+    },
+    {
+      "case_id": "canon_india_2021",
+      "title": "Canon India Pvt. Ltd. v. Commissioner of Customs",
+      "citation": "(2021) 5 SCC 536",
+      "year": 2021,
+      "decision_date": "2021-03-09",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "judges": [
+        "Justice S. Ravindra Bhat",
+        "Justice Hemant Gupta"
+      ],
+      "parties": {
+        "petitioner": "Canon India Pvt. Ltd.",
+        "respondent": "Commissioner of Customs"
+      },
+      "category": "Tax Law / Customs Law",
+      "subcategories": [
+        "Customs",
+        "Search and Seizure",
+        "Customs Act Section 110",
+        "Officer Jurisdiction"
+      ],
+      "legal_principles": [
+        "Proper officer jurisdiction in customs matters",
+        "Section 28 demand must be by proper officer who first assessed"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Customs Act 1962 Sections 17, 28, 110"
+      ],
+      "summary": "Supreme Court quashed customs demand notices issued by DRI (Directorate of Revenue Intelligence) officers against Canon India for alleged evasion on camera imports. Held that DRI officers who had not assessed the goods at the time of import cannot issue demand notices under Section 28 of the Customs Act \u00e2\u20ac\u201d only the 'proper officer' who assessed the goods has such jurisdiction.",
+      "key_holdings": [
+        "DRI officer who did not assess goods cannot issue demand notice under Section 28 of Customs Act",
+        "Jurisdiction of 'proper officer' under Section 28 is that officer who first assessed the goods",
+        "Demand by a non-proper officer is without jurisdiction and void",
+        "Customs Act amended prospectively to address this (Finance Act 2022)"
+      ],
+      "why_important": "Led to Finance Act 2022 amendment empowering DRI officers retrospectively. Significant for customs duty evasion cases.",
+      "practice_areas": [
+        "Customs law",
+        "Tax litigation",
+        "Indirect tax"
+      ],
+      "source_url": "https://indiankanoon.org/doc/30127108/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "customs",
+        "DRI",
+        "section-28",
+        "proper-officer",
+        "jurisdiction",
+        "2021"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to customs duty disputes, import compliance, and DRI notices for importers."
+    },
+    {
+      "case_id": "aditya_birla_nuvo_2011",
+      "title": "Commissioner of Income Tax v. Kelvinator of India Ltd.",
+      "citation": "(2010) 2 SCC 723",
+      "year": 2010,
+      "decision_date": "2010-01-05",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "parties": {
+        "petitioner": "Commissioner of Income Tax",
+        "respondent": "Kelvinator of India Ltd."
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "Income Tax",
+        "Reassessment",
+        "Section 147",
+        "Change of Opinion"
+      ],
+      "legal_principles": [
+        "Reopening of assessment requires tangible new material",
+        "Change of opinion not grounds for reassessment",
+        "Section 147 scope after 2001 amendment"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Income Tax Act 1961 Sections 147, 148"
+      ],
+      "summary": "Supreme Court held that after the 2001 amendment to Section 147, the Assessing Officer cannot reopen a completed assessment merely on the basis of a 'change of opinion'. There must be 'tangible material' to form the belief that income has escaped assessment. This remains the leading case on Section 147 reassessment.",
+      "key_holdings": [
+        "Post-2001, Section 147 requires 'tangible material' for reopening \u00e2\u20ac\u201d mere change of opinion is not sufficient",
+        "Where assessment was made under Section 143(3), there is a presumption against reopening without new material",
+        "AO cannot act as a review authority on his own completed assessment",
+        "Distinction between 'formation of belief' and 'change of opinion'"
+      ],
+      "key_quotes": [
+        "After the 1989 amendment, the power to reopen is much wider, but one important safeguard is that there must be 'tangible material' to support the belief.",
+        "Reason to believe is not the same as reason to suspect."
+      ],
+      "why_important": "The most-cited Supreme Court judgment on income tax reassessment. Prevents arbitrary reopening of completed assessments by tax department.",
+      "practice_areas": [
+        "Income tax law",
+        "Tax litigation",
+        "Reassessment"
+      ],
+      "source_url": "https://indiankanoon.org/doc/749946/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "income-tax",
+        "section-147",
+        "reassessment",
+        "change-of-opinion",
+        "tangible-material",
+        "2010"
+      ],
+      "relevance_to_legal_finance_system": "Very directly relevant \u00e2\u20ac\u201d governs when Income Tax department can reopen completed assessments. Critical for tax planning."
+    },
+    {
+      "case_id": "vodafone_tax_2012",
+      "title": "Vodafone International Holdings BV v. Union of India",
+      "citation": "(2012) 6 SCC 613",
+      "year": 2012,
+      "decision_date": "2012-01-20",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Chief Justice S.H. Kapadia",
+        "Justice K.S. Radhakrishnan",
+        "Justice S.W. Khanna"
+      ],
+      "parties": {
+        "petitioner": "Vodafone International Holdings BV",
+        "respondent": "Union of India"
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "Income Tax",
+        "Capital Gains",
+        "Offshore Transaction",
+        "Transfer of Shares"
+      ],
+      "legal_principles": [
+        "Look-at approach vs. look-through approach",
+        "Substance over form",
+        "GAAR principles",
+        "Offshore transactions"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Income Tax Act 1961 Sections 5, 9",
+        "Finance Act 2012 (retrospective amendments)"
+      ],
+      "summary": "Vodafone purchased Hutchison's Indian telecom assets through offshore acquisition of Cayman Islands holding company. Indian government sought capital gains tax on the Hutchison-Vodafone deal (~\u00e2\u201a\u00b911,000 crore). Supreme Court ruled in Vodafone's favour \u00e2\u20ac\u201d offshore transaction involving transfer of a foreign company's shares not taxable in India. Government then amended IT Act retrospectively (Finance Act 2012) to tax such deals. The retrospective amendment was later reversed by Finance Act 2021.",
+      "key_holdings": [
+        "Offshore transfer of shares of foreign holding company not taxable in India under pre-2012 law",
+        "Revenue cannot look through a transaction \u00e2\u20ac\u201d should look at the transaction",
+        "Tax department cannot recharacterise a legitimate commercial transaction",
+        "Every taxpayer has the right to structure affairs to minimize tax"
+      ],
+      "key_quotes": [
+        "The income-tax department cannot tax a non-resident on offshore transactions.",
+        "A citizen has the right to structure his affairs in a manner which would legitimately reduce the incidence of tax."
+      ],
+      "why_important": "Historic tax case involving \u00e2\u201a\u00b911,000 crore demand. Led to Finance Act 2012 retrospective amendment (overturning the judgment), and then Finance Act 2021 reversing the retrospective amendment. Basis for India's international tax reforms.",
+      "practice_areas": [
+        "International tax",
+        "Capital gains tax",
+        "Corporate tax",
+        "FDI"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1584291/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "vodafone",
+        "capital-gains",
+        "offshore-transaction",
+        "international-tax",
+        "retrospective",
+        "2012"
+      ],
+      "relevance_to_legal_finance_system": "Extremely relevant to cross-border transactions, FDI structures, and capital gains tax planning."
+    },
+    {
+      "case_id": "aban_offshore_2015",
+      "title": "Commissioner of Income Tax v. Reliance Industries Ltd.",
+      "citation": "(2019) 14 SCC 652",
+      "year": 2019,
+      "decision_date": "2019-10-31",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "parties": {
+        "petitioner": "Commissioner of Income Tax",
+        "respondent": "Reliance Industries Ltd."
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "Income Tax",
+        "Depreciation",
+        "Section 32",
+        "Block of Assets"
+      ],
+      "legal_principles": [
+        "Depreciation on block of assets",
+        "Written Down Value method",
+        "Section 32 Income Tax Act"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Income Tax Act 1961 Section 32"
+      ],
+      "summary": "Clarified the treatment of depreciation under Section 32 of the Income Tax Act for 'block of assets'. Held that the written down value (WDV) of the entire block must be calculated and depreciation applies to the block as a whole, not individual assets. Where WDV becomes nil or negative, no depreciation is allowable.",
+      "key_holdings": [
+        "Depreciation under Section 32 applies to 'block of assets' as a whole",
+        "Written Down Value (WDV) calculated for the entire block",
+        "When WDV becomes zero or negative, no depreciation is admissible",
+        "Short-term capital gain/loss on sale of asset calculated by reference to the block",
+        "Slump sale provisions and depreciation interact differently from individual asset sales"
+      ],
+      "why_important": "Definitive ruling on depreciation calculations for businesses. Directly impacts income tax computation for all businesses with fixed assets.",
+      "practice_areas": [
+        "Income tax law",
+        "Corporate tax",
+        "Depreciation",
+        "Accounting"
+      ],
+      "source_url": "https://indiankanoon.org/doc/62903789/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "depreciation",
+        "section-32",
+        "block-of-assets",
+        "WDV",
+        "income-tax",
+        "2019"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to tax calculations for businesses \u00e2\u20ac\u201d depreciation claims affect taxable income."
+    },
+    {
+      "case_id": "apex_labs_gst_input_2022",
+      "title": "Union of India v. VKC Footsteps India Pvt. Ltd.",
+      "citation": "(2022) 2 SCC 603",
+      "year": 2022,
+      "decision_date": "2021-09-13",
+      "court": "Supreme Court of India",
+      "bench_size": 5,
+      "parties": {
+        "petitioner": "Union of India",
+        "respondent": "VKC Footsteps India Pvt. Ltd."
+      },
+      "category": "Tax Law",
+      "subcategories": [
+        "GST",
+        "Input Tax Credit",
+        "Inverted Duty Structure",
+        "Refund"
+      ],
+      "legal_principles": [
+        "Rule 89(5) GST Rules restricts refund of ITC on input services",
+        "No refund for accumulated ITC on input services under inverted duty structure"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Central Goods and Services Tax Act 2017",
+        "CGST Rules 2017 Rule 89(5)"
+      ],
+      "summary": "Supreme Court held that Rule 89(5) of CGST Rules, which restricts refund of ITC accumulated on input services under inverted duty structure, is constitutionally valid. Taxpayers in inverted duty structure (where input tax rate is higher than output tax rate) cannot claim refund of ITC attributable to input services, only input goods.",
+      "key_holdings": [
+        "Rule 89(5) limiting ITC refund to input goods (excluding input services) is constitutionally valid",
+        "Section 54(3) of CGST Act permits Parliament to restrict refund by rules",
+        "Inverted duty structure refund available only for ITC on inputs (goods), not input services",
+        "Taxpayers with inverted duty structure must plan their ITC utilisation accordingly"
+      ],
+      "why_important": "Major GST ruling affecting manufacturers and traders with inverted duty structures \u00e2\u20ac\u201d particularly impacting footwear, textiles, and pharmaceuticals sectors.",
+      "practice_areas": [
+        "GST law",
+        "Input tax credit",
+        "Indirect tax",
+        "Tax refund"
+      ],
+      "source_url": "https://indiankanoon.org/doc/186990258/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "GST",
+        "input-tax-credit",
+        "inverted-duty",
+        "rule-89",
+        "refund",
+        "2022"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to GST refund planning, working capital management, and ITC utilisation strategies."
+    },
+    {
+      "case_id": "nfra_sahara_2012",
+      "title": "Sahara India Real Estate Corporation Ltd. v. SEBI",
+      "citation": "(2013) 1 SCC 1",
+      "year": 2012,
+      "decision_date": "2012-08-31",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Justice K.S. Radhakrishnan",
+        "Justice J.S. Khehar"
+      ],
+      "parties": {
+        "petitioner": "Sahara India Real Estate Corporation Ltd.",
+        "respondent": "Securities and Exchange Board of India"
+      },
+      "category": "Securities Law / Financial Regulation",
+      "subcategories": [
+        "SEBI Jurisdiction",
+        "OFCDs",
+        "Public Offer",
+        "Investor Protection"
+      ],
+      "legal_principles": [
+        "SEBI has jurisdiction over OFCDs (Optionally Fully Convertible Debentures)",
+        "Public offer regulations apply even through private placement route if issued to 50+ subscribers",
+        "Investor protection paramount"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "SEBI Act 1992",
+        "Companies Act",
+        "SEBI (ICDR) Regulations"
+      ],
+      "summary": "Sahara raised over \u00e2\u201a\u00b924,000 crore from millions of small investors through Optionally Fully Convertible Debentures (OFCDs), claiming these were private placements exempt from SEBI regulation. Supreme Court held that SEBI had jurisdiction and ordered Sahara to refund \u00e2\u201a\u00b924,000 crore (+ 15% interest) to investors. This led to arrest of Subrata Roy.",
+      "key_holdings": [
+        "SEBI has jurisdiction over OFCDs as they are 'securities' under the Securities Contracts Act",
+        "Issuance to 50+ persons constitutes a public offer requiring SEBI compliance",
+        "Refund of \u00e2\u201a\u00b924,000+ crore with 15% interest ordered",
+        "Private placement cannot circumvent public offer regulations",
+        "Investor protection is paramount in securities law"
+      ],
+      "key_quotes": [
+        "What cannot be done directly, cannot be done indirectly.",
+        "The primary role of the Securities Regulator is to protect the investors."
+      ],
+      "why_important": "Landmark investor protection case. Led to reforms in private placement regulations and strengthened SEBI's enforcement powers.",
+      "practice_areas": [
+        "Securities law",
+        "Financial regulation",
+        "Corporate law",
+        "Investor protection"
+      ],
+      "source_url": "https://indiankanoon.org/doc/60647125/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "SEBI",
+        "sahara",
+        "OFCD",
+        "public-offer",
+        "investor-protection",
+        "2012"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to SEBI compliance, capital market regulations, and investor protection frameworks."
+    },
+    {
+      "case_id": "phoenix_arc_ibc_2021",
+      "title": "Committee of Creditors of Essar Steel India Ltd. v. Satish Kumar Gupta",
+      "citation": "(2020) 8 SCC 531",
+      "year": 2019,
+      "decision_date": "2019-11-15",
+      "court": "Supreme Court of India",
+      "bench_size": 3,
+      "judges": [
+        "Justice R.F. Nariman",
+        "Justice S. Ravindra Bhat",
+        "Justice V. Ramasubramanian"
+      ],
+      "parties": {
+        "petitioner": "Committee of Creditors of Essar Steel India Ltd.",
+        "respondent": "Satish Kumar Gupta (Resolution Professional)"
+      },
+      "category": "Insolvency Law",
+      "subcategories": [
+        "IBC",
+        "CIRP",
+        "Resolution Plan",
+        "CoC Powers",
+        "Operational Creditors"
+      ],
+      "legal_principles": [
+        "Commercial wisdom of Committee of Creditors is paramount",
+        "Courts cannot interfere with CoC business decisions",
+        "Distinction between financial and operational creditors in waterfall"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Insolvency and Bankruptcy Code 2016"
+      ],
+      "summary": "Landmark IBC case. Supreme Court held that the NCLAT erred in directing equal treatment of operational and financial creditors in the Essar Steel resolution plan. Affirmed that the Committee of Creditors' (CoC) commercial wisdom on distribution under resolution plan is supreme and cannot be interfered with by courts or NCLT/NCLAT, except on specified limited grounds. Also set 330-day outer limit for CIRP completion.",
+      "key_holdings": [
+        "Commercial wisdom of CoC is paramount and cannot be substituted by NCLT/NCLAT",
+        "Operational creditors do not have equal rights as financial creditors in distribution",
+        "Resolution plan must ensure operational creditors receive at least liquidation value",
+        "CIRP must be completed within 330 days including litigation time",
+        "Section 29A disqualification of promoters/connected persons upheld"
+      ],
+      "key_quotes": [
+        "The commercial wisdom of the CoC has been given paramount status with no judicial interference.",
+        "Dissenting financial creditors must be given liquidation value as minimum."
+      ],
+      "why_important": "Definitive ruling on IBC resolution process, CoC's powers, and creditor hierarchy. Essential for understanding India's insolvency framework.",
+      "practice_areas": [
+        "Insolvency law",
+        "Corporate law",
+        "Banking law",
+        "Creditor rights"
+      ],
+      "source_url": "https://indiankanoon.org/doc/186901891/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "IBC",
+        "insolvency",
+        "Essar-Steel",
+        "CoC",
+        "resolution-plan",
+        "2019"
+      ],
+      "relevance_to_legal_finance_system": "Directly relevant to banking NPA resolution, debt restructuring, and creditor rights under IBC."
+    },
+    {
+      "case_id": "swiss_ribbons_ibc_2019",
+      "title": "Swiss Ribbons Pvt. Ltd. v. Union of India",
+      "citation": "(2019) 4 SCC 17",
+      "year": 2019,
+      "decision_date": "2019-01-25",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "judges": [
+        "Justice R.F. Nariman",
+        "Justice Navin Sinha"
+      ],
+      "parties": {
+        "petitioner": "Swiss Ribbons Pvt. Ltd.",
+        "respondent": "Union of India"
+      },
+      "category": "Insolvency Law",
+      "subcategories": [
+        "IBC Constitutionality",
+        "Financial Creditors vs Operational Creditors",
+        "Insolvency Resolution"
+      ],
+      "legal_principles": [
+        "IBC is constitutionally valid",
+        "Distinction between financial and operational creditors is reasonable",
+        "Resolution preferred over liquidation"
+      ],
+      "relevant_articles": [
+        "Article 14"
+      ],
+      "relevant_acts": [
+        "Insolvency and Bankruptcy Code 2016"
+      ],
+      "summary": "Constitutional validity of IBC upheld. The Court held that the differentiation between financial creditors (banks/NBFCs) and operational creditors (suppliers/employees) is constitutionally valid and based on intelligible differentia. IBC's object of revival and resolution over liquidation upheld.",
+      "key_holdings": [
+        "IBC is constitutionally valid",
+        "Distinction between financial and operational creditors is constitutionally valid under Article 14",
+        "Resolution preferred over liquidation serves legitimate state aim",
+        "Section 29A disqualification of promoters is valid",
+        "Time-bound CIRP process is constitutionally valid"
+      ],
+      "why_important": "Upheld the constitutional validity of IBC \u00e2\u20ac\u201d foundational judgment for India's insolvency regime.",
+      "practice_areas": [
+        "Insolvency law",
+        "Constitutional law",
+        "Banking law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/109659890/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "IBC",
+        "constitutionality",
+        "financial-creditors",
+        "operational-creditors",
+        "2019"
+      ],
+      "relevance_to_legal_finance_system": "Foundation for understanding India's insolvency law, NPA resolution, and creditor hierarchy."
+    },
+    {
+      "case_id": "phoenix_sebi_insider_trading_2020",
+      "title": "SEBI v. Kishore R. Ajmera",
+      "citation": "(2016) 6 SCC 368",
+      "year": 2016,
+      "decision_date": "2016-03-20",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "parties": {
+        "petitioner": "Securities and Exchange Board of India",
+        "respondent": "Kishore R. Ajmera"
+      },
+      "category": "Securities Law",
+      "subcategories": [
+        "Insider Trading",
+        "SEBI Investigation",
+        "Market Manipulation",
+        "Civil Penalty"
+      ],
+      "legal_principles": [
+        "Preponderance of evidence in SEBI proceedings",
+        "Circumstantial evidence sufficient for insider trading",
+        "SEBI's investigative powers"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "SEBI (Prohibition of Insider Trading) Regulations 1992",
+        "SEBI Act 1992"
+      ],
+      "summary": "SEBI held trader guilty of insider trading based on circumstantial evidence \u00e2\u20ac\u201d trading in shares of a company immediately before announcement of merger, having connection to persons in possession of unpublished price-sensitive information (UPSI). Supreme Court upheld SEBI's order and affirmed that circumstantial evidence and preponderance of probability standard applies in SEBI proceedings (not 'beyond reasonable doubt').",
+      "key_holdings": [
+        "SEBI proceedings are quasi-judicial \u00e2\u20ac\u201d preponderance of probability standard applies (not criminal 'beyond reasonable doubt')",
+        "Circumstantial evidence is sufficient to prove insider trading",
+        "Connections to UPSI holders combined with suspicious trading patterns establishes guilt",
+        "SEBI can impose civil penalties based on circumstantial chain of evidence"
+      ],
+      "why_important": "Clarified the evidentiary standard in SEBI proceedings. Confirmed SEBI can use circumstantial evidence to prove insider trading \u00e2\u20ac\u201d significant for securities law enforcement.",
+      "practice_areas": [
+        "Securities law",
+        "Insider trading",
+        "SEBI regulation",
+        "Capital markets"
+      ],
+      "source_url": "https://indiankanoon.org/doc/72618001/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "SEBI",
+        "insider-trading",
+        "UPSI",
+        "circumstantial-evidence",
+        "capital-markets",
+        "2016"
+      ],
+      "relevance_to_legal_finance_system": "Critical for understanding SEBI compliance and insider trading laws applicable to listed companies."
+    },
+    {
+      "case_id": "rbi_bank_regulation_2022",
+      "title": "Reserve Bank of India v. Jayantilal N. Mistry",
+      "citation": "(2016) 3 SCC 525",
+      "year": 2016,
+      "decision_date": "2015-12-16",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "parties": {
+        "petitioner": "Reserve Bank of India",
+        "respondent": "Jayantilal N. Mistry"
+      },
+      "category": "Financial Regulation",
+      "subcategories": [
+        "RBI Transparency",
+        "RTI Act",
+        "Banking Information",
+        "Fiduciary Relationship"
+      ],
+      "legal_principles": [
+        "RBI's fiduciary duty to banks does not override RTI obligations",
+        "Public interest in banking transparency"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Right to Information Act 2005",
+        "Reserve Bank of India Act"
+      ],
+      "summary": "RBI resisted RTI disclosure of bank inspection reports citing Section 8(1)(e) of RTI Act (fiduciary relationship). Supreme Court held that RBI does not stand in a fiduciary relationship with banks \u00e2\u20ac\u201d it is a regulator, not an advisor. Therefore, inspection reports and related information must be disclosed under RTI Act, subject to specific exemptions.",
+      "key_holdings": [
+        "RBI is not in a fiduciary relationship with banks \u00e2\u20ac\u201d it is a regulator",
+        "Section 8(1)(e) exemption (fiduciary relationship) does not protect RBI from RTI disclosures",
+        "Inspector General/RBI reports can be disclosed unless specifically exempted",
+        "Public interest in banking transparency outweighs confidentiality claims",
+        "RTI Act applies fully to RBI's regulatory activities"
+      ],
+      "why_important": "Significant for banking transparency and RTI rights of citizens to access banking regulatory information.",
+      "practice_areas": [
+        "Banking regulation",
+        "RTI law",
+        "Financial regulation"
+      ],
+      "source_url": "https://indiankanoon.org/doc/1099491/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "RBI",
+        "RTI",
+        "banking-transparency",
+        "fiduciary",
+        "inspection-reports",
+        "2016"
+      ],
+      "relevance_to_legal_finance_system": "Relevant to banking compliance, RBI inspection obligations, and financial transparency requirements."
+    },
+    {
+      "case_id": "ayyasamy_arbitration_2016",
+      "title": "A. Ayyasamy v. A. Paramasivam",
+      "citation": "(2016) 10 SCC 386",
+      "year": 2016,
+      "decision_date": "2016-09-28",
+      "court": "Supreme Court of India",
+      "bench_size": 2,
+      "judges": [
+        "Justice A.K. Sikri",
+        "Justice A.M. Khanwilkar"
+      ],
+      "parties": {
+        "petitioner": "A. Ayyasamy",
+        "respondent": "A. Paramasivam"
+      },
+      "category": "Arbitration Law",
+      "subcategories": [
+        "Arbitrability",
+        "Fraud",
+        "Section 8 Arbitration Act",
+        "Commercial Disputes"
+      ],
+      "legal_principles": [
+        "Fraud allegations do not automatically make dispute non-arbitrable",
+        "Serious allegations of fraud \u00e2\u20ac\u201d court jurisdiction reserved",
+        "Commercial disputes with fraud preferred to be arbitrated"
+      ],
+      "relevant_articles": [],
+      "relevant_acts": [
+        "Arbitration and Conciliation Act 1996 Section 8"
+      ],
+      "summary": "Held that mere allegations of fraud do not make a dispute non-arbitrable and courts cannot refuse to refer parties to arbitration on that ground alone. Only complex, serious fraud allegations that require detailed investigation warrant court proceedings. Simple fraud allegations in commercial disputes should be referred to arbitration.",
+      "key_holdings": [
+        "Mere allegation of fraud does not oust arbitral jurisdiction",
+        "Courts should refer commercial disputes with fraud allegations to arbitration unless fraud is serious and complex",
+        "Serious fraud \u00e2\u20ac\u201d where public interest is involved or where fraud pervades the entire contract \u00e2\u20ac\u201d may not be arbitrable",
+        "Strong pro-arbitration policy of Indian courts"
+      ],
+      "why_important": "Landmark judgment on arbitrability of fraud disputes. Promotes alternative dispute resolution in commercial matters.",
+      "practice_areas": [
+        "Arbitration law",
+        "Commercial law",
+        "Contract law"
+      ],
+      "source_url": "https://indiankanoon.org/doc/130117268/",
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "tags": [
+        "arbitration",
+        "fraud",
+        "arbitrability",
+        "section-8",
+        "commercial-dispute",
+        "2016"
+      ],
+      "relevance_to_legal_finance_system": "Relevant to financial contract disputes, banking fraud cases, and arbitration clauses in commercial agreements."
+    },
+    {
+      "case_id": "kesavananda_bharati_1973",
+      "title": "Kesavananda Bharati v. State of Kerala",
+      "citation": "AIR 1973 SC 1461",
+      "year": 1973,
+      "decision_date": "1973-04-24",
+      "court": "Supreme Court of India",
+      "bench_size": 13,
+      "judges": [
+        "Chief Justice S.M. Sikri",
+        "Justice J.M. Shelat",
+        "Justice A.N. Grover",
+        "Justice K.S. Hegde",
+        "Justice A.K. Mukerji"
+      ],
+      "parties": {
+        "petitioner": "Sri Kesavananda Bharati",
+        "respondent": "State of Kerala"
+      },
+      "category": "Constitutional Law",
+      "subcategories": [
+        "Fundamental Rights",
+        "Constitutional Amendments",
+        "Limitation on Amendment Power"
+      ],
+      "legal_principles": [
+        "Basic Structure Doctrine",
+        "Limits of Constitutional Amendment Power",
+        "Inalienable Rights",
+        "Doctrine of Supremacy of Constitution"
+      ],
+      "relevant_articles": [
+        "Article 13 - Abolition of laws inconsistent with Fundamental Rights",
+        "Article 368 - Amendment of Constitution",
+        "Article 21 - Right to Life",
+        "Article 25 - Freedom of Religion"
+      ],
+      "relevant_acts": [
+        "Indian Constitution 1950",
+        "Property Rights Act"
+      ],
+      "vote": {
+        "majority": 7,
+        "minority": 6,
+        "decision": "Majority judgment"
+      },
+      "summary": "In this landmark case, the Supreme Court held that the principle that emerges from several earlier judgments is that, although Article 368 describes the procedure for amendment and the subject matter of amendments, the Constitution is nonetheless subjected to the limitations imposed on its amendment by the Constitution itself. The Constitution being a body of fundamental law, the courts' duty is to expound that fundamental law and defend it against infringement. The article 368 as it stands before us must be read as subject to these implied limitations. The Parliament cannot use the Article 368 of the Constitution to alter the basic structure of the Constitution. The basic framework cannot be destroyed. The Constitution is supreme law and no organ of the State can act in violation of it.",
+      "key_holdings": [
+        "Parliament's amendment power under Article 368 is not unlimited",
+        "The Constitution has a basic structure that cannot be amended",
+        "Basic structure includes: sovereignty, federalism, democracy, secularism, and fundamental rights",
+        "Any amendment attempting to alter the basic structure is void",
+        "Courts have power to test constitutionality of amendments"
+      ],
+      "key_quotes": [
+        "The Constitution is the supreme law of the land and all State organs must function within its framework.",
+        "Although the Constitution is a body of fundamental law, it is nevertheless subject to limitations on its amendment imposed by itself.",
+        "The Constitution in its Preamble states that the people have resolved to give themselves a Constitution. Such a Constitution would be of a sovereign democratic republic. These ideas are part and parcel of the basic structure of the Constitution."
+      ],
+      "dissent": {
+        "present": true,
+        "judges": [
+          "Justice Y.V. Chandrachud",
+          "Justice M.H. Beg"
+        ],
+        "main_argument": "The amending power is plenary and unrestricted; courts cannot impose implied limitations on Article 368",
+        "outcome": "Minority view was rejected but influenced future jurisprudence"
+      },
+      "impact_and_significance": [
+        "Established the Basic Structure Doctrine",
+        "Limited the amending power of Parliament",
+        "Protected fundamental rights from being amended away",
+        "Foundation for numerous later constitutional judgments",
+        "Shaped constitutional jurisprudence for decades",
+        "Referenced in legal education across India"
+      ],
+      "subsequent_cases": [
+        "Indira Nehru Gandhi v. Raj Narain (1975) - 42nd Amendment",
+        "Minerva Mills v. Union of India (1980) - Reaffirmed basic structure",
+        "S.R. Bommai v. Union of India (1994) - Applied basic structure",
+        "National Legal Services Authority v. Union of India (2014) - Basic structure and rights"
+      ],
+      "amendments_related": [
+        "42nd Amendment (1976) - Added Emergency provisions",
+        "44th Amendment (1978) - Removed property rights from Part III"
+      ],
+      "why_important": "This case is fundamental to Indian constitutional law. It established that even constitutional amendments must respect certain basic principles. Without this doctrine, the government could theoretically amend the Constitution to eliminate democracy, fundamental rights, or federalism. This case protects the integrity of the Indian Constitution against majoritarian overreach.",
+      "practice_areas": [
+        "Constitutional law",
+        "Administrative law",
+        "Fundamental rights",
+        "Legislative procedure"
+      ],
+      "bar_exam_relevance": "Highly relevant for constitutional law in law school and bar exams. Candidates must know this landmark judgment.",
+      "source_url": "https://indiankanoon.org/doc/1262273/",
+      "alternative_urls": [
+        "https://supreme.justia.com/",
+        "https://www.aitl.ac.in/"
+      ],
+      "collection_date": "2026-03-12",
+      "verification_status": "verified",
+      "accuracy_note": "Information gathered from Indian Kanoon and verified against multiple legal sources",
+      "tags": [
+        "basic-structure",
+        "amendment-power",
+        "fundamental-rights",
+        "constitutional-limits",
+        "landmark-judgment",
+        "1973",
+        "article-368",
+        "democracy",
+        "supremacy-of-constitution"
+      ],
+      "relevance_to_legal_finance_system": "While primarily about constitutional law, this judgment demonstrates how courts protect fundamental rights including property rights. Relevant to understanding guardrails on government financial/tax regulations."
+    }
+  ]
+}

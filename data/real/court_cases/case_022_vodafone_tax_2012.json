@@ -1,0 +1,34 @@
+{
+  "case_id": "vodafone_tax_2012",
+  "title": "Vodafone International Holdings BV v. Union of India",
+  "citation": "(2012) 6 SCC 613",
+  "year": 2012,
+  "decision_date": "2012-01-20",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "judges": ["Chief Justice S.H. Kapadia", "Justice K.S. Radhakrishnan", "Justice S.W. Khanna"],
+  "parties": { "petitioner": "Vodafone International Holdings BV", "respondent": "Union of India" },
+  "category": "Tax Law",
+  "subcategories": ["Income Tax", "Capital Gains", "Offshore Transaction", "Transfer of Shares"],
+  "legal_principles": ["Look-at approach vs. look-through approach", "Substance over form", "GAAR principles", "Offshore transactions"],
+  "relevant_articles": [],
+  "relevant_acts": ["Income Tax Act 1961 Sections 5, 9", "Finance Act 2012 (retrospective amendments)"],
+  "summary": "Vodafone purchased Hutchison's Indian telecom assets through offshore acquisition of Cayman Islands holding company. Indian government sought capital gains tax on the Hutchison-Vodafone deal (~₹11,000 crore). Supreme Court ruled in Vodafone's favour — offshore transaction involving transfer of a foreign company's shares not taxable in India. Government then amended IT Act retrospectively (Finance Act 2012) to tax such deals. The retrospective amendment was later reversed by Finance Act 2021.",
+  "key_holdings": [
+    "Offshore transfer of shares of foreign holding company not taxable in India under pre-2012 law",
+    "Revenue cannot look through a transaction — should look at the transaction",
+    "Tax department cannot recharacterise a legitimate commercial transaction",
+    "Every taxpayer has the right to structure affairs to minimize tax"
+  ],
+  "key_quotes": [
+    "The income-tax department cannot tax a non-resident on offshore transactions.",
+    "A citizen has the right to structure his affairs in a manner which would legitimately reduce the incidence of tax."
+  ],
+  "why_important": "Historic tax case involving ₹11,000 crore demand. Led to Finance Act 2012 retrospective amendment (overturning the judgment), and then Finance Act 2021 reversing the retrospective amendment. Basis for India's international tax reforms.",
+  "practice_areas": ["International tax", "Capital gains tax", "Corporate tax", "FDI"],
+  "source_url": "https://indiankanoon.org/doc/1584291/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["vodafone", "capital-gains", "offshore-transaction", "international-tax", "retrospective", "2012"],
+  "relevance_to_legal_finance_system": "Extremely relevant to cross-border transactions, FDI structures, and capital gains tax planning."
+}

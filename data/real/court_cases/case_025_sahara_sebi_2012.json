@@ -1,0 +1,35 @@
+{
+  "case_id": "nfra_sahara_2012",
+  "title": "Sahara India Real Estate Corporation Ltd. v. SEBI",
+  "citation": "(2013) 1 SCC 1",
+  "year": 2012,
+  "decision_date": "2012-08-31",
+  "court": "Supreme Court of India",
+  "bench_size": 3,
+  "judges": ["Justice K.S. Radhakrishnan", "Justice J.S. Khehar"],
+  "parties": { "petitioner": "Sahara India Real Estate Corporation Ltd.", "respondent": "Securities and Exchange Board of India" },
+  "category": "Securities Law / Financial Regulation",
+  "subcategories": ["SEBI Jurisdiction", "OFCDs", "Public Offer", "Investor Protection"],
+  "legal_principles": ["SEBI has jurisdiction over OFCDs (Optionally Fully Convertible Debentures)", "Public offer regulations apply even through private placement route if issued to 50+ subscribers", "Investor protection paramount"],
+  "relevant_articles": [],
+  "relevant_acts": ["SEBI Act 1992", "Companies Act", "SEBI (ICDR) Regulations"],
+  "summary": "Sahara raised over ₹24,000 crore from millions of small investors through Optionally Fully Convertible Debentures (OFCDs), claiming these were private placements exempt from SEBI regulation. Supreme Court held that SEBI had jurisdiction and ordered Sahara to refund ₹24,000 crore (+ 15% interest) to investors. This led to arrest of Subrata Roy.",
+  "key_holdings": [
+    "SEBI has jurisdiction over OFCDs as they are 'securities' under the Securities Contracts Act",
+    "Issuance to 50+ persons constitutes a public offer requiring SEBI compliance",
+    "Refund of ₹24,000+ crore with 15% interest ordered",
+    "Private placement cannot circumvent public offer regulations",
+    "Investor protection is paramount in securities law"
+  ],
+  "key_quotes": [
+    "What cannot be done directly, cannot be done indirectly.",
+    "The primary role of the Securities Regulator is to protect the investors."
+  ],
+  "why_important": "Landmark investor protection case. Led to reforms in private placement regulations and strengthened SEBI's enforcement powers.",
+  "practice_areas": ["Securities law", "Financial regulation", "Corporate law", "Investor protection"],
+  "source_url": "https://indiankanoon.org/doc/60647125/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["SEBI", "sahara", "OFCD", "public-offer", "investor-protection", "2012"],
+  "relevance_to_legal_finance_system": "Directly relevant to SEBI compliance, capital market regulations, and investor protection frameworks."
+}

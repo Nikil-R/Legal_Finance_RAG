@@ -1,0 +1,112 @@
+{
+  "case_id": "kesavananda_bharati_1973",
+  "title": "Kesavananda Bharati v. State of Kerala",
+  "citation": "AIR 1973 SC 1461",
+  "year": 1973,
+  "decision_date": "1973-04-24",
+  "court": "Supreme Court of India",
+  "bench_size": 13,
+  "judges": [
+    "Chief Justice S.M. Sikri",
+    "Justice J.M. Shelat",
+    "Justice A.N. Grover",
+    "Justice K.S. Hegde",
+    "Justice A.K. Mukerji"
+  ],
+  "parties": {
+    "petitioner": "Sri Kesavananda Bharati",
+    "respondent": "State of Kerala"
+  },
+  "category": "Constitutional Law",
+  "subcategories": [
+    "Fundamental Rights",
+    "Constitutional Amendments",
+    "Limitation on Amendment Power"
+  ],
+  "legal_principles": [
+    "Basic Structure Doctrine",
+    "Limits of Constitutional Amendment Power",
+    "Inalienable Rights",
+    "Doctrine of Supremacy of Constitution"
+  ],
+  "relevant_articles": [
+    "Article 13 - Abolition of laws inconsistent with Fundamental Rights",
+    "Article 368 - Amendment of Constitution",
+    "Article 21 - Right to Life",
+    "Article 25 - Freedom of Religion"
+  ],
+  "relevant_acts": [
+    "Indian Constitution 1950",
+    "Property Rights Act"
+  ],
+  "vote": {
+    "majority": 7,
+    "minority": 6,
+    "decision": "Majority judgment"
+  },
+  "summary": "In this landmark case, the Supreme Court held that the principle that emerges from several earlier judgments is that, although Article 368 describes the procedure for amendment and the subject matter of amendments, the Constitution is nonetheless subjected to the limitations imposed on its amendment by the Constitution itself. The Constitution being a body of fundamental law, the courts' duty is to expound that fundamental law and defend it against infringement. The article 368 as it stands before us must be read as subject to these implied limitations. The Parliament cannot use the Article 368 of the Constitution to alter the basic structure of the Constitution. The basic framework cannot be destroyed. The Constitution is supreme law and no organ of the State can act in violation of it.",
+  "key_holdings": [
+    "Parliament's amendment power under Article 368 is not unlimited",
+    "The Constitution has a basic structure that cannot be amended",
+    "Basic structure includes: sovereignty, federalism, democracy, secularism, and fundamental rights",
+    "Any amendment attempting to alter the basic structure is void",
+    "Courts have power to test constitutionality of amendments"
+  ],
+  "key_quotes": [
+    "The Constitution is the supreme law of the land and all State organs must function within its framework.",
+    "Although the Constitution is a body of fundamental law, it is nevertheless subject to limitations on its amendment imposed by itself.",
+    "The Constitution in its Preamble states that the people have resolved to give themselves a Constitution. Such a Constitution would be of a sovereign democratic republic. These ideas are part and parcel of the basic structure of the Constitution."
+  ],
+  "dissent": {
+    "present": true,
+    "judges": ["Justice Y.V. Chandrachud", "Justice M.H. Beg"],
+    "main_argument": "The amending power is plenary and unrestricted; courts cannot impose implied limitations on Article 368",
+    "outcome": "Minority view was rejected but influenced future jurisprudence"
+  },
+  "impact_and_significance": [
+    "Established the Basic Structure Doctrine",
+    "Limited the amending power of Parliament",
+    "Protected fundamental rights from being amended away",
+    "Foundation for numerous later constitutional judgments",
+    "Shaped constitutional jurisprudence for decades",
+    "Referenced in legal education across India"
+  ],
+  "subsequent_cases": [
+    "Indira Nehru Gandhi v. Raj Narain (1975) - 42nd Amendment",
+    "Minerva Mills v. Union of India (1980) - Reaffirmed basic structure",
+    "S.R. Bommai v. Union of India (1994) - Applied basic structure",
+    "National Legal Services Authority v. Union of India (2014) - Basic structure and rights"
+  ],
+  "amendments_related": [
+    "42nd Amendment (1976) - Added Emergency provisions",
+    "44th Amendment (1978) - Removed property rights from Part III"
+  ],
+  "why_important": "This case is fundamental to Indian constitutional law. It established that even constitutional amendments must respect certain basic principles. Without this doctrine, the government could theoretically amend the Constitution to eliminate democracy, fundamental rights, or federalism. This case protects the integrity of the Indian Constitution against majoritarian overreach.",
+  "practice_areas": [
+    "Constitutional law",
+    "Administrative law",
+    "Fundamental rights",
+    "Legislative procedure"
+  ],
+  "bar_exam_relevance": "Highly relevant for constitutional law in law school and bar exams. Candidates must know this landmark judgment.",
+  "source_url": "https://indiankanoon.org/doc/1262273/",
+  "alternative_urls": [
+    "https://supreme.justia.com/",
+    "https://www.aitl.ac.in/"
+  ],
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "accuracy_note": "Information gathered from Indian Kanoon and verified against multiple legal sources",
+  "tags": [
+    "basic-structure",
+    "amendment-power",
+    "fundamental-rights",
+    "constitutional-limits",
+    "landmark-judgment",
+    "1973",
+    "article-368",
+    "democracy",
+    "supremacy-of-constitution"
+  ],
+  "relevance_to_legal_finance_system": "While primarily about constitutional law, this judgment demonstrates how courts protect fundamental rights including property rights. Relevant to understanding guardrails on government financial/tax regulations."
+}

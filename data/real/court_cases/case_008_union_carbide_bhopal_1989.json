@@ -1,0 +1,35 @@
+{
+  "case_id": "union_carbide_bhopal_1989",
+  "title": "Union Carbide Corporation v. Union of India",
+  "citation": "AIR 1990 SC 273",
+  "year": 1989,
+  "decision_date": "1989-02-14",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "judges": ["Chief Justice R.S. Pathak", "Justice E.S. Venkataramaiah", "Justice S. Mukharji", "Justice M.M. Dutt", "Justice S.R. Pandian"],
+  "parties": { "petitioner": "Union Carbide Corporation (USA)", "respondent": "Union of India" },
+  "category": "Tort Law / Constitutional Law",
+  "subcategories": ["Industrial Disaster", "Absolute Liability", "Compensation", "Bhopal Gas Tragedy"],
+  "legal_principles": ["Absolute Liability (Rylands v Fletcher evolved)", "Parens Patriae", "Settlement in public interest"],
+  "relevant_articles": ["Article 32", "Article 21"],
+  "relevant_acts": ["Bhopal Gas Leak Disaster (Processing of Claims) Act 1985"],
+  "vote": { "majority": 5, "minority": 0, "decision": "Unanimous" },
+  "summary": "Settlement of ₹715 crore (USD 470 million) for victims of the 1984 Bhopal gas tragedy that killed thousands. The Court approved the settlement between UCC and Government of India acting as parens patriae for victims. It also made doctrine of absolute liability applicable — industrial enterprises engaged in hazardous activities are absolutely liable for harm caused.",
+  "key_holdings": [
+    "Doctrine of absolute liability applies to enterprises engaged in hazardous activities",
+    "Government can act as parens patriae to represent disaster victims",
+    "Courts have jurisdiction to approve class-action type settlements",
+    "Amount of compensation must be 'just, equitable and reasonable'"
+  ],
+  "key_quotes": [
+    "Enterprises which are engaged in hazardous activity owe an absolute and non-delegable duty to the community.",
+    "There are no exceptions to the principle of absolute liability."
+  ],
+  "why_important": "Established absolute liability doctrine (stronger than strict liability from Rylands v Fletcher). Set precedent for corporate liability in industrial disasters. Led to Environment Protection Act and related legislation.",
+  "practice_areas": ["Tort law", "Environmental law", "Corporate liability", "Insurance"],
+  "source_url": "https://indiankanoon.org/doc/596049/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["absolute-liability", "bhopal", "industrial-disaster", "corporate-liability", "settlement", "1989"],
+  "relevance_to_legal_finance_system": "Absolute liability doctrine directly impacts corporate insurance requirements and financial risk provisioning."
+}

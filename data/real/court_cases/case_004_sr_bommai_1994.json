@@ -1,0 +1,36 @@
+{
+  "case_id": "sr_bommai_1994",
+  "title": "S.R. Bommai v. Union of India",
+  "citation": "AIR 1994 SC 1918",
+  "year": 1994,
+  "decision_date": "1994-03-11",
+  "court": "Supreme Court of India",
+  "bench_size": 9,
+  "judges": ["Justice M.N. Venkatachaliah", "Justice J.S. Verma", "Justice P.B. Sawant", "Justice K. Ramaswamy", "Justice S.R. Pandian", "Justice A.M. Ahmadi", "Justice Kuldip Singh", "Justice B.P. Jeevan Reddy", "Justice S.C. Agrawal"],
+  "parties": { "petitioner": "S.R. Bommai", "respondent": "Union of India" },
+  "category": "Constitutional Law",
+  "subcategories": ["President's Rule", "Federalism", "Article 356", "Secularism"],
+  "legal_principles": ["Federalism", "Secularism as Basic Structure", "Limits of President's Rule", "Judicial Review of Article 356"],
+  "relevant_articles": ["Article 356", "Article 74", "Article 164"],
+  "relevant_acts": ["Constitution of India"],
+  "vote": { "majority": 9, "minority": 0, "decision": "Unanimous" },
+  "summary": "The Supreme Court ruled that imposition of President's Rule under Article 356 is subject to judicial review. The court held secularism and federalism are essential features of the basic structure of the Constitution. It restrained the arbitrary misuse of Article 356 by requiring the President's satisfaction to be based on relevant material.",
+  "key_holdings": [
+    "Imposition of President's Rule under Article 356 is subject to judicial review",
+    "Secularism is a basic feature of the Constitution",
+    "Federalism is part of the basic structure",
+    "Floor test must be held before recommending President's Rule",
+    "Court can restore dismissed government if imposition was unconstitutional"
+  ],
+  "key_quotes": [
+    "Secularism is the basic feature of the Constitution.",
+    "The floor of the House is the place to test majority."
+  ],
+  "why_important": "Drastically curtailed arbitrary use of Article 356 by the Union government against state governments. Firmly established secularism and federalism as basic structure elements.",
+  "practice_areas": ["Constitutional law", "Administrative law", "Political law"],
+  "source_url": "https://indiankanoon.org/doc/60799/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["article-356", "presidents-rule", "federalism", "secularism", "basic-structure", "1994"],
+  "relevance_to_legal_finance_system": "Relevant to centre-state financial relations and GST council disputes under cooperative federalism."
+}

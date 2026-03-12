@@ -1,0 +1,170 @@
+[
+  {
+    "id": "tax_slab_fy2024_25_new_regime",
+    "name": "Income Tax Slabs - FY 2024-25 (New Regime)",
+    "financial_year": "2024-25",
+    "regime": "new",
+    "effective_from": "2024-04-01",
+    "effective_to": "2025-03-31",
+    "description": "New tax regime with standard deduction of ₹75,000",
+    "slabs": [
+      {
+        "slab_number": 1,
+        "income_from": 0,
+        "income_to": 300000,
+        "rate": 0,
+        "description": "No tax",
+        "surcharge": "Not applicable",
+        "cess": "Not applicable"
+      },
+      {
+        "slab_number": 2,
+        "income_from": 300000,
+        "income_to": 700000,
+        "rate": 5,
+        "description": "5% tax on income above ₹3 lakhs",
+        "surcharge": "0% if total income ≤ ₹50 lakhs",
+        "cess": "4% health and education cess on tax"
+      },
+      {
+        "slab_number": 3,
+        "income_from": 700000,
+        "income_to": 1000000,
+        "rate": 10,
+        "description": "10% tax on income ₹7-10 lakhs",
+        "surcharge": "0% if income ≤ ₹50 lakhs",
+        "cess": "4% health and education cess"
+      },
+      {
+        "slab_number": 4,
+        "income_from": 1000000,
+        "income_to": 1200000,
+        "rate": 15,
+        "description": "15% tax on income ₹10-12 lakhs",
+        "surcharge": "10% if income ₹50-60 lakhs; 15% if ₹60-200 lakhs",
+        "cess": "4% health and education cess"
+      },
+      {
+        "slab_number": 5,
+        "income_from": 1200000,
+        "income_to": 1500000,
+        "rate": 20,
+        "description": "20% tax on income ₹12-15 lakhs",
+        "surcharge": "10% if income ₹50-60 lakhs; 15% if ₹60-200 lakhs",
+        "cess": "4% health and education cess"
+      },
+      {
+        "slab_number": 6,
+        "income_from": 1500000,
+        "income_to": 99999999,
+        "rate": 30,
+        "description": "30% tax on income above ₹15 lakhs",
+        "surcharge": "10% if income ₹50-60 lakhs; 15% if ₹60-200 lakhs; 37% if above ₹200 lakhs",
+        "cess": "4% health and education cess"
+      }
+    ],
+    "standard_deduction": 75000,
+    "deductions": "Only limited deductions available in new regime",
+    "benefit": "Lower tax rates but fewer deductions available compared to old regime",
+    "source": "https://www.incometaxindia.gov.in",
+    "last_updated": "2024-02-01",
+    "collection_date": "2026-03-12"
+  },
+  {
+    "id": "tax_slab_fy2024_25_old_regime",
+    "name": "Income Tax Slabs - FY 2024-25 (Old Regime)",
+    "financial_year": "2024-25",
+    "regime": "old",
+    "effective_from": "2024-04-01",
+    "effective_to": "2025-03-31",
+    "description": "Old tax regime with various deductions available",
+    "slabs": [
+      {
+        "slab_number": 1,
+        "income_from": 0,
+        "income_to": 250000,
+        "rate": 0,
+        "description": "No tax"
+      },
+      {
+        "slab_number": 2,
+        "income_from": 250000,
+        "income_to": 500000,
+        "rate": 5,
+        "description": "5% tax on income ₹2.5-5 lakhs"
+      },
+      {
+        "slab_number": 3,
+        "income_from": 500000,
+        "income_to": 1000000,
+        "rate": 20,
+        "description": "20% tax on income ₹5-10 lakhs"
+      },
+      {
+        "slab_number": 4,
+        "income_from": 1000000,
+        "income_to": 99999999,
+        "rate": 30,
+        "description": "30% tax on income above ₹10 lakhs"
+      }
+    ],
+    "major_deductions": [
+      {
+        "section": "80C",
+        "limit": 150000,
+        "description": "Investment deduction",
+        "includes": ["PPF", "ELSS", "Life Insurance", "Tuition Fees"]
+      },
+      {
+        "section": "80D",
+        "limit": 25000,
+        "description": "Medical insurance premium",
+        "limit_senior_citizen": 50000,
+        "includes": ["Health insurance", "Senior citizen insurance"]
+      },
+      {
+        "section": "80E",
+        "limit": "No limit",
+        "description": "Education loan interest",
+        "includes": ["Higher education loan interest only"]
+      },
+      {
+        "section": "24",
+        "limit": 200000,
+        "description": "Home loan interest",
+        "includes": ["Self-occupied property interest", "Deemed let-out property"]
+      }
+    ],
+    "standard_deduction": 50000,
+    "source": "https://www.incometaxindia.gov.in",
+    "last_updated": "2024-02-01",
+    "collection_date": "2026-03-12"
+  },
+  {
+    "id": "senior_citizen_benefits_fy2024_25",
+    "name": "Senior Citizen Tax Benefits - FY 2024-25",
+    "age_limit": 60,
+    "slabs": [
+      {
+        "income_from": 0,
+        "income_to": 500000,
+        "rate": 0,
+        "description": "No tax for senior citizen in old regime"
+      }
+    ],
+    "special_benefits": [
+      {
+        "section": "80D",
+        "limit": 50000,
+        "description": "Double deduction for medical insurance"
+      },
+      {
+        "section": "80TTB",
+        "limit": 50000,
+        "description": "Interest on bank deposits/post office savings"
+      }
+    ],
+    "source": "https://www.incometaxindia.gov.in",
+    "collection_date": "2026-03-12"
+  }
+]

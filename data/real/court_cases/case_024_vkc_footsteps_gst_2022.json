@@ -1,0 +1,29 @@
+{
+  "case_id": "apex_labs_gst_input_2022",
+  "title": "Union of India v. VKC Footsteps India Pvt. Ltd.",
+  "citation": "(2022) 2 SCC 603",
+  "year": 2022,
+  "decision_date": "2021-09-13",
+  "court": "Supreme Court of India",
+  "bench_size": 5,
+  "parties": { "petitioner": "Union of India", "respondent": "VKC Footsteps India Pvt. Ltd." },
+  "category": "Tax Law",
+  "subcategories": ["GST", "Input Tax Credit", "Inverted Duty Structure", "Refund"],
+  "legal_principles": ["Rule 89(5) GST Rules restricts refund of ITC on input services", "No refund for accumulated ITC on input services under inverted duty structure"],
+  "relevant_articles": [],
+  "relevant_acts": ["Central Goods and Services Tax Act 2017", "CGST Rules 2017 Rule 89(5)"],
+  "summary": "Supreme Court held that Rule 89(5) of CGST Rules, which restricts refund of ITC accumulated on input services under inverted duty structure, is constitutionally valid. Taxpayers in inverted duty structure (where input tax rate is higher than output tax rate) cannot claim refund of ITC attributable to input services, only input goods.",
+  "key_holdings": [
+    "Rule 89(5) limiting ITC refund to input goods (excluding input services) is constitutionally valid",
+    "Section 54(3) of CGST Act permits Parliament to restrict refund by rules",
+    "Inverted duty structure refund available only for ITC on inputs (goods), not input services",
+    "Taxpayers with inverted duty structure must plan their ITC utilisation accordingly"
+  ],
+  "why_important": "Major GST ruling affecting manufacturers and traders with inverted duty structures — particularly impacting footwear, textiles, and pharmaceuticals sectors.",
+  "practice_areas": ["GST law", "Input tax credit", "Indirect tax", "Tax refund"],
+  "source_url": "https://indiankanoon.org/doc/186990258/",
+  "collection_date": "2026-03-12",
+  "verification_status": "verified",
+  "tags": ["GST", "input-tax-credit", "inverted-duty", "rule-89", "refund", "2022"],
+  "relevance_to_legal_finance_system": "Directly relevant to GST refund planning, working capital management, and ITC utilisation strategies."
+}
