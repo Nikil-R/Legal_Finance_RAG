@@ -24,4 +24,4 @@ COPY . .
 EXPOSE 8080
 
 # Use a shell to allow environment variable expansion for the PORT
-CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --proxy-headers
+CMD uvicorn render_app:app --host 0.0.0.0 --port ${PORT:-10000} --timeout-keep-alive 120
