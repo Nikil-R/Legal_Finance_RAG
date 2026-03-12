@@ -137,7 +137,8 @@ export async function sendQuery(
         body: JSON.stringify({
           question,
           session_id: sessionId,
-          use_tools: true, // Ensuring tools are requested
+          domain: 'all',
+          include_sources: true,
         }),
         timeout: QUERY_TIMEOUT,
       });

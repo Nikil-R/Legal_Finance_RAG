@@ -19,11 +19,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://legal-finance-rag.vercel.app",  # Production frontend
-        "https://*.vercel.app",                   # Vercel preview deployments
-        "http://localhost:3000",                  # Local development
-        "http://localhost:8000",                  # Local API testing
-        "*",                                      # Temporary backup
+        "https://legal-finance-rag.vercel.app",
+        "https://legal-finance-rag-git-main-nikils-projects-8692659d.vercel.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
