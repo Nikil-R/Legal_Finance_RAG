@@ -50,6 +50,7 @@ line_length = 88
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+pythonpath = ["."]
 norecursedirs = [
     "tests/tmp_pytest",
     ".tmp",

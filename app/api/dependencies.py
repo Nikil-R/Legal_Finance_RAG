@@ -10,8 +10,10 @@ from functools import lru_cache
 import chromadb
 
 from app.config import settings
-from app.generation import RAGPipeline
+from app.generation import RAGPipeline, GroqClient, ToolOrchestrator
 from app.reranking import RetrievalPipeline
+from app.tools.registry import ToolRegistry
+from app.tools.executor import ToolExecutor
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -113,8 +115,27 @@ def get_retriever() -> _StatsRetriever | _FallbackRetriever:
         return _FallbackRetriever()
 
 
+@lru_cache()
+def get_tool_registry() -> ToolRegistry:
+    return ToolRegistry()
+
+@lru_cache()
+def get_tool_executor() -> ToolExecutor:
+    registry = get_tool_registry()
+    return ToolExecutor(registry)
+
+@lru_cache()
+def get_tool_orchestrator() -> ToolOrchestrator:
+    client = GroqClient()
+    registry = get_tool_registry()
+    executor = get_tool_executor()
+    return ToolOrchestrator(client, registry, executor)
+
 def clear_pipeline_cache():
     get_rag_pipeline.cache_clear()
     get_retrieval_pipeline.cache_clear()
     get_retriever.cache_clear()
+    get_tool_registry.cache_clear()
+    get_tool_executor.cache_clear()
+    get_tool_orchestrator.cache_clear()
     logger.info("Pipeline caches cleared")

@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Message } from '@/lib/types';
-import { AlertCircle, Copy, Check, AlertTriangle, BarChart3, Shield } from 'lucide-react';
+import { AlertCircle, Copy, Check, AlertTriangle, BarChart3, Shield, Wrench } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -99,6 +99,20 @@ export function ChatArea({
                       <div className="flex gap-2 mb-3 pb-3 border-b border-blue-500/30">
                         <AlertTriangle className="h-4 w-4 text-blue-400 flex-shrink-0" />
                         <span className="text-xs font-semibold text-blue-300">INSUFFICIENT CONTEXT</span>
+                      </div>
+                    )}
+                    
+                    {message.metadata?.tool_calls && message.metadata.tool_calls.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-indigo-500/30">
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-[10px] font-bold text-indigo-400 uppercase tracking-tight">
+                          <Wrench className="h-2.5 w-2.5" />
+                          Tools Used
+                        </div>
+                        {message.metadata.tool_calls.map((tc, idx) => (
+                           <div key={idx} className="px-2 py-0.5 rounded-full bg-slate-700/50 border border-slate-600 text-[10px] font-medium text-slate-300">
+                             {tc.tool.replace(/_/g, ' ')}
+                           </div>
+                        ))}
                       </div>
                     )}
 

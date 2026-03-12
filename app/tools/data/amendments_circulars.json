@@ -1,0 +1,85 @@
+{
+  "recent_amendments": [
+    {
+      "id": "AM001",
+      "amendment_type": "Finance Act",
+      "act_name": "Income Tax Act, 1961",
+      "amendment_date": "2024-04-01",
+      "effective_date": "2024-04-01",
+      "fiscal_year_from": "2024-25",
+      "title": "Amendment to Section 80C - Enhanced Deduction Limit",
+      "summary": "Enhanced limit for life insurance premium and tuition fee under Section 80C from ₹1.5 lakhs to ₹2 lakhs",
+      "old_provision": "Maximum deduction under Section 80C: ₹1,50,000 per annum",
+      "new_provision": "Maximum deduction under Section 80C: ₹2,00,000 per annum",
+      "eligible_items": [
+        "Life insurance premiums",
+        "Tuition fees for children",
+        "PPF contributions",
+        "NSC investment",
+        "ELSS mutual fund investments"
+      ],
+      "if_applicable": ["Individual taxpayers", "HUF"],
+      "impact_analysis": "Taxpayers can now save up to ₹60,000 additional per annum. Beneficial for those with high insurance premiums and education expenses.",
+      "transitional_provisions": "Applies to FY 2024-25 onwards. No backdating of benefits.",
+      "related_sections": ["Section 80CCC", "Section 80CCE"],
+      "implementation_status": "Active",
+      "references": ["Finance Act 2024"],
+      "notification_number": "FB:TCD:DA-23:2024-TP"
+    },
+    {
+      "id": "AM002",
+      "amendment_type": "Circular",
+      "issuing_authority": "CBDT",
+      "act_name": "GST Act, 2017",
+      "amendment_date": "2024-03-15",
+      "effective_date": "2024-03-15",
+      "title": "Clarification on Input Tax Credit eligibility for Business Meals",
+      "summary": "GSTN issued circular on ITC eligibility for business meal expenses",
+      "old_position": "Ambiguity on ITC eligibility for business meal expenses",
+      "new_position": "ITC available if meal is integral part of business operations (e.g., client entertainment)",
+      "conditions": [
+        "Invoice raised by registered business",
+        "Business purpose documented",
+        "Standard 5% GST applicable on meals"
+      ],
+      "if_applicable": ["All registered businesses"],
+      "impact_analysis": "Provides clarity and allows ITC reclaim for qualifying business meals. Estimated benefit ₹5,000-50,000 depending on business type.",
+      "implementation_status": "Active",
+      "notification_number": "CBDT F.No.GST/23/2024-CM"
+    },
+    {
+      "id": "AM003",
+      "amendment_type": "Regulatory Notification",
+      "issuing_authority": "RBI",
+      "act_name": "RBI Master Directions - NBFCs",
+      "amendment_date": "2024-02-01",
+      "effective_date": "2024-06-01",
+      "title": "Enhanced KYC/AML Requirements for NBFC Operations",
+      "summary": "RBI strengthened KYC and AML procedures for NBFC lending",
+      "old_provision": "Standard KYC norms compliance",
+      "new_provision": "Enhanced KYC including beneficial ownership verification and source of funds details",
+      "requirements": [
+        "Beneficial ownership declaration for all entities",
+        "Source of funds verification for transactions >₹10 lakhs",
+        "Annual KYC renewal for high-risk customers",
+        "Enhanced monitoring for PEP (Politically Exposed Persons)"
+      ],
+      "if_applicable": ["All deposit taking NBFCs", "Large NBFCs"],
+      "implementation_status": "Active from 01-06-2024",
+      "notification_number": "RBI/MRD/2024-25/01",
+      "penalty": "Fine up to ₹5 lakhs for non-compliance"
+    }
+  ],
+  "amendment_categories": {
+    "income_tax": ["AM001"],
+    "gst": ["AM002"],
+    "nbfc_rbi": ["AM003"],
+    "corporate_law": [],
+    "labor_law": []
+  },
+  "affected_entities": {
+    "individual": ["AM001"],
+    "business": ["AM002"],
+    "financial_entities": ["AM003"]
+  }
+}

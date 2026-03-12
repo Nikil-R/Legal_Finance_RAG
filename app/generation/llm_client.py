@@ -130,6 +130,65 @@ class GroqClient:
         logger.error("Groq generation failed (%s): %s", error_type, last_error)
         return {"success": False, "error": last_error, "error_type": error_type}
 
+    async def generate_with_tools(
+        self,
+        messages: List[Dict[str, Any]],
+        tools: Optional[List[Dict[str, Any]]] = None,
+        temperature: float = 0.0,
+        max_tokens: int = 2048,
+    ) -> Dict[str, Any]:
+        """
+        Executes a chat completion request with tool support.
+        """
+        def _call_with_tools() -> object:
+            return self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                tools=tools,
+                tool_choice="auto" if tools else None,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+
+        try:
+            # We skip the heavy retry logic for now to keep it simple, 
+            # but reuse the basic structure.
+            response = _call_with_tools()
+            usage = response.usage
+            message = response.choices[0].message
+            
+            # Format message for the orchestrator
+            message_dict = {
+                "role": "assistant",
+                "content": message.content or "",
+            }
+            if message.tool_calls:
+                message_dict["tool_calls"] = [
+                    {
+                        "id": tc.id,
+                        "type": "function",
+                        "function": {
+                            "name": tc.function.name,
+                            "arguments": tc.function.arguments
+                        }
+                    }
+                    for tc in message.tool_calls
+                ]
+
+            return {
+                "success": True,
+                "message": message_dict,
+                "model": self.model,
+                "usage": {
+                    "prompt_tokens": usage.prompt_tokens,
+                    "completion_tokens": usage.completion_tokens,
+                    "total_tokens": usage.total_tokens,
+                }
+            }
+        except Exception as e:
+            logger.error("Groq tool call failed: %s", str(e))
+            return {"success": False, "error": str(e)}
+
     def health_check(self) -> bool:
         """Verifies API connectivity with a minimal request."""
         try:

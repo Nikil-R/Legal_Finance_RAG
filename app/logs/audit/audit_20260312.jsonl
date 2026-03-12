@@ -1,0 +1,2 @@
+{"event_id": "d0eca3e9", "timestamp": "2026-03-12T08:10:49.108821", "event_type": "TOOL_INVOKED", "tool": "test_tool", "user_id": "user1", "parameters": {"param": "value"}, "result_summary": {}, "error": null, "execution_time_ms": null, "metadata": {}}
+{"event_id": "7a4a25bb", "timestamp": "2026-03-12T08:11:10.737910", "event_type": "TOOL_INVOKED", "tool": "test_tool", "user_id": "user1", "parameters": {"param": "value"}, "result_summary": {}, "error": null, "execution_time_ms": null, "metadata": {}}

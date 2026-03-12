@@ -1,0 +1,31 @@
+{
+  "Income Tax Act": {
+    "80C": {
+      "title": "Deduction in respect of life insurance premia, etc.",
+      "max_deduction": "₹1,50,000",
+      "applicable_to": "Individual and HUF",
+      "key_investments": ["PPF", "ELSS", "Life Insurance", "NSC", "5-year FD", "Tuition Fees"],
+      "summary": "Allows deduction up to ₹1.5 lakh for specified investments and expenses from gross total income."
+    },
+    "80D": {
+      "title": "Deduction for medical insurance premium",
+      "max_deduction": "₹25,000 (Self/Family), ₹50,000 (Senior Citizens)",
+      "applicable_to": "Individual and HUF",
+      "key_investments": ["Health Insurance Premium", "Preventive Health Check-up"],
+      "summary": "Deduction for medical insurance premium paid for self, spouse, children, and parents."
+    },
+    "10(10D)": {
+      "title": "Exemption on Life Insurance maturity proceeds",
+      "summary": "Any sum received under a life insurance policy, including bonus, is exempt subject to certain conditions regarding premium-to-sum-assured ratio."
+    },
+    "44AD": {
+      "title": "Presumptive taxation for businesses",
+      "summary": "Allows small businesses with turnover up to ₹2 crore (₹3 crore if digital) to declare income at 8% (6% for digital receipts) without maintaining books."
+    },
+    "24(b)": {
+      "title": "Deduction for Interest on Home Loan",
+      "max_deduction": "₹2,00,000",
+      "summary": "Deduction for interest paid on capital borrowed for acquisition or construction of self-occupied house property."
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "compliance_matrix": {
+    "sole_proprietor": {
+      "income_tax": {
+        "filing_deadline": "31-07",
+        "requirements": [
+          "Income Tax Return (ITR) filing",
+          "Maintain books of accounts if turnover > ₹25 lakhs",
+          "GST registration if turnover > ₹20 lakhs"
+        ],
+        "penalties": {
+          "late_filing": "₹5,000 + Interest @1% per month",
+          "non_filing": "Criminal prosecution possible"
+        }
+      },
+      "gst": {
+        "threshold": "₹20,00,000",
+        "filing_frequency": "quarterly",
+        "requirements": [
+          "GSTR-1 filing (Outward supplies)",
+          "GSTR-3B filing (Monthly/Quarterly tax return)",
+          "Maintain invoices and records for 6 years"
+        ],
+        "penalties": {
+          "late_filing": "₹100-1000 per day",
+          "non_compliance": "Criminal prosecution + levy recovery"
+        }
+      },
+      "professional_tax": {
+        "applicable_states": ["Maharashtra", "Karnataka", "Tamil Nadu"],
+        "frequency": "Quarterly",
+        "deadline": "Last day of next month"
+      }
+    },
+    "private_limited_company": {
+      "mca_compliance": {
+        "director_appointment": "DIN registration within 30 days",
+        "annual_filings": [
+          "Annual Return (MGERN) - 30 days from AGM",
+          "Financial Statements - 30 days from AGM",
+          "Board Report - Annual"
+        ],
+        "director_duties": {
+          "disclosure": "Related party transactions, DIN updates",
+          "meetings": "At least one board meeting per quarter",
+          "minutes": "Maintain and preserve for 10 years"
+        }
+      },
+      "audit_requirements": {
+        "threshold": "₹1 crore turnover or ₹50 crore assets",
+        "frequency": "Annual",
+        "deadline": "120 days from year-end",
+        "auditor_qualification": "CA or Cost Accountant"
+      },
+      "secretarial_audit": {
+        "required_turnover": "₹100 crore or public company",
+        "frequency": "Annual",
+        "report_submission": "60 days of AGM"
+      },
+      "insider_trading": {
+        "code_adoption": "Mandatory for listed and large companies",
+        "disclosure_window": "2 days of transaction",
+        "blackout_period": "45 days before financial results"
+      }
+    },
+    "llp": {
+      "filing_requirements": {
+        "annual_filing": "Within 60 days of closing financial year",
+        "documents": ["Financial Statements", "Partner details"],
+        "contribution": "Annual fee ₹500-₹5000"
+      },
+      "audit_threshold": "₹25 crore turnover",
+      "partner_changes": {
+        "notification_deadline": "30 days",
+        "documents_required": ["INC-5", "Partner details"]
+      }
+    },
+    "partnership": {
+      "registration": "Optional but recommended",
+      "filing": "Annual information return within 30 days of FY-end",
+      "audit": "Required if turnover > ₹1 crore",
+      "partner_contribution": "Income tax filing mandatory"
+    }
+  },
+  "industry_specific": {
+    "pharmaceuticals": {
+      "gmp_certification": "Mandatory - Renewal every 3 years",
+      "dco_approval": "Required for drug manufacturing",
+      "anti_counterfeiting": "Track and trace system implementation"
+    },
+    "food_business": {
+      "fssai_license": "Mandatory registration/license",
+      "hygiene_certification": "Annual renewal",
+      "labeling_compliance": "Per Food Safety Standards"
+    },
+    "finance_nbfc": {
+      "rbi_registration": "Mandatory",
+      "capital_adequacy": "Min 12% CRAR",
+      "npa_provisions": "Quarterly reporting",
+      "audit_frequency": "Half-yearly"
+    }
+  },
+  "state_regulations": {
+    "maharashtra": {
+      "professional_tax": "₹0 to ₹2500 based on income",
+      "registration_fee": "Varies by industry"
+    },
+    "karnataka": {
+      "shop_establishment": "Mandatory for retail/wholesale",
+      "registration_fee": "₹2000-10000"
+    },
+    "tamil_nadu": {
+      "industrial_promotion": "TIPs benefits for new units",
+      "startup_policy": "Tax exemption for 5 years"
+    }
+  }
+}

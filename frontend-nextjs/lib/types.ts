@@ -10,6 +10,7 @@ export interface Message {
   timestamp: Date;
   error?: string;
   isSafetyBlock?: boolean;
+  metadata?: QueryResponse['metadata'];
 }
 
 export interface Source {
@@ -38,7 +39,21 @@ export interface QueryResponse {
     has_disclaimer: boolean;
     issues: string[];
   };
-  metadata: Record<string, unknown>;
+  metadata: {
+    model: string;
+    token_usage: {
+      prompt_tokens: number;
+      completion_tokens: number;
+      total_tokens: number;
+    };
+    total_time_ms: number;
+    tool_calls?: Array<{
+      tool: string;
+      args: any;
+      result: any;
+    }>;
+    [key: string]: any;
+  };
   error?: string;
   error_type?: string;
   timestamp: string;

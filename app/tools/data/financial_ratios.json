@@ -1,0 +1,127 @@
+{
+  "ratio_categories": {
+    "profitability_ratios": {
+      "gross_profit_margin": {
+        "formula": "(Gross Profit / Revenue) × 100",
+        "interpretation": "Measures company's production efficiency. Higher is better.",
+        "benchmark": "Industry dependent, typically 15-40%",
+        "what_it_means": "Shows percentage of revenue retained after cost of goods sold"
+      },
+      "operating_profit_margin": {
+        "formula": "(EBIT / Revenue) × 100",
+        "interpretation": "Measures operational efficiency before interest and taxes.",
+        "benchmark": "Typically 5-15% depending on industry",
+        "what_it_means": "Indicates how much operating income is generated per rupee of sales"
+      },
+      "net_profit_margin": {
+        "formula": "(Net Income / Revenue) × 100",
+        "interpretation": "Ultimate efficiency measure - shows bottom-line profitability.",
+        "benchmark": "2-10% across industries",
+        "what_it_means": "What percentage of revenue becomes actual profit"
+      },
+      "roe": {
+        "formula": "(Net Income / Shareholders' Equity) × 100",
+        "full_name": "Return on Equity",
+        "interpretation": "Measures return on shareholder investment.",
+        "benchmark": "15-20% considered good",
+        "what_it_means": "How efficiently the company uses shareholder capital to generate profits"
+      },
+      "roa": {
+        "formula": "(Net Income / Total Assets) × 100",
+        "full_name": "Return on Assets",
+        "interpretation": "Measures how efficiently assets are used to generate profit.",
+        "benchmark": "5-10% is reasonable",
+        "what_it_means": "How much profit is generated from each rupee of assets"
+      }
+    },
+    "liquidity_ratios": {
+      "current_ratio": {
+        "formula": "Current Assets / Current Liabilities",
+        "interpretation": "Measures short-term financial health and ability to pay obligations.",
+        "benchmark": "1.5 to 2.0 is healthy",
+        "what_it_means": "Company has ₹1.5-2 in current assets for every rupee of current liabilities",
+        "red_flag": "Ratio < 1.0 indicates potential liquidity crisis"
+      },
+      "quick_ratio": {
+        "formula": "(Current Assets - Inventory) / Current Liabilities",
+        "full_name": "Acid Test Ratio",
+        "interpretation": "More conservative than current ratio - excludes inventory.",
+        "benchmark": "1.0 or higher is ideal",
+        "what_it_means": "Most liquid assets available to meet immediate obligations"
+      },
+      "cash_ratio": {
+        "formula": "(Cash + Cash Equivalents) / Current Liabilities",
+        "interpretation": "Most conservative liquidity measure.",
+        "benchmark": "0.2 to 0.5",
+        "what_it_means": "Percentage of current liabilities directly coverable by cash"
+      },
+      "working_capital": {
+        "formula": "Current Assets - Current Liabilities",
+        "interpretation": "Absolute measure of short-term financial cushion.",
+        "benchmark": "Should be positive",
+        "what_it_means": "Available capital for daily operations after meeting immediate obligations"
+      }
+    },
+    "leverage_ratios": {
+      "debt_to_equity": {
+        "formula": "Total Debt / Total Equity",
+        "interpretation": "Measures financial leverage - proportion of debt vs equity.",
+        "benchmark": "Less than 2.0 is generally safe",
+        "what_it_means": "For every rupee of equity, company has rupees of debt",
+        "concern": "Higher ratios indicate higher financial risk"
+      },
+      "debt_to_assets": {
+        "formula": "Total Debt / Total Assets",
+        "interpretation": "Shows what percentage of assets are financed by debt.",
+        "benchmark": "Less than 0.6 (60%) considered healthy",
+        "what_it_means": "Higher ratio means more assets financed by borrowing"
+      },
+      "equity_multiplier": {
+        "formula": "Total Assets / Total Equity",
+        "interpretation": "How much assets are supported by each rupee of equity.",
+        "benchmark": "2.0 to 3.0 is typical",
+        "what_it_means": "Leverage effect of using debt financing"
+      },
+      "interest_coverage": {
+        "formula": "EBIT / Interest Expense",
+        "interpretation": "Ability to pay interest on debt from operating income.",
+        "benchmark": "Greater than 2.5 is safe",
+        "red_flag": "Below 1.5 indicates difficulty meeting interest payments"
+      }
+    },
+    "efficiency_ratios": {
+      "asset_turnover": {
+        "formula": "Revenue / Average Total Assets",
+        "interpretation": "How efficiently assets generate sales.",
+        "benchmark": "Industry dependent, higher is better",
+        "what_it_means": "Revenue generated per rupee of assets"
+      },
+      "inventory_turnover": {
+        "formula": "Cost of Goods Sold / Average Inventory",
+        "interpretation": "How quickly inventory is sold and replaced.",
+        "benchmark": "Higher is better, depends on industry",
+        "what_it_means": "Number of times inventory is sold and replenished during period"
+      },
+      "receivables_turnover": {
+        "formula": "Revenue / Average Accounts Receivable",
+        "interpretation": "How quickly receivables are converted to cash.",
+        "benchmark": "Industry and credit policy dependent",
+        "what_it_means": "Times per year receivables are collected"
+      },
+      "dso": {
+        "formula": "365 / Receivables Turnover",
+        "full_name": "Days Sales Outstanding",
+        "interpretation": "Average days to collect payment from customers.",
+        "benchmark": "Lower is better, typically 30-60 days",
+        "what_it_means": "How many days credit is extended to customers on average"
+      }
+    }
+  },
+  "health_assessment": {
+    "excellent": "All ratios in healthy range, consistent trend",
+    "good": "Most ratios healthy, minor concerns",
+    "average": "Mixed signals, needs monitoring",
+    "concerning": "Several weak ratios, deteriorating trend",
+    "critical": "Multiple severe issues, urgent action needed"
+  }
+}

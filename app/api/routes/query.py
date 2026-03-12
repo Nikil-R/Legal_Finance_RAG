@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 
-from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline
+from app.api.dependencies import get_rag_pipeline, get_retrieval_pipeline, get_tool_orchestrator
 from app.api.models import (
     ErrorResponse,
     QueryMetadata,
@@ -38,9 +38,11 @@ from app.observability import (
 from app.reranking import RetrievalPipeline
 from app.utils.pii_redactor import redact_pii
 from app.utils.session_ownership import verify_session_ownership
+from app.legal_disclaimers import LegalDisclaimers
 
 router = APIRouter(prefix="/query", tags=["Query"])
 logger = structlog_logger.bind(module="api.query")
+
 
 
 async def _run_with_timeout(fn, *args, timeout_seconds: int, **kwargs):
@@ -79,9 +81,10 @@ async def query(
         require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
     ),
     pipeline: RAGPipeline = Depends(get_rag_pipeline),
+    orchestrator: ToolOrchestrator = Depends(get_tool_orchestrator),
 ) -> QueryResponse:
     """
-    Main RAG query endpoint.
+    Main RAG query endpoint with Tool Calling support.
     """
     processed_question = (
         redact_pii(query_request.question)
@@ -89,9 +92,10 @@ async def query(
         else query_request.question
     )
     logger.info(
-        "Query received: '%s...' | Domain: %s",
+        "Query received: '%s...' | Domain: %s | Tool Calling: %s",
         processed_question[:50],
         query_request.domain,
+        settings.ENABLE_TOOL_CALLING
     )
     if query_request.session_id and not verify_session_ownership(
         session_id=query_request.session_id,
@@ -107,16 +111,64 @@ async def query(
         span.set_attribute("user.id", user.id)
         span.set_attribute("user.role", user.role.value)
         span.set_attribute("query.length", len(processed_question))
+        span.set_attribute("tool_calling_enabled", settings.ENABLE_TOOL_CALLING)
 
         try:
-            result = await _run_with_timeout(
-                pipeline.run,
-                question=processed_question,
-                domain=query_request.domain.value,
-                session_id=query_request.session_id,
-                owner_id=user.id,
-                timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
-            )
+            # Decide flow based on settings
+            if settings.ENABLE_TOOL_CALLING:
+                # NEW: Tool-augmented flow
+                # First get retrieval result for context chunks (Option A/Hybrid)
+                retrieval_result = await _run_with_timeout(
+                    pipeline.retrieval_pipeline.run,
+                    query=processed_question,
+                    domain=query_request.domain.value,
+                    session_id=query_request.session_id,
+                    owner_id=user.id,
+                    timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
+                )
+                
+                # Run orchestrator
+                result = await _run_with_timeout(
+                    orchestrator.process_with_tools,
+                    question=processed_question,
+                    system_prompt=pipeline.generator.system_prompt,
+                    context_chunks=retrieval_result.get("sources", []) if retrieval_result["success"] else None,
+                    timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
+                )
+                
+                # Map to RAG pipeline style result for response mapping
+                # This ensures compatibility with the rest of this function
+                if result["success"]:
+                    # Run validation
+                    validation = pipeline.generator.validator.validate_response(
+                        result["answer"], 
+                        len(result.get("sources", [])),
+                        used_tools=len(result.get("tool_calls_made", [])) > 0
+                    )
+                    
+                    result_formatted = {
+                        "success": True,
+                        "answer": result["answer"],
+                        "sources": result.get("sources", []),
+                        "validation": validation,
+                        "metadata": {
+                            "model": result.get("model", "unknown"),
+                            "token_usage": result.get("usage", {}),
+                            "total_time_ms": result.get("duration_ms", 0.0),
+                            "tool_calls": result.get("tool_calls_made", [])
+                        }
+                    }
+                    result = result_formatted
+            else:
+                # ORIGINAL: Traditional RAG flow
+                result = await _run_with_timeout(
+                    pipeline.run,
+                    question=processed_question,
+                    domain=query_request.domain.value,
+                    session_id=query_request.session_id,
+                    owner_id=user.id,
+                    timeout_seconds=settings.REQUEST_TIMEOUT_SECONDS,
+                )
 
             if result["success"]:
                 sources = []
@@ -163,11 +215,22 @@ async def query(
                     cache_hit=meta.get("cache_hit", False),
                 )
 
+                # Select disclaimer based on domain
+                if query_request.domain.value == "tax":
+                    disclaimer = LegalDisclaimers.get_tax_disclaimer()
+                elif query_request.domain.value == "legal":
+                    disclaimer = LegalDisclaimers.get_court_case_disclaimer()
+                elif query_request.domain.value == "finance":
+                    disclaimer = LegalDisclaimers.get_compliance_disclaimer()
+                else:
+                    disclaimer = LegalDisclaimers.get_general_disclaimer()
+
                 response = QueryResponse(
                     success=True,
                     question=processed_question,
                     domain=query_request.domain.value,
                     answer=result["answer"],
+                    disclaimer=disclaimer,
                     sources=sources,
                     validation=validation,
                     metadata=metadata,

@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables / .env file."""
 
+    # --- Tool Calling ---
+    ENABLE_TOOL_CALLING: bool = True
+    TOOL_CALLING_MAX_ROUNDS: int = 3
+    TOOL_EXECUTION_TIMEOUT: int = 10
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

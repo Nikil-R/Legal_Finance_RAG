@@ -1,0 +1,61 @@
+{
+  "2026-27": {
+    "estimate_type": "BE",
+    "fiscal_deficit": {
+      "value_crore": 1568248,
+      "value_formatted": "₹15,68,248 crore",
+      "as_percent_gdp": 4.3
+    },
+    "total_expenditure": {
+      "value_crore": 5347315,
+      "value_formatted": "₹53,47,315 crore"
+    },
+    "revenue_receipts": {
+      "value_crore": 3465958,
+      "value_formatted": "₹34,65,958 crore"
+    },
+    "capital_expenditure": {
+      "value_crore": 1221821,
+      "value_formatted": "₹12,21,821 crore"
+    },
+    "effective_capital_expenditure": {
+      "value_crore": 1714523,
+      "value_formatted": "₹17,14,523 crore"
+    },
+    "tax_revenue_net": {
+      "value_crore": 2870000,
+      "value_formatted": "₹28,70,000 crore"
+    },
+    "debt_to_gdp": {
+      "value_percent": 55.6
+    },
+    "defence_spending": {
+      "value_crore": 681210,
+      "value_formatted": "₹6,81,210 crore"
+    },
+    "education_spending": {
+      "value_crore": 125638,
+      "value_formatted": "₹1,25,638 crore"
+    },
+    "health_spending": {
+      "value_crore": 92450,
+      "value_formatted": "₹92,450 crore"
+    }
+  },
+  "2025-26": {
+    "estimate_type": "RE",
+    "fiscal_deficit": {
+      "value_crore": 1654231,
+      "value_formatted": "₹16,54,231 crore",
+      "as_percent_gdp": 4.4
+    },
+    "total_expenditure": {
+      "value_crore": 4820150,
+      "value_formatted": "₹48,20,150 crore"
+    },
+    "capital_expenditure": {
+      "value_crore": 1100000,
+      "value_formatted": "₹11,00,000 crore"
+    }
+  }
+}

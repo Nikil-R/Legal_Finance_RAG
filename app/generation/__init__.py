@@ -4,6 +4,7 @@ from app.generation.guardrails import GuardrailEngine
 from app.generation.llm_client import GroqClient
 from app.generation.pipeline import RAGPipeline
 from app.generation.response_validator import ResponseValidator
+from app.generation.tool_orchestrator import ToolOrchestrator
 
 __all__ = [
     "CitationMapper",
@@ -12,4 +13,5 @@ __all__ = [
     "RAGPipeline",
     "GroqClient",
     "ResponseValidator",
+    "ToolOrchestrator",
 ]

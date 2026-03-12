@@ -1,0 +1,126 @@
+{
+  "penalty_schedules": {
+    "income_tax": {
+      "late_return_filing": {
+        "penalty_section": "Section 271F",
+        "applicability": "Any return filed after due date",
+        "penalty_amount": "₹5,000 (flat)",
+        "interest_rate": "1% per month on tax difference"
+      },
+      "non_filing": {
+        "penalty_section": "Section 271A / Criminal u/s 276CC",
+        "penalty_amount": "50% to 300% of tax payable",
+        "criminal_prosecution": "Up to 2 years imprisonment + fine",
+        "applies_when": "Deliberate non-filing with intent to evade tax"
+      },
+      "concealment": {
+        "penalty_section": "Section 271(1)(c)",
+        "penalty_slab": {
+          "up_to_25_percent": "50% of additional tax",
+          "25_to_50_percent": "100% of additional tax",
+          "above_50_percent": "150% of additional tax"
+        },
+        "applies_when": "Concealment of income or furnishing inaccurate particulars"
+      },
+      "wrong_claim": {
+        "penalty_section": "Section 271(1)(c)",
+        "penalty_amount": "50% to 300% of tax at stake",
+        "applies_when": "Claiming wrong deductions or exemptions"
+      },
+      "tds_default": {
+        "penalty_section": "Section 272A",
+        "interest_rate": "1.5% per month on TDS not deposited",
+        "penalty": "100% of TDS amount + above interest"
+      }
+    },
+    "gst": {
+      "late_gstr1_filing": {
+        "penalty": "₹100 per day (Max ₹5,000)",
+        "compounding_option": "Available with additional 50%"
+      },
+      "non_payment_gst": {
+        "penalty": "10% of tax + interest at 18% p.a.",
+        "criminal": "Imprisonment up to 6 months + ₹1 lakh fine"
+      },
+      "false_credit": {
+        "penalty": "Amount of ITC falsely claimed + equal penalty",
+        "criminal_prosecution": "Up to 5 years imprisonment"
+      },
+      "supply_without_invoice": {
+        "penalty": "5% to 15% of value of supply",
+        "plus": "Interest at prescribed rate"
+      },
+      "unregistered_supply": {
+        "penalty": "10% of value of supply",
+        "applicability": "Supplying without registration when required"
+      }
+    },
+    "corporate_law": {
+      "late_mca_filing": {
+        "penalty": "₹5,000 - ₹25,000 depending on document type",
+        "criminal": "Prosecution under IPC possible"
+      },
+      "director_disqualification": {
+        "penalty": "Disqualification from being director",
+        "period": "6 months to 5 years or permanent"
+      },
+      "non_holding_audit": {
+        "penalty": "₹1,00,000 + 10% of fees",
+        "criminal": "Imprisonment up to 1 year"
+      },
+      "insider_trading_violation": {
+        "penalty": "₹25 crore or 3x amount of illegal gains",
+        "criminal": "Up to 15 years imprisonment"
+      }
+    },
+    "customs_excise": {
+      "goods_confiscation": {
+        "penalty": "100% of duty chargeable",
+        "plus": "Goods seizure"
+      },
+      "smuggling": {
+        "penalty": "200% to 300% of duty",
+        "criminal": "Up to 7 years imprisonment"
+      }
+    },
+    "labor_laws": {
+      "non_compliance_pf": {
+        "penalty": "₹500 - ₹2,000 per day",
+        "interest": "Interest at prevailing bank rate"
+      },
+      "non_payment_gratuity": {
+        "penalty": "Simple interest at 8% p.a.",
+        "criminal": "Imprisonment up to 1 year"
+      }
+    }
+  },
+  "interest_calculations": {
+    "income_tax_interest": {
+      "simple_interest_rate": "1% per month",
+      "compounding": "Simple (not compounded)",
+      "section_reference": "Section 234A/B/C",
+      "applicable_for": "Late payment of tax, late filing, late deposit of TDS"
+    },
+    "gst_interest": {
+      "rate": "State Bank Base Rate + 2%",
+      "current_rate_approx": "8-9% p.a.",
+      "compounding": "Monthly",
+      "section_reference": "Section 112(a) CGST Act"
+    },
+    "loan_default": {
+      "bank_rate": "Base rate (4.90%) + margin",
+      "typical_range": "8-12% p.a.",
+      "moratorium_on_interest": "Not allowed for secured lending"
+    }
+  },
+  "compound_interest_scenarios": {
+    "scenario_example": {
+      "gst_unpaid": 100000,
+      "months_delayed": 12,
+      "interest_rate": 9,
+      "total_liability": 109000,
+      "simple_interest_calculation": 9000,
+      "note": "Interest increases liability significantly over time"
+    }
+  }
+}

@@ -16,6 +16,7 @@ from app.api.routes import (
     documents_router,
     health_router,
     query_router,
+    tools_router,
     user_documents_router,
 )
 from app.api.security import require_api_key
@@ -60,6 +61,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health_router)
     app.include_router(query_router, prefix="/api/v1", dependencies=[Depends(require_api_key)])
+    app.include_router(tools_router, prefix="/api/v1", dependencies=[Depends(require_api_key)])
     app.include_router(documents_router, prefix="/api/v1", dependencies=[Depends(require_api_key)])
     app.include_router(user_documents_router, prefix="/api/v1", dependencies=[Depends(require_api_key)])
     app.include_router(query_router, prefix="/api/v2", dependencies=[Depends(require_api_key)])
@@ -108,6 +110,8 @@ def create_app() -> FastAPI:
             "top_k_rerank": settings.TOP_K_RERANK,
             "temperature": settings.TEMPERATURE,
             "api_auth_enabled": settings.API_AUTH_ENABLED,
+            "enable_tool_calling": settings.ENABLE_TOOL_CALLING,
+            "tool_calling_max_rounds": settings.TOOL_CALLING_MAX_ROUNDS,
         }
 
     return app

@@ -157,6 +157,7 @@ class QueryMetadata(BaseModel):
     guardrails: dict = Field(default_factory=dict)
     query_rewrite: dict = Field(default_factory=dict)
     cache_hit: bool = False
+    tool_calls: list[dict] = Field(default_factory=list)
 
 
 class QueryResponse(BaseModel):
@@ -166,52 +167,12 @@ class QueryResponse(BaseModel):
     question: str
     domain: str
     answer: Optional[str] = None
+    disclaimer: Optional[str] = None
     sources: list[SourceDocument] = Field(default_factory=list)
     validation: Optional[ValidationResult] = None
     metadata: Optional[QueryMetadata] = None
     error: Optional[str] = None
     timestamp: datetime
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "success": True,
-                "question": "What are the deductions under Section 80C?",
-                "domain": "tax",
-                "answer": "Under Section 80C of the Income Tax Act...",
-                "sources": [
-                    {
-                        "reference_id": 1,
-                        "source": "income_tax_act.pdf",
-                        "domain": "tax",
-                        "relevance_score": 0.92,
-                        "excerpt": "Section 80C allows...",
-                    }
-                ],
-                "validation": {
-                    "overall_valid": True,
-                    "has_citations": True,
-                    "has_disclaimer": True,
-                    "issues": [],
-                },
-                "metadata": {
-                    "retrieval_candidates": 20,
-                    "reranked_chunks": 5,
-                    "top_relevance_score": 0.92,
-                    "model": "llama-3.1-8b-instant",
-                    "prompt_version": "v1",
-                    "token_usage": {
-                        "prompt_tokens": 500,
-                        "completion_tokens": 200,
-                        "total_tokens": 700,
-                    },
-                    "retrieval_time_ms": 150,
-                    "generation_time_ms": 800,
-                    "total_time_ms": 950,
-                },
-                "timestamp": "2024-01-15T10:30:00Z",
-            }
-        }
 
 
 class RetrievalResponse(BaseModel):

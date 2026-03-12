@@ -10,30 +10,30 @@ interface WelcomeScreenProps {
 const STARTER_CARDS = [
   {
     icon: Target,
-    title: 'Indian Budget 2026',
-    description: 'Explain key highlights and fiscal allocations.',
-    example: 'Summarize the key highlights and allocations for infrastructure in the 2026 Budget.',
+    title: 'Tax Calculation',
+    description: 'Calculate income tax for FY 2026-27.',
+    example: 'Calculate tax on ₹15,00,000 income in the new regime for FY 2026-27.',
     color: 'blue'
   },
   {
     icon: PieChart,
-    title: 'Tax Policy Analysis',
-    description: 'Analyze changes in direct and indirect taxes.',
-    example: 'What are the major changes in GST and Income Tax rates for the next fiscal year?',
+    title: 'GST Rate Search',
+    description: 'Look up GST rates and HSN codes.',
+    example: 'What is the GST rate and HSN code for restaurant services?',
     color: 'cyan'
   },
   {
     icon: ShieldCheck,
-    title: 'Legal Compliance',
-    description: 'Verify document adherence to new regulations.',
-    example: 'Are there any new compliance requirements for fintech startups mentioned in the budget?',
+    title: 'Budget Analysis',
+    description: 'Compare budget figures and fiscal targets.',
+    example: 'Compare the fiscal deficit targets of 2025-26 and 2026-27.',
     color: 'indigo'
   },
   {
     icon: Flame,
-    title: 'Market Impact',
-    description: 'Assess the impact on specific industry sectors.',
-    example: 'How does the current budget impact the renewable energy sector in India?',
+    title: 'Act Section Lookup',
+    description: 'Find specific sections in Indian legal acts.',
+    example: 'What does Section 80C of the Income Tax Act cover?',
     color: 'amber'
   },
 ];

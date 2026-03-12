@@ -132,14 +132,15 @@ class ResponseValidator:
 
         return {"is_refusal": False, "refusal_phrase": None}
 
-    def validate_response(self, response: str, num_sources: int) -> dict:
+    def validate_response(self, response: str, num_sources: int, used_tools: bool = False) -> dict:
         """Runs all validations and returns a summary result."""
         citations = self.validate_citations(response, num_sources)
         disclaimer = self.validate_disclaimer(response)
         refusal = self.validate_refusal(response)
 
-        # If it's a refusal, we don't strictly require citations, but still require disclaimer.
-        if refusal["is_refusal"]:
+        # If it's a refusal or tools were used, we don't strictly require citations.
+        # But we ALWAYS require disclaimer.
+        if refusal["is_refusal"] or (used_tools and not citations["has_citations"]):
             overall_valid = disclaimer["valid"]
         else:
             overall_valid = citations["valid"] and disclaimer["valid"]
@@ -147,11 +148,13 @@ class ResponseValidator:
         issues = []
         if not disclaimer["valid"]:
             issues.append("Missing mandatory disclaimer")
-        if not refusal["is_refusal"] and not citations["valid"]:
-            if not citations["has_citations"]:
-                issues.append("Missing citations")
-            if citations["invalid_citations"]:
-                issues.append(f"Invalid citations: {citations['invalid_citations']}")
+            
+        # Requirement for citations only if it's not a refusal AND (no tools used OR tool used but search was part of it)
+        if not refusal["is_refusal"] and not used_tools and not citations["valid"]:
+            issues.append("Missing citations")
+        
+        if citations["invalid_citations"]:
+            issues.append(f"Invalid citations: {citations['invalid_citations']}")
 
         if not overall_valid:
             logger.error(

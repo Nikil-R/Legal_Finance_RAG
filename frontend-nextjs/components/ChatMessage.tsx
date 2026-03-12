@@ -1,7 +1,7 @@
 'use client';
 
 import { Message, Source } from '@/lib/types';
-import { Copy, Check, AlertCircle, Bot, User, Share2 } from 'lucide-react';
+import { Copy, Check, AlertCircle, Bot, User, Share2, Wrench } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useToast } from './ToastProvider';
@@ -76,6 +76,21 @@ export function ChatMessage({ message, onCitationClick }: ChatMessageProps) {
                    <span className="text-red-600 dark:text-red-400">System Error</span>
                  </>
                )}
+            </div>
+          )}
+
+          {/* Tool Calls Indicator */}
+          {!isUser && message.metadata?.tool_calls && message.metadata.tool_calls.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-indigo-500/20">
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-tight">
+                <Wrench className="h-2.5 w-2.5" />
+                Tools Used
+              </div>
+              {message.metadata.tool_calls.map((tc, idx) => (
+                 <div key={idx} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                   {tc.tool.replace(/_/g, ' ')}
+                 </div>
+              ))}
             </div>
           )}
 
