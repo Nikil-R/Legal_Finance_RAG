@@ -18,7 +18,13 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://legal-finance-rag.vercel.app",  # Production frontend
+        "https://*.vercel.app",                   # Vercel preview deployments
+        "http://localhost:3000",                  # Local development
+        "http://localhost:8000",                  # Local API testing
+        "*",                                      # Temporary backup
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
