@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: legal-finance-rag
+    runtime: docker
+    plan: starter # Starter plan recommended for ML models (2GB RAM)
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: API_AUTH_ENABLED
+        value: "true"
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: GROQ_API_KEY
+        sync: false # Set this in Render dashboard
+      - key: API_KEYS
+        sync: false # Set as "id:key,id2:key2" in Render dashboard
+      - key: CORS_ORIGINS
+        value: "*" # Change this to your frontend URL later
+      - key: TOP_K_RETRIEVAL
+        value: "10"
+      - key: TOP_K_RERANK
+        value: "3"
+      - key: GUARDRAIL_MIN_TOP_SCORE
+        value: "-5.0"
+      - key: CHROMA_PERSIST_DIR
+        value: "./chroma_db"
+    healthCheckPath: /health/ready
+    dockerContext: .
+    dockerfilePath: Dockerfile

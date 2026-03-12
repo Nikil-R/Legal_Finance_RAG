@@ -20,9 +20,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application code
 COPY . .
 
-# Expose port (Railway usually uses 8080 or detection)
+# Expose port (default for uvicorn but overridden by PORT environment variable)
 EXPOSE 8080
 
-# Run the application
-# We use --proxy-headers for production and --forwarded-allow-ips="*" for safety
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers"]
+# Use a shell to allow environment variable expansion for the PORT
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --proxy-headers
