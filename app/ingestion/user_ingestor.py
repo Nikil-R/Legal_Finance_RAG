@@ -8,9 +8,6 @@ from datetime import datetime
 from pathlib import Path
 
 from app.config import get_settings
-from app.ingestion.chunker import DocumentChunker
-from app.ingestion.embedder import VectorStoreManager
-from app.ingestion.loader import DocumentLoader
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -66,6 +63,9 @@ class UserDocumentIngestor:
     """Handles uploading, text extraction, and storage for user-specific documents."""
 
     def __init__(self) -> None:
+        from app.ingestion.chunker import DocumentChunker
+        from app.ingestion.loader import DocumentLoader
+
         self.settings = get_settings()
         self.loader = DocumentLoader()
         self.chunker = DocumentChunker(
@@ -92,6 +92,8 @@ class UserDocumentIngestor:
         """
         Accept file content, extract text, chunk, and store in a session-specific collection.
         """
+        from app.ingestion.embedder import VectorStoreManager
+
         # 1. Save file temporarily
         session_dir = (self.upload_dir / session_id).resolve()
         session_dir.mkdir(parents=True, exist_ok=True)

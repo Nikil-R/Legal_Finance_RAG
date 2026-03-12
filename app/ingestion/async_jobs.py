@@ -10,7 +10,6 @@ from pathlib import Path
 
 from app.config import get_settings
 from app.infra.ingestion_jobs import ingestion_job_store
-from app.ingestion.user_ingestor import UserDocumentIngestor
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -45,6 +44,8 @@ def process_ingestion_job(
     """
     Execute ingestion work for an already-staged file and update job status.
     """
+    from app.ingestion.user_ingestor import UserDocumentIngestor
+
     path = Path(staged_file_path)
     ingestion_job_store.mark_processing(job_id)
 

@@ -5,7 +5,7 @@ Query endpoints for the RAG system.
 import asyncio
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
@@ -25,7 +25,6 @@ from app.api.models import (
 from app.api.rate_limit import limiter
 from app.api.security import AuthenticatedUser, require_role
 from app.config import settings
-from app.generation import RAGPipeline, ToolOrchestrator
 from app.models.auth import Role
 from app.observability import (
     metrics,
@@ -38,6 +37,10 @@ from app.reranking import RetrievalPipeline
 from app.utils.pii_redactor import redact_pii
 from app.utils.session_ownership import verify_session_ownership
 from app.legal_disclaimers import LegalDisclaimers
+
+if TYPE_CHECKING:
+    from app.generation import RAGPipeline, ToolOrchestrator
+    from app.reranking import RetrievalPipeline
 
 router = APIRouter(prefix="/query", tags=["Query"])
 logger = structlog_logger.bind(module="api.query")
@@ -309,7 +312,7 @@ async def retrieve_only(
     user: AuthenticatedUser = Depends(
         require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
     ),
-    pipeline: RetrievalPipeline = Depends(get_retrieval_pipeline),
+    pipeline: "RetrievalPipeline" = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """
     Retrieval-only endpoint (no LLM generation).

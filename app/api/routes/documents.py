@@ -14,7 +14,6 @@ from app.api.models import (
 from app.api.rate_limit import limiter
 from app.api.security import AuthenticatedUser, require_role
 from app.infra.system_ingestion_jobs import system_ingestion_job_store
-from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
 from app.models.auth import Role
 from app.observability import logger as obs_logger
 
@@ -114,6 +113,8 @@ async def ingest_documents(
     logger.debug("User %s triggered system ingestion request", user.id)
 
     try:
+        from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
+
         result = enqueue_system_ingestion_job(clear_existing=ingest_request.clear_existing)
         return IngestJobResponse(
             success=True,

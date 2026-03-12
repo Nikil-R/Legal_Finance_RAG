@@ -22,7 +22,7 @@ Output chunk shape:
 
 import re
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters.character import RecursiveCharacterTextSplitter
 
 from app.utils.logger import get_logger
 

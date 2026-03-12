@@ -6,17 +6,20 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
+from typing import TYPE_CHECKING
 
 import chromadb
 
 from app.config import settings
-from app.generation import RAGPipeline, GroqClient, ToolOrchestrator
-from app.reranking import RetrievalPipeline
-from app.tools.registry import ToolRegistry
-from app.tools.executor import ToolExecutor
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
+
+if TYPE_CHECKING:
+    from app.generation import RAGPipeline, ToolOrchestrator
+    from app.reranking import RetrievalPipeline
+    from app.tools.executor import ToolExecutor
+    from app.tools.registry import ToolRegistry
 
 
 class _FallbackRAGPipeline:
@@ -90,6 +93,8 @@ class _StatsRetriever:
 def get_rag_pipeline() -> RAGPipeline | _FallbackRAGPipeline:
     logger.info("Initializing RAGPipeline...")
     try:
+        from app.generation import RAGPipeline
+
         return RAGPipeline()
     except Exception as exc:
         logger.error("RAGPipeline initialization failed: %s", exc)
@@ -100,6 +105,8 @@ def get_rag_pipeline() -> RAGPipeline | _FallbackRAGPipeline:
 def get_retrieval_pipeline() -> RetrievalPipeline | _FallbackRetrievalPipeline:
     logger.info("Initializing RetrievalPipeline...")
     try:
+        from app.reranking import RetrievalPipeline
+
         return RetrievalPipeline()
     except Exception as exc:
         logger.error("RetrievalPipeline initialization failed: %s", exc)
@@ -117,15 +124,21 @@ def get_retriever() -> _StatsRetriever | _FallbackRetriever:
 
 @lru_cache()
 def get_tool_registry() -> ToolRegistry:
+    from app.tools.registry import ToolRegistry
+
     return ToolRegistry()
 
 @lru_cache()
 def get_tool_executor() -> ToolExecutor:
+    from app.tools.executor import ToolExecutor
+
     registry = get_tool_registry()
     return ToolExecutor(registry)
 
 @lru_cache()
 def get_tool_orchestrator() -> ToolOrchestrator:
+    from app.generation import GroqClient, ToolOrchestrator
+
     client = GroqClient()
     registry = get_tool_registry()
     executor = get_tool_executor()

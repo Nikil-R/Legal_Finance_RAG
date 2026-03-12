@@ -11,7 +11,6 @@ from concurrent.futures import ThreadPoolExecutor
 from app.api.dependencies import clear_pipeline_cache
 from app.config import get_settings
 from app.infra.system_ingestion_jobs import system_ingestion_job_store
-from app.ingestion.pipeline import run_ingestion_pipeline
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -44,6 +43,8 @@ def process_system_ingestion_job(
     """
     Execute system ingestion work and update job status.
     """
+    from app.ingestion.pipeline import run_ingestion_pipeline
+
     system_ingestion_job_store.mark_processing(job_id)
     started = time.time()
 

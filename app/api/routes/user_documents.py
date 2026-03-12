@@ -19,8 +19,6 @@ from app.api.models import (
 from app.api.security import AuthenticatedUser, get_current_user
 from app.config import get_settings
 from app.infra.ingestion_jobs import ingestion_job_store
-from app.ingestion.async_jobs import enqueue_ingestion_job
-from app.ingestion.user_ingestor import sanitize_upload
 from app.utils.logger import get_logger
 from app.utils.session_ownership import verify_session_ownership
 
@@ -44,6 +42,8 @@ async def read_upload_safely(file: UploadFile, max_upload_size: int) -> bytes:
 
 
 def _stage_user_upload(content: bytes, filename: str, session_id: str) -> Path:
+    from app.ingestion.user_ingestor import sanitize_upload
+
     staging_dir = (Path("data/user_upload_jobs") / session_id).resolve()
     staging_dir.mkdir(parents=True, exist_ok=True)
     staged_path = sanitize_upload(filename, staging_dir)
@@ -93,6 +93,8 @@ async def upload_user_document(
             session_id=session_id,
         )
         try:
+            from app.ingestion.async_jobs import enqueue_ingestion_job
+
             result = enqueue_ingestion_job(
                 staged_file_path=str(staged_path),
                 filename=Path(filename).name,
