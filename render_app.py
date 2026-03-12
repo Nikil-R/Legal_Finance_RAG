@@ -42,12 +42,18 @@ async def root():
         "docs": "/docs"
     }
 
+import asyncio
+
 # Load heavy stuff AFTER server starts
 @app.on_event("startup")
+async def startup_event():
+    """Trigger background loading of routes."""
+    asyncio.create_task(load_application())
+
 async def load_application():
     """
-    Load actual application routes after server binds to port.
-    This prevents timeout during startup.
+    Load actual application routes in the background after server binds to port.
+    This ensures the port is open INSTANTLY for Render.
     """
     print("🚀 Server started, now loading application routes...")
     
