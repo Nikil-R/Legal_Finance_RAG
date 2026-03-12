@@ -84,8 +84,8 @@ async def query(
     user: AuthenticatedUser = Depends(
         require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
     ),
-    pipeline: RAGPipeline = Depends(get_rag_pipeline),
-    orchestrator: ToolOrchestrator = Depends(get_tool_orchestrator),
+    pipeline: Any = Depends(get_rag_pipeline),
+    orchestrator: Any = Depends(get_tool_orchestrator),
 ) -> QueryResponse:
     """
     Main RAG query endpoint with Tool Calling support.
@@ -312,7 +312,7 @@ async def retrieve_only(
     user: AuthenticatedUser = Depends(
         require_role(Role.QUERY, Role.INGEST, Role.ADMIN)
     ),
-    pipeline: "RetrievalPipeline" = Depends(get_retrieval_pipeline),
+    pipeline: Any = Depends(get_retrieval_pipeline),
 ) -> RetrievalResponse:
     """
     Retrieval-only endpoint (no LLM generation).
