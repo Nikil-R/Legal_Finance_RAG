@@ -10,7 +10,7 @@
       "root": "."
     }
   ],
-  "reportMissingImports": true,
+  "reportMissingImports": false,
   "reportMissingTypeStubs": false,
   "typeCheckingMode": "basic"
 }

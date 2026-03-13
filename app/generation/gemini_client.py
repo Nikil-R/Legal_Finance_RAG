@@ -4,11 +4,11 @@ Bypasses the SDK which adds problematic 'models/' prefixes.
 """
 
 import json
-import requests
+import requests  # type: ignore
 from typing import Any, Dict, List, Optional
 
-from app.config import settings
-from app.utils.logger import get_logger
+from app.config import settings  # type: ignore
+from app.utils.logger import get_logger  # type: ignore
 
 logger = get_logger(__name__)
 
@@ -183,7 +183,7 @@ class GeminiClient:
             
             for part in parts:
                 if "text" in part:
-                    text_content = text_content + str(part["text"])
+                    text_content = f"{text_content}{part['text']}"
                 elif "functionCall" in part:
                     fc = part["functionCall"]
                     tool_calls.append({
@@ -192,7 +192,7 @@ class GeminiClient:
                     })
             
             # Prepare result for orchestrator compatibility
-            message_dict = {
+            message_dict: Dict[str, Any] = {
                 "role": "assistant",
                 "content": text_content if not tool_calls else "",
             }

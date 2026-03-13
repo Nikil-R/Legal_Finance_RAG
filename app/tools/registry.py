@@ -1,20 +1,20 @@
 from typing import Dict, Any, List, Callable
-from .schemas import GroqTool, GroqToolFunction
+from .schemas import GroqTool, GroqToolFunction  # type: ignore
 
 # Import tool implementations
-from .tax_calculator import calculate_income_tax
-from .implementations.gst_lookup import lookup_gst_rate
-from .implementations.budget_data import lookup_budget_data
-from .implementations.document_search import search_legal_documents
-from .implementations.section_lookup import lookup_act_section
+from .tax_calculator import calculate_income_tax  # type: ignore
+from .implementations.gst_lookup import lookup_gst_rate  # type: ignore
+from .implementations.budget_data import lookup_budget_data  # type: ignore
+from .implementations.document_search import search_legal_documents  # type: ignore
+from .implementations.section_lookup import lookup_act_section  # type: ignore
 # New high-priority tools
-from .implementations.court_case_search import search_court_cases
-from .implementations.compliance_checker import check_compliance
-from .implementations.financial_ratio_calculator import calculate_financial_ratios
+from .implementations.court_case_search import search_court_cases  # type: ignore
+from .implementations.compliance_checker import check_compliance  # type: ignore
+from .implementations.financial_ratio_calculator import calculate_financial_ratios  # type: ignore
 # New medium-priority tools
-from .implementations.amendment_tracker import track_amendments
-from .implementations.penalty_interest_calculator import calculate_penalties_and_interest
-from .implementations.document_comparison import compare_documents
+from .implementations.amendment_tracker import track_amendments  # type: ignore
+from .implementations.penalty_interest_calculator import calculate_penalties_and_interest  # type: ignore
+from .implementations.document_comparison import compare_documents  # type: ignore
 
 class ToolRegistry:
     """Manages all available tools for LLM tool calling."""

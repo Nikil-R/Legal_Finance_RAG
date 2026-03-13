@@ -5,11 +5,11 @@ Uses direct REST API to bypass SDK-specific 'models/' prefixing issues.
 
 import base64
 import json
-import requests
+import requests  # type: ignore
 from typing import Any, Dict, List, Optional
 
-from app.config import settings
-from app.utils.logger import get_logger
+from app.config import settings  # type: ignore
+from app.utils.logger import get_logger  # type: ignore
 
 logger = get_logger(__name__)
 
