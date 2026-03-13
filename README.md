@@ -1,6 +1,6 @@
 # 🏛️ LegalFinance RAG: Production-Grade AI for Indian Legal & Tax Advisory
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Try_Now-success?style=for-the-badge)](https://your-demo-url.com)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Try_Now-success?style=for-the-badge)](https://legal-finance-rag.vercel.app/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
@@ -38,7 +38,7 @@ Try asking:
 "Explain Section 80C deductions"
 ```
 
-👉 **[Launch Demo](https://your-demo-url.com)** 
+👉 **[Launch Demo](https://legal-finance-rag.vercel.app/)** 
 
 ---
 
@@ -413,22 +413,17 @@ MIT License - See [LICENSE](LICENSE) for details.
 - **Next.js** - React framework
 - **Shadcn/UI** - UI components
 
-### Special Thanks
-- Prof. [Name] - Project Guide, Sambhram Institute of Technology
-- OpenAI - GPT-4 for code assistance
-- HuggingFace - Open-source models
-
 ---
 
 ## 👨‍💻 About the Developer
 
 **Nikil R**  
-B.Tech in Computer Science & Engineering  
+B.E in Information Science & Engineering  
 Sambhram Institute of Technology, Bengaluru
 
 [![GitHub](https://img.shields.io/badge/GitHub-@Nikil--R-181717?style=flat&logo=github)](https://github.com/Nikil-R)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/your-profile)
-[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat&logo=gmail)](mailto:your.email@example.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/nikil-r1)
+[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat&logo=gmail)](mailto:nikil.r.connect@gmail.com)
 
 ---
 
@@ -436,7 +431,7 @@ Sambhram Institute of Technology, Bengaluru
 
 - 🐛 **Bug Reports:** [Open an Issue](https://github.com/Nikil-R/Legal_Finance_RAG/issues)
 - 💡 **Feature Requests:** [Discussions](https://github.com/Nikil-R/Legal_Finance_RAG/discussions)
-- 📧 **Email:** your.email@example.com
+- 📧 **Email:** nikil.r.connect@gmail.com
 
 ---
 
