@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, AlertCircle, Paperclip } from 'lucide-react';
+import { Send, AlertCircle, Paperclip, Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -19,7 +19,45 @@ export function ChatInput({
   onUploadClick,
 }: ChatInputProps) {
   const [input, setInput] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Initialize Speech Recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'en-US';
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput((prev) => prev + (prev ? ' ' : '') + transcript);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      setIsListening(true);
+      recognitionRef.current?.start();
+    }
+  };
 
   // Auto-grow textarea
   useEffect(() => {
@@ -76,7 +114,7 @@ export function ChatInput({
           <Paperclip className="h-5 w-5" />
         </button>
 
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex gap-2 items-end bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 px-2 py-1.5 focus-within:border-blue-500/50 focus-within:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] transition-all duration-300">
           <textarea
             ref={textareaRef}
             value={input}
@@ -86,15 +124,27 @@ export function ChatInput({
             disabled={isLoading || !isBackendHealthy}
             rows={1}
             className={cn(
-              "w-full resize-none rounded-2xl border bg-slate-50 dark:bg-slate-800/50 px-5 py-3 text-sm font-medium transition-all duration-300",
-              "border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100",
-              "placeholder:text-slate-400 dark:placeholder:text-slate-500",
-              "focus:outline-none focus:border-blue-500/50",
-              "focus:shadow-[0_0_0_4px_rgba(59,130,246,0.1)] dark:focus:shadow-[0_0_0_4px_rgba(59,130,246,0.2)]",
+              "w-full resize-none bg-transparent px-3 py-1.5 text-sm font-medium focus:outline-none",
+              "text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500",
               "disabled:opacity-50 disabled:cursor-not-allowed",
-              "max-h-52 min-h-[44px]"
+              "max-h-52 min-h-[36px]"
             )}
           />
+          
+          {/* Voice Input Button */}
+          <button
+            onClick={toggleListening}
+            disabled={isLoading || !isBackendHealthy}
+            className={cn(
+              "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all",
+              isListening 
+                ? "bg-red-500 text-white animate-pulse" 
+                : "text-slate-400 hover:text-blue-500"
+            )}
+            title={isListening ? "Stop listening" : "Voice input"}
+          >
+            {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+          </button>
         </div>
 
         {/* Send Action */}

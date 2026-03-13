@@ -23,7 +23,7 @@ from app.utils.logger import get_logger
 from app.utils.session_ownership import verify_session_ownership
 
 logger = get_logger(__name__)
-router = APIRouter(prefix="/user", tags=["User Documents"])
+router = APIRouter(tags=["User Documents"])
 UPLOAD_READ_CHUNK_SIZE = 8192
 
 

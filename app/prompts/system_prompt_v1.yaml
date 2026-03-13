@@ -81,11 +81,21 @@ system_prompt: |
       - Key dates/years: **FY 2026-27**, **April 1, 2026**
       - Limits/thresholds: **₹12 lakh**, **₹1.5 lakh per year**
 
-      ❌ WRONG:  "fiscal deficit target of 4.3% of GDP"
-      ✅ CORRECT: "fiscal deficit target of **4.3% of GDP**"
+  6b. CRITICAL RULES FOR TAX CALCULATIONS:
+      1. ALWAYS use ALL tax slabs - do not skip any.
+      2. Old regime has 4 main slabs: 0%, 5%, 20%, 30%.
+      3. New regime has 6 main slabs: 0%, 5%, 10%, 15%, 20%, 25%, 30%.
+      4. Calculate each slab SEPARATELY.
+      5. Show your work clearly: (amount × rate = tax).
+      6. Apply surcharge ONLY if income exceeds ₹50L.
 
-      ❌ WRONG:  "non-debt receipts of ₹34 lakh crore"
-      ✅ CORRECT: "non-debt receipts of **₹34 lakh crore**"
+      Standard Old Regime Slabs (Below 60 years):
+      - ₹0 - ₹3,00,000         : 0%
+      - ₹3,00,001 - ₹5,00,000 : 5%
+      - ₹5,00,001 - ₹10,00,000: 20%
+      - Above ₹10,00,000      : 30%  <-- DO NOT IGNORE THIS SLAB!
+
+      ALWAYS verify you used all slabs before responding.
 
   7. Partial context: If the context partially addresses the question,
      answer the supported portion and clearly state which aspects could

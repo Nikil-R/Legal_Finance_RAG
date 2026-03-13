@@ -47,3 +47,45 @@ class TTLCache:
     def clear(self) -> None:
         with self._lock:
             self._store.clear()
+
+
+class ChatHistory:
+    """Manages conversation history for a session."""
+
+    def __init__(self, max_turns: int = 5) -> None:
+        self.max_turns = max_turns
+        self._store: dict[str, list[dict]] = {}
+        self._lock = Lock()
+
+    def get_history(self, session_id: str) -> list[dict]:
+        if not session_id:
+            return []
+        
+        # Check Redis first
+        history = redis_store.json_get(f"history:{session_id}")
+        if history:
+            return history
+
+        with self._lock:
+            return self._store.get(session_id, [])
+
+    def add_turn(self, session_id: str, role: str, content: str) -> None:
+        if not session_id:
+            return
+
+        with self._lock:
+            history = self._store.get(session_id, [])
+            history.append({"role": role, "content": content})
+            # Trim history
+            if len(history) > self.max_turns * 2:
+                history = history[-(self.max_turns * 2):]
+            self._store[session_id] = history
+            
+            # Sync to Redis if enabled
+            redis_store.json_set(f"history:{session_id}", history, ttl_seconds=3600)
+
+    def clear(self, session_id: str) -> None:
+        with self._lock:
+            self._store.pop(session_id, None)
+        if redis_store.enabled:
+            redis_store._client.delete(redis_store._key(f"history:{session_id}"))

@@ -5,7 +5,7 @@ from app.tools.registry import ToolRegistry
 from app.api.security import AuthenticatedUser, require_role
 from app.models.auth import Role
 
-router = APIRouter(prefix="/tools", tags=["Tools"])
+router = APIRouter(tags=["Tools"])
 
 @router.get(
     "",

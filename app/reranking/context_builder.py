@@ -81,6 +81,7 @@ class ContextBuilder:
                     "rerank_score": chunk.get("rerank_score"),  # may be None
                     "content": content,
                     "excerpt": content[:400],
+                    "url": meta.get("source_url") or meta.get("url"),
                 }
             )
 

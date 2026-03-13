@@ -12,28 +12,37 @@ class LegalDisclaimers:
     """Generate context-appropriate disclaimers"""
     
     GENERAL_DISCLAIMER = """
-⚠️  EDUCATIONAL PROJECT DISCLAIMER
-═══════════════════════════════════════════════════════════════
-This is a student-built educational demonstration project, NOT professional advice.
+📚 PROJECT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Project:      Legal Finance RAG System \n
+  Developer:    Nikil R \n 
+  Institution:  Sambhram Institute of Technology\n
+  Last Updated: {current_date}\n
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Project: Legal Finance RAG System
-Developer: [Your Name]
-Institution: [Your College/University]
-Last Updated: {date}
+⚠️  IMPORTANT NOTICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓  This is a STUDENT-BUILT educational demonstration project\n
+  ✓  NOT professional legal, tax, or financial advice\n
+  ✓  Information may NOT be current or accurate for real decisions\n
+  ✓  Results are AI-generated and should be independently verified\n
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ FOR EDUCATIONAL PURPOSES ONLY
-✓ NOT A SUBSTITUTE FOR PROFESSIONAL ADVICE
-✓ DATA MAY NOT BE CURRENT OR ACCURATE FOR REAL DECISIONS
+🔍 FOR ACTUAL LEGAL, TAX, OR COMPLIANCE MATTERS, CONSULT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  👨‍⚖️  Qualified Lawyers / Legal Professionals\n
+  💼 Chartered Accountants / Tax Advisors\n
+  📋 Registered Compliance Officers\n
+  🏛️  Official Government Portals\n
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-For actual legal, tax, or compliance matters, consult:
-• Qualified Lawyers / Legal Professionals
-• Chartered Accountants / Tax Advisors  
-• Registered Compliance Officers
-• Official Government Portals
+💡 ABOUT THIS SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This is a demonstration of Retrieval-Augmented Generation (RAG) technology
+using modern AI/ML techniques. It showcases document retrieval, semantic
+search, and natural language generation capabilities.
 
-This system is a demonstration of AI/RAG technology.
-Results should be independently verified before any real use.
-═══════════════════════════════════════════════════════════════
+⚠️  Use at your own risk. Always verify results with qualified professionals.
 """
 
     TAX_CALCULATION_DISCLAIMER = """
@@ -118,8 +127,9 @@ Do not rely solely on this for compliance decisions.
     @staticmethod
     def get_general_disclaimer() -> str:
         """Get general project disclaimer"""
+        # Ensure current_date is used to match the placeholder in GENERAL_DISCLAIMER
         return LegalDisclaimers.GENERAL_DISCLAIMER.format(
-            date=datetime.now().strftime("%B %d, %Y")
+            current_date=datetime.now().strftime("%B %d, %Y")
         )
     
     @staticmethod
@@ -409,12 +419,14 @@ def demo_disclaimers():
     print("\n" + "="*70)
     print("TERMS OF SERVICE (First 500 chars)")
     print("="*70)
-    print(TermsOfService.get_terms()[:500] + "...")
+    terms_text = str(TermsOfService.get_terms())
+    print(terms_text[:500] + "...")
     
     print("\n" + "="*70)
     print("ATTRIBUTIONS (First 500 chars)")
     print("="*70)
-    print(AttributionsPage.get_attributions()[:500] + "...")
+    attr_text = str(AttributionsPage.get_attributions())
+    print(attr_text[:500] + "...")
     
     print("\n✅ All legal disclaimers and pages generated successfully")
 

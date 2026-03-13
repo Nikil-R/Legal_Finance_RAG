@@ -7,7 +7,7 @@ from __future__ import annotations
 import datetime
 from typing import Any, Dict, List, Optional
 
-from app.generation.llm_client import GroqClient
+from app.generation.llm_fabric import LLMFabric
 from app.generation.response_validator import ResponseValidator
 from app.prompts.prompt_manager import PromptManager
 from app.utils.logger import get_logger
@@ -21,7 +21,7 @@ class RAGGenerator:
     def __init__(self, prompt_version: str = "v1") -> None:
         self.prompt_version = prompt_version
         self.prompt_manager = PromptManager()
-        self.groq_client = GroqClient()
+        self.llm_fabric = LLMFabric()
         self.validator = ResponseValidator()
         logger.info(
             "RAGGenerator initialized with prompt version: %s", self.prompt_version
@@ -32,7 +32,13 @@ class RAGGenerator:
         """Returns the system prompt according to current version."""
         return self.prompt_manager.get_system_prompt(self.prompt_version)
 
-    def generate(self, question: str, context: str, sources: list[dict]) -> dict:
+    def generate(
+        self, 
+        question: str, 
+        context: str, 
+        sources: list[dict],
+        history: list[dict] = None
+    ) -> dict:
         """
         Generates a grounded answer based on question and context.
         """
@@ -40,24 +46,30 @@ class RAGGenerator:
             logger.warning("RAGGenerator received an empty question.")
             return {"success": False, "error": "Question is empty"}
 
-        if not context or not context.strip():
-            logger.info("RAGGenerator received empty context, triggers refusal.")
-            # We still go to LLM but it will likely refuse, or we can pre-emptively refuse.
-            # Here we let the LLM handle it based on system prompt rules.
-
         # 1. Get Prompts
         try:
             system_prompt = self.prompt_manager.get_system_prompt(self.prompt_version)
+            
+            # Format history for the prompt
+            history_str = ""
+            if history:
+                history_str = "\n".join([f"{h['role'].capitalize()}: {h['content']}" for h in history])
+            
             user_prompt = self.prompt_manager.format_user_prompt(
                 self.prompt_version, context, question
             )
+            
+            # Append history if present
+            if history_str:
+                user_prompt = f"Previous conversation history:\n{history_str}\n\nCurrent question based on context and history:\n{user_prompt}"
+
             params = self.prompt_manager.get_parameters(self.prompt_version)
         except Exception as e:
             logger.error("Failed to prepare prompts: %s", str(e))
             return {"success": False, "error": f"Prompt error: {str(e)}"}
 
         # 2. Call LLM
-        llm_result = self.groq_client.generate(
+        llm_result = self.llm_fabric.generate(
             system_prompt=system_prompt,
             user_prompt=user_prompt,
             temperature=params.get("temperature", 0.0),

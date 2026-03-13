@@ -1,10 +1,16 @@
 {
-  "include": ["app", "tests"],
-  "extraPaths": ["."],
+  "include": ["."],
+  "exclude": ["**/__pycache__", ".venv"],
+  "pythonVersion": "3.11",
+  "pythonPlatform": "Windows",
   "venvPath": ".",
   "venv": ".venv",
-  "pythonVersion": "3.11",
-  "typeCheckingMode": "basic",
+  "executionEnvironments": [
+    {
+      "root": "."
+    }
+  ],
   "reportMissingImports": true,
-  "reportMissingModuleSource": false
+  "reportMissingTypeStubs": false,
+  "typeCheckingMode": "basic"
 }

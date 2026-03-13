@@ -4,17 +4,36 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 def calculate_income_tax(
-    income: float,
+    income: Any,
     regime: str = "new",
     age_group: str = "below_60",
-    deductions: float = 0.0,
-    section_80c: Optional[float] = None,
-    section_80d: Optional[float] = None,
+    deductions: Any = 0.0,
+    section_80c: Optional[Any] = None,
+    section_80d: Optional[Any] = None,
 ) -> Dict[str, Any]:
     """
     Calculate Indian income tax liability for a given annual income for FY 2026-27.
     Supports deductions primarily for the Old Regime.
     """
+    # Force coercion to handle strings from LLMs
+    try:
+        if isinstance(income, str):
+            income = float(income.replace(",", ""))
+        else:
+            income = float(income)
+            
+        if isinstance(deductions, str):
+            deductions = float(deductions.replace(",", ""))
+        else:
+            deductions = float(deductions or 0.0)
+            
+        if section_80c is not None:
+            section_80c = float(str(section_80c).replace(",", ""))
+        if section_80d is not None:
+            section_80d = float(str(section_80d).replace(",", ""))
+            
+    except (ValueError, TypeError) as e:
+        return {"success": False, "error": f"Invalid number format: {str(e)}"}
     if income <= 0:
         return {"success": False, "error": "Income must be positive"}
 
@@ -106,15 +125,19 @@ def calculate_income_tax(
 
     # Surcharge
     surcharge_amount = 0.0
+    surcharge_explanation = "Income below ₹50L threshold; no surcharge applicable."
     for s_slab in data.get("surcharge", []):
         s_limit = s_slab.get("limit")
         s_rate = float(s_slab.get("rate", 0.0))
-        if s_limit is None or taxable_income < float(s_limit):
+        if s_limit is None or taxable_income <= float(s_limit):
             surcharge_amount = tax_before_cess * s_rate
+            if s_rate > 0:
+                surcharge_explanation = f"Applied {int(s_rate*100)}% surcharge as taxable income is between ₹{(float(data['surcharge'][data['surcharge'].index(s_slab)-1]['limit'])/100000.0) if data['surcharge'].index(s_slab)>0 else 50:g}L and ₹{(float(s_limit)/100000.0) if s_limit else '∞'}L."
             break
             
     # Cess
-    cess_amount = (tax_before_cess + surcharge_amount) * float(data.get("cess_rate", 0.04))
+    cess_rate = float(data.get("cess_rate", 0.04))
+    cess_amount = (tax_before_cess + surcharge_amount) * cess_rate
     total_tax = tax_before_cess + surcharge_amount + cess_amount
     
     effective_rate = (float(total_tax) / float(income) * 100.0) if income > 0 else 0.0
@@ -125,8 +148,9 @@ def calculate_income_tax(
         "gross_income": float(income),
         "deductions_applied": float(applied_regime_deductions),
         "taxable_income": float(taxable_income),
-        "tax_before_cess": float(tax_before_cess),
-        "surcharge": float(surcharge_amount),
+        "tax_before_surcharge_and_cess": float(tax_before_cess),
+        "surcharge_amount": float(surcharge_amount),
+        "surcharge_explanation": surcharge_explanation,
         "cess": float(cess_amount),
         "total_tax": round(float(total_tax), 2),
         "effective_rate": f"{effective_rate:.2f}%",

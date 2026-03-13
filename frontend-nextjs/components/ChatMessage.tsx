@@ -1,7 +1,7 @@
 'use client';
 
 import { Message, Source } from '@/lib/types';
-import { Copy, Check, AlertCircle, Bot, User, Share2, Wrench } from 'lucide-react';
+import { Copy, Check, AlertCircle, Bot, User, Share2, Wrench, Download } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useToast } from './ToastProvider';
@@ -105,9 +105,25 @@ export function ChatMessage({ message, onCitationClick }: ChatMessageProps) {
             )}
           </div>
 
-          {/* Hover Actions (Copy / Share) */}
+          {/* Hover Actions (Copy / Share / Download) */}
           {!isUser && !isError && (
              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                <button 
+                  onClick={() => {
+                    import('@/lib/api-client').then(({ exportQuery }) => {
+                      exportQuery(
+                        message.metadata?.question || '',
+                        message.content,
+                        message.sources || [],
+                        localStorage.getItem('chat_session_id') || ''
+                      ).catch(err => console.error('Export failed', err));
+                    });
+                  }}
+                  className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
+                  title="Download PDF"
+                >
+                  <Download className="h-3 w-3 text-slate-400" />
+                </button>
                 <button 
                   onClick={copyToClipboard}
                   className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"

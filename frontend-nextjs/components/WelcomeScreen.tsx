@@ -31,9 +31,9 @@ const STARTER_CARDS = [
   },
   {
     icon: Flame,
-    title: 'Act Section Lookup',
-    description: 'Find specific sections in Indian legal acts.',
-    example: 'What does Section 80C of the Income Tax Act cover?',
+    title: 'Comparison Mode',
+    description: 'Compare legal scenarios side-by-side.',
+    example: 'Compare the tax implications of the Old vs New Regime for an income of ₹20 Lakhs.',
     color: 'amber'
   },
 ];

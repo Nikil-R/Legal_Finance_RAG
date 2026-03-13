@@ -75,7 +75,7 @@ async def load_application():
     
     try:
         from app.api.routes.query import router as query_router
-        app.include_router(query_router, prefix="/api/v2", tags=["query"])
+        app.include_router(query_router, prefix="/api/v2/query", tags=["query"])
         print("✅ Loaded query router")
         
     except Exception as e:
@@ -83,7 +83,7 @@ async def load_application():
     
     try:
         from app.api.routes.tools import router as tools_router
-        app.include_router(tools_router, prefix="/api/v1", tags=["tools"])
+        app.include_router(tools_router, prefix="/api/v1/tools", tags=["tools"])
         print("✅ Loaded tools router")
         
     except Exception as e:
@@ -91,7 +91,7 @@ async def load_application():
     
     try:
         from app.api.routes.documents import router as documents_router
-        app.include_router(documents_router, prefix="/api/v2", tags=["documents"])
+        app.include_router(documents_router, prefix="/api/v2/documents", tags=["documents"])
         print("✅ Loaded documents router")
         
     except Exception as e:
@@ -99,12 +99,29 @@ async def load_application():
 
     try:
         from app.api.routes.user_documents import router as user_documents_router
-        app.include_router(user_documents_router, prefix="/api/v2", tags=["user_documents"])
+        app.include_router(user_documents_router, prefix="/api/v2/user", tags=["user_documents"])
         print("✅ Loaded user documents router")
         
     except Exception as e:
         print(f"⚠️ User documents router failed: {e}")
-    
+
+
+    try:
+        from app.api.routes.evaluate import router as evaluate_router
+        app.include_router(evaluate_router, prefix="/api/v2/evaluate", tags=["evaluation"])
+        print("✅ Loaded evaluation router")
+
+    except Exception as e:
+        print(f"⚠️ Evaluate router failed: {e}")
+
+    try:
+        from app.api.routes.compare import router as compare_router
+        app.include_router(compare_router, prefix="/api/v2/compare", tags=["comparison"])
+        print("✅ Loaded comparison router")
+
+    except Exception as e:
+        print(f"⚠️ Compare router failed: {e}")
+
     print("🎉 Application fully loaded!")
 
 # Simple status endpoint

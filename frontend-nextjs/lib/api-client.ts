@@ -241,3 +241,42 @@ export async function uploadFile(file: File): Promise<UploadResponse> {
     throw new ApiError(null, 'network_error', 'Upload failed');
   }
 }
+
+/**
+ * Export a query result to PDF
+ */
+export async function exportQuery(
+  question: string,
+  answer: string,
+  sources: any[],
+  sessionId: string
+): Promise<void> {
+  const exportUrl = `${API_BASE_URL}/api/v2/query/export`;
+  const response = await fetch(exportUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      question,
+      answer,
+      sources,
+      session_id: sessionId,
+      domain: 'all',
+      include_sources: true,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Export failed');
+  }
+
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `research_${new Date().getTime()}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}

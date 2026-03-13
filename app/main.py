@@ -71,14 +71,14 @@ def create_app() -> FastAPI:
 
     # Routes - NO AUTH for deployment
     app.include_router(health_router)
-    app.include_router(query_router, prefix="/api/v1")
-    app.include_router(tools_router, prefix="/api/v1")
-    app.include_router(documents_router, prefix="/api/v1")
-    app.include_router(user_documents_router, prefix="/api/v1")
+    app.include_router(query_router, prefix="/api/v1/query")
+    app.include_router(tools_router, prefix="/api/v1/tools")
+    app.include_router(documents_router, prefix="/api/v1/documents")
+    app.include_router(user_documents_router, prefix="/api/v1/user")
     
-    app.include_router(query_router, prefix="/api/v2")
-    app.include_router(documents_router, prefix="/api/v2")
-    app.include_router(user_documents_router, prefix="/api/v2")
+    app.include_router(query_router, prefix="/api/v2/query")
+    app.include_router(documents_router, prefix="/api/v2/documents")
+    app.include_router(user_documents_router, prefix="/api/v2/user")
 
     @app.get("/")
     async def root():

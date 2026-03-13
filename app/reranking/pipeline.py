@@ -11,6 +11,7 @@ from app.reranking.context_builder import ContextBuilder
 from app.reranking.reranker import CrossEncoderReranker
 from app.retrieval import HybridRetriever
 from app.retrieval.query_rewriter import QueryRewriter
+from app.retrieval.graph_retriever import GraphRetriever
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -38,6 +39,7 @@ class RetrievalPipeline:
         self._reranker = CrossEncoderReranker()
         self._context_builder = ContextBuilder()
         self._rewriter = QueryRewriter()
+        self._graph_retriever = GraphRetriever()
         logger.info("RetrievalPipeline ready.")
 
     def run(
@@ -113,6 +115,12 @@ class RetrievalPipeline:
             )
 
         context_data = self._context_builder.build_context_with_metadata(reranked)
+        
+        # --- Graph Expansion ---
+        graph_expansion = self._graph_retriever.get_context_expansion(query)
+        if graph_expansion:
+            context_data["context_string"] = f"{graph_expansion}\n\n{context_data['context_string']}"
+            
         total_ms = (time.perf_counter() - pipeline_start) * 1_000
 
         return {

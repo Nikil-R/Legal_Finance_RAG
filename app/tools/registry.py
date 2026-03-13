@@ -1,20 +1,20 @@
 from typing import Dict, Any, List, Callable
-from app.tools.schemas import GroqTool, GroqToolFunction
+from .schemas import GroqTool, GroqToolFunction
 
 # Import tool implementations
-from app.tools.implementations.tax_calculator import calculate_income_tax
-from app.tools.implementations.gst_lookup import lookup_gst_rate
-from app.tools.implementations.budget_data import lookup_budget_data
-from app.tools.implementations.document_search import search_legal_documents
-from app.tools.implementations.section_lookup import lookup_act_section
+from .tax_calculator import calculate_income_tax
+from .implementations.gst_lookup import lookup_gst_rate
+from .implementations.budget_data import lookup_budget_data
+from .implementations.document_search import search_legal_documents
+from .implementations.section_lookup import lookup_act_section
 # New high-priority tools
-from app.tools.implementations.court_case_search import search_court_cases
-from app.tools.implementations.compliance_checker import check_compliance
-from app.tools.implementations.financial_ratio_calculator import calculate_financial_ratios
+from .implementations.court_case_search import search_court_cases
+from .implementations.compliance_checker import check_compliance
+from .implementations.financial_ratio_calculator import calculate_financial_ratios
 # New medium-priority tools
-from app.tools.implementations.amendment_tracker import track_amendments
-from app.tools.implementations.penalty_interest_calculator import calculate_penalties_and_interest
-from app.tools.implementations.document_comparison import compare_documents
+from .implementations.amendment_tracker import track_amendments
+from .implementations.penalty_interest_calculator import calculate_penalties_and_interest
+from .implementations.document_comparison import compare_documents
 
 class ToolRegistry:
     """Manages all available tools for LLM tool calling."""
@@ -63,8 +63,7 @@ class ToolRegistry:
                 },
                 "deductions": {
                     "type": "number",
-                    "description": "Total tax-saving deductions (Section 80C, 80D, etc.) mainly for Old Regime. Standard deduction is automatically applied.",
-                    "default": 0.0
+                    "description": "Total deductions in rupees (only applicable for old regime)"
                 }
             },
             required=["income"],

@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, List, Dict
 
 from pydantic import BaseModel, Field
 
@@ -35,6 +35,12 @@ class QueryRequest(BaseModel):
     session_id: Optional[str] = Field(
         default=None, description="Optional session ID for conversation memory"
     )
+    image_url: Optional[str] = Field(
+        default=None, description="Base64 encoded image or URL for multimodal analysis"
+    )
+    compare_with: Optional[str] = Field(
+        default=None, description="Secondary provider for A/B comparison (e.g. 'google', 'groq')"
+    )
 
     class Config:
         json_schema_extra = {
@@ -43,6 +49,8 @@ class QueryRequest(BaseModel):
                 "domain": "tax",
                 "include_sources": True,
                 "session_id": None,
+                "image_url": None,
+                "compare_with": "google"
             }
         }
 
@@ -173,6 +181,7 @@ class QueryResponse(BaseModel):
     metadata: Optional[QueryMetadata] = None
     error: Optional[str] = None
     timestamp: datetime
+    comparison_answer: Optional[str] = None # For side-by-side mode
 
 
 class RetrievalResponse(BaseModel):

@@ -137,9 +137,9 @@ def get_tool_executor() -> ToolExecutor:
 
 @lru_cache()
 def get_tool_orchestrator() -> ToolOrchestrator:
-    from app.generation import GroqClient, ToolOrchestrator
+    from app.generation import LLMFabric, ToolOrchestrator
 
-    client = GroqClient()
+    client = LLMFabric()
     registry = get_tool_registry()
     executor = get_tool_executor()
     return ToolOrchestrator(client, registry, executor)

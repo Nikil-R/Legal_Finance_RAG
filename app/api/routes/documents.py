@@ -17,7 +17,7 @@ from app.infra.system_ingestion_jobs import system_ingestion_job_store
 from app.models.auth import Role
 from app.observability import logger as obs_logger
 
-router = APIRouter(prefix="/documents", tags=["Documents"])
+router = APIRouter(tags=["Documents"])
 logger = obs_logger.bind(module="api.documents")
 
 

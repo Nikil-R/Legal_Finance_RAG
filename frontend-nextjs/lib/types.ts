@@ -20,6 +20,7 @@ export interface Source {
   origin: 'system' | 'user';
   relevance_score: number;
   excerpt: string;
+  url?: string;
   citation_spans?: Array<{
     claim: string;
     start: number;

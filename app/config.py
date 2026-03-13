@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "local"
     TESTING: bool = False
     GROQ_API_KEY: str = Field(default="test_groq_key")
+    GOOGLE_API_KEY: str = Field(default="")
+    GEMINI_MODEL: str = "gemini-1.5-flash"
+    PRIMARY_LLM_PROVIDER: str = "groq"  # "groq" or "google"
     REDIS_URL: str = Field(default="")
 
     def __init__(self, **kwargs):
@@ -37,6 +40,8 @@ class Settings(BaseSettings):
             try:
                 if self.GROQ_API_KEY == "test_groq_key":
                     self.GROQ_API_KEY = secrets.get_secret("prod/legal-rag/api-keys", "groq_api_key")
+                if not self.GOOGLE_API_KEY:
+                    self.GOOGLE_API_KEY = secrets.get_secret("prod/legal-rag/api-keys", "google_api_key")
                 if not self.REDIS_URL:
                     self.REDIS_URL = secrets.get_secret("prod/legal-rag/infra", "redis_url")
             except Exception as e:
