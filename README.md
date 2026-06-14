@@ -20,6 +20,41 @@ The architecture is built on a decoupled full-stack model ensuring high scalabil
 *   **Vector & BM25 Stores:** Uses ChromaDB for dense semantic retrieval and BM25 sparse indexes for keyword matching.
 *   **Pipeline Orchestrator:** LangChain and Custom Executors that string together LLMs, Retriever Modules, and Re-ranking models (`cross-encoder/ms-marco-MiniLM-L-6-v2`).
 
+```mermaid
+graph TD
+    User([User]) -->|Queries / Uploads PDFs| Frontend
+    
+    subgraph Vercel
+        Frontend[Next.js Frontend]
+    end
+    
+    Frontend -->|REST / SSE| Backend
+    
+    subgraph Render
+        Backend[FastAPI Backend]
+        Orchestrator[LangChain Orchestrator]
+        Embeddings[all-MiniLM-L6-v2]
+        CrossEncoder[ms-marco-MiniLM-L-6-v2]
+        Backend --> Orchestrator
+        Orchestrator --> Embeddings
+        Orchestrator --> CrossEncoder
+    end
+    
+    subgraph Databases
+        VectorDB[(ChromaDB Vector Store)]
+        Redis[(Redis Query Cache)]
+    end
+    
+    Orchestrator <-->|Dense & Sparse Search| VectorDB
+    Backend <-->|Cache Hit / Miss| Redis
+    
+    subgraph External
+        LLM((LLM Provider))
+    end
+    
+    Orchestrator -->|Generates Response| LLM
+```
+
 ## 3. End-to-End Operational Lifecycle Walkthrough
 
 1.  **Ingestion:** A user uploads a PDF (e.g., a contract or tax return) through the UI. The file is uploaded to the FastAPI backend, where it is chunked, embedded using `all-MiniLM-L6-v2`, and stored in a user-specific ChromaDB collection alongside BM25 indexes.
