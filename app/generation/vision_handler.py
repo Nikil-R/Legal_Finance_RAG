@@ -17,7 +17,7 @@ logger = get_logger(__name__)
 class VisionHandler:
     """Uses Gemini 1.5 Vision capabilities via direct REST API (AI Studio Compatible)."""
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-1.5-flash") -> None:
+    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-3.5-flash") -> None:
         """Initialize vision handler."""
         self.api_key = api_key or settings.GOOGLE_API_KEY
         
@@ -35,13 +35,14 @@ class VisionHandler:
 
     def _make_vision_call(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Helper to make vision REST calls with v1 -> v1beta fallback."""
-        url_v1 = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+        # Use v1beta since 3.5-flash might not be fully available on v1
+        url_beta = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
         
-        logger.info(f"🌐 Calling Gemini Vision REST API (v1): gemini-1.5-flash")
+        logger.info(f"🌐 Calling Gemini Vision REST API (v1beta): {self.model_name}")
         
         try:
             response = requests.post(
-                url_v1,
+                url_beta,
                 headers={"Content-Type": "application/json"},
                 params={"key": self.api_key},
                 json=payload,
@@ -52,7 +53,8 @@ class VisionHandler:
             
             if response.status_code == 404:
                 logger.warning("⚠️ Vision v1 endpoint failed with 404, trying v1beta...")
-                url_beta = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+                # Fallback directly to v1beta without tools if supported
+                url_beta = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
                 
                 response = requests.post(
                     url_beta,

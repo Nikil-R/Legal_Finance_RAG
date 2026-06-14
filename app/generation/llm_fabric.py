@@ -177,6 +177,10 @@ class LLMFabric:
                     result["provider"] = "gemini"
                     logger.info("✅ Gemini tool-calling succeeded")
                     return result
+                else:
+                    error_msg = result.get("error", "Unknown error")
+                    logger.warning(f"⚠️ Gemini tool-calling failed: {error_msg}")
+                    return {"success": False, "error": f"Gemini fallback failed: {error_msg}"}
                 
             except Exception as e:
                 logger.error(f"❌ Gemini tool-calling also failed: {e}")

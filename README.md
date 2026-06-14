@@ -157,7 +157,7 @@ cp .env.example .env
 ### 3️⃣ Ingest Documents (One-Time)
 ```bash
 # Place PDFs in data/ folder, then:
-python -m app.scripts.ingest_documents
+python -m app.ingestion.cli
 
 # Verify:
 # ✅ 3,628 chunks indexed in ChromaDB

@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     TESTING: bool = False
     GROQ_API_KEY: str = Field(default="test_groq_key")
     GOOGLE_API_KEY: str = Field(default="")
-    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_MODEL: str = "gemini-3.5-flash"
     PRIMARY_LLM_PROVIDER: str = "groq"  # "groq" or "google"
     REDIS_URL: str = Field(default="")
 

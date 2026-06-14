@@ -26,8 +26,8 @@ class GeminiClient:
             # Use replace to avoid slicing issues in some linting environments
             model_str = model_str.replace("models/", "", 1)
         
-        if not model_str or "gemini" not in model_str.lower():
-            model_str = "gemini-1.5-flash"
+        if not model_str:
+            model_str = "gemini-3.5-flash"
             
         self.model_name = model_str
         logger.info(f"✅ Gemini initialized (REST API) with model: '{self.model_name}'")
@@ -52,9 +52,9 @@ class GeminiClient:
             }
             
             # For non-tool calls, v1 is most stable
-            url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
             
-            logger.info(f"🌐 Calling Gemini REST API (Generate/v1): gemini-1.5-flash")
+            logger.info(f"🌐 Calling Gemini REST API (Generate/v1beta): {self.model_name}")
             
             response = requests.post(
                 url,
@@ -85,7 +85,8 @@ class GeminiClient:
                 "success": True,
                 "content": text_content,
                 "answer": text_content,
-                "model": "gemini-1.5-flash",
+                "model": self.model_name,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "usage": {
                     "prompt_tokens": usage_metadata.get("promptTokenCount", 0),
                     "completion_tokens": usage_metadata.get("candidatesTokenCount", 0),
@@ -124,9 +125,9 @@ class GeminiClient:
                     payload["tools"] = gemini_tools
             
             # STEP 1: Try v1beta WITH tools (Only v1beta supports function calling)
-            url_beta = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+            url_beta = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
             
-            logger.info(f"🌐 Calling Gemini REST API (v1beta with tools): gemini-1.5-flash")
+            logger.info(f"🌐 Calling Gemini REST API (v1beta with tools): {self.model_name}")
             
             response = requests.post(
                 url_beta,
@@ -140,7 +141,8 @@ class GeminiClient:
             
             # STEP 2: Fallback to v1 WITHOUT tools if v1beta fails (status 400 or 404)
             if response.status_code in [400, 404]:
-                logger.warning(f"⚠️ v1beta failed ({response.status_code}), attempting v1 WITHOUT tools...")
+                logger.warning(f"⚠️ v1beta failed ({response.status_code}) with error: {response.text}")
+                logger.warning("Attempting v1 WITHOUT tools...")
                 
                 # Strip tools from payload
                 payload_no_tools = {
@@ -151,7 +153,7 @@ class GeminiClient:
                     }
                 }
                 
-                url_v1 = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
+                url_v1 = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
                 
                 response = requests.post(
                     url_v1,
@@ -219,7 +221,7 @@ class GeminiClient:
                 "content": text_content if not tool_calls else "",
                 "tool_calls": tool_calls,
                 "tool_calls_made": tool_calls,
-                "model": "gemini-1.5-flash",
+                "model": self.model_name,
                 "usage": {
                     "prompt_tokens": usage_metadata.get("promptTokenCount", 0),
                     "completion_tokens": usage_metadata.get("candidatesTokenCount", 0),
@@ -261,7 +263,7 @@ class GeminiClient:
                     "name": func["name"],
                     "description": func.get("description", ""),
                     "parameters": {
-                        "type": "object",
+                        "type": "OBJECT",
                         "properties": params.get("properties", {}),
                     }
                 }
@@ -275,19 +277,29 @@ class GeminiClient:
         return [{"functionDeclarations": function_declarations}] if function_declarations else []
 
     def _sanitize_parameters(self, params: Dict[str, Any]) -> Dict[str, Any]:
-        """Strip features unsupported by Gemini (like non-string enums)."""
+        """Strip features unsupported by Gemini (like non-string enums) and uppercase types."""
         sanitized = params.copy()
+        
+        if "type" in sanitized and isinstance(sanitized["type"], str):
+            sanitized["type"] = sanitized["type"].upper()
+
         if "properties" in sanitized:
             for name, schema in list(sanitized["properties"].items()):
+                # Uppercase the type
+                if "type" in schema and isinstance(schema["type"], str):
+                    sanitized["properties"][name]["type"] = schema["type"].upper()
+
                 # Remove enum if not a string
-                if "enum" in schema and schema.get("type") != "string":
+                if "enum" in schema and schema.get("type", "").lower() != "string":
                     logger.warning(f"Removing enum from {name}")
                     sanitized["properties"][name] = {k: v for k, v in schema.items() if k != "enum"}
                 
                 # Handle nested array items
-                if schema.get("type") == "array" and "items" in schema:
+                if schema.get("type", "").upper() == "ARRAY" and "items" in schema:
                     items = schema["items"]
-                    if "enum" in items and items.get("type") != "string":
+                    if "type" in items and isinstance(items["type"], str):
+                        sanitized["properties"][name]["items"]["type"] = items["type"].upper()
+                    if "enum" in items and items.get("type", "").lower() != "string":
                         logger.warning(f"Removing enum from {name}.items")
                         sanitized["properties"][name]["items"] = {k: v for k, v in items.items() if k != "enum"}
         return sanitized
