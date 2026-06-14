@@ -1,4 +1,4 @@
-# LegalFinance AI 🏛️📈
+# LegalFinance AI: Production-Grade RAG Pipeline for Law & Finance
 
 <div align="center">
   
