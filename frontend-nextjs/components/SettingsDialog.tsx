@@ -1,15 +1,23 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Settings, X, Moon, Sun, Monitor, Info, ShieldCheck, Globe, Database, Cog } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
 export function SettingsDialog() {
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'general' | 'advanced' | 'about'>('general');
   const [darkMode, setDarkMode] = useState(true);
-  const [apiUrl, setApiUrl] = useState(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+  const [apiUrl, setApiUrl] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Initial sync with document class and env variable
+    setDarkMode(document.documentElement.classList.contains('dark'));
+    setApiUrl(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+  }, []);
 
   const toggleTheme = () => {
     const next = !darkMode;
@@ -18,8 +26,8 @@ export function SettingsDialog() {
     else document.documentElement.classList.remove('dark');
   };
 
-  if (!open) {
-    return (
+  return (
+    <>
       <button
         onClick={() => setOpen(true)}
         className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors text-slate-500"
@@ -27,24 +35,22 @@ export function SettingsDialog() {
       >
         <Settings className="h-5 w-5" />
       </button>
-    );
-  }
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in"
-        onClick={() => setOpen(false)}
-      />
-      
-      {/* Modal */}
-      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[500px] animate-in zoom-in-95 duration-300">
-        
-        {/* Sidebar Nav */}
-        <div className="w-full md:w-48 bg-slate-50 dark:bg-slate-800/50 p-6 flex flex-col gap-2 border-r border-slate-100 dark:border-slate-800">
+      {open && mounted && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-[#0A0A0A]/80 backdrop-blur-sm animate-in fade-in"
+            onClick={() => setOpen(false)}
+          />
+          
+          {/* Modal */}
+          <div className="relative w-full max-w-2xl bg-[#111827] border border-border rounded-[32px] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[500px] animate-in zoom-in-95 duration-300">
+            
+            {/* Sidebar Nav */}
+            <div className="w-full md:w-48 bg-[#111827] p-6 flex flex-col gap-2 border-r border-border">
           <div className="mb-4">
-             <h2 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400">Settings</h2>
+             <h2 className="text-xs font-black uppercase tracking-[0.2em] text-muted">Settings</h2>
           </div>
           
           <TabButton 
@@ -69,7 +75,7 @@ export function SettingsDialog() {
           <div className="mt-auto">
              <button 
                 onClick={() => setOpen(false)}
-                className="w-full py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold transition-all active:scale-95"
+                className="w-full py-2 bg-primary text-[#0A0A0A] rounded-xl text-xs font-bold transition-all hover:brightness-110 active:scale-95 shadow-lg shadow-primary/20"
              >
                Done
              </button>
@@ -80,20 +86,20 @@ export function SettingsDialog() {
         <div className="flex-1 p-8 overflow-y-auto overflow-x-hidden">
            {activeTab === 'general' && (
              <div className="space-y-8 animate-in slide-in-from-right-4">
-                <div className="space-y-4">
-                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">Appearance</h3>
-                   <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                 <div className="space-y-4">
+                   <h3 className="text-sm font-bold text-foreground">Appearance</h3>
+                   <div className="flex items-center justify-between p-4 rounded-2xl bg-[#1F2937] border border-border">
                       <div className="flex items-center gap-3">
-                         <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                         <div className="p-2 rounded-lg bg-primary/10 text-primary">
                            {darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
                          </div>
-                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Dark Mode</span>
+                         <span className="text-xs font-bold text-foreground">Dark Mode</span>
                       </div>
                       <button 
                         onClick={toggleTheme}
                         className={cn(
                           "relative w-10 h-5 rounded-full transition-colors",
-                          darkMode ? "bg-blue-500" : "bg-slate-300"
+                          darkMode ? "bg-primary" : "bg-muted"
                         )}
                       >
                          <div className={cn(
@@ -105,12 +111,12 @@ export function SettingsDialog() {
                 </div>
 
                 <div className="space-y-4">
-                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">Privacy</h3>
-                   <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                   <h3 className="text-sm font-bold text-foreground">Privacy</h3>
+                   <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#1F2937] border border-border">
                       <ShieldCheck className="h-5 w-5 text-green-500" />
                       <div className="flex flex-col">
-                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Zero-Retention Mode</span>
-                         <span className="text-[10px] text-slate-500 font-medium">Conversations are not stored on server</span>
+                         <span className="text-xs font-bold text-foreground">Zero-Retention Mode</span>
+                         <span className="text-[10px] text-muted font-medium">Conversations are not stored on server</span>
                       </div>
                    </div>
                 </div>
@@ -119,26 +125,26 @@ export function SettingsDialog() {
 
            {activeTab === 'advanced' && (
              <div className="space-y-6 animate-in slide-in-from-right-4">
-                <div className="space-y-3">
-                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">Backend Configuration</h3>
-                   <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                 <div className="space-y-3">
+                   <h3 className="text-sm font-bold text-foreground">Backend Configuration</h3>
+                   <p className="text-xs text-muted leading-relaxed font-medium">
                      Override the default API endpoint for local development or custom deployments.
                    </p>
                 </div>
                 
                 <div className="space-y-2">
-                   <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">API Endpoint URL</label>
+                   <label className="text-[10px] font-bold uppercase tracking-wider text-muted">API Endpoint URL</label>
                    <div className="flex gap-2">
                       <div className="relative flex-1">
-                         <Database className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                         <Database className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted" />
                          <input 
                            type="text" 
                            value={apiUrl}
                            onChange={(e) => setApiUrl(e.target.value)}
-                           className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs font-mono text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all"
+                           className="w-full bg-[#1F2937] border border-border rounded-xl pl-10 pr-4 py-2 text-xs font-mono text-foreground focus:outline-none focus:border-primary/50 transition-all"
                          />
                       </div>
-                      <button className="px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl text-[10px] font-bold uppercase text-slate-500 hover:text-blue-500 transition-colors">Apply</button>
+                      <button className="px-3 py-2 bg-[#1F2937] rounded-xl text-[10px] font-bold uppercase text-muted hover:text-primary border border-border transition-colors">Apply</button>
                    </div>
                 </div>
              </div>
@@ -146,35 +152,38 @@ export function SettingsDialog() {
 
            {activeTab === 'about' && (
              <div className="space-y-8 animate-in slide-in-from-right-4">
-                <div className="flex flex-col items-center text-center space-y-4">
-                   <div className="h-20 w-20 rounded-[28px] bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-xl shadow-blue-500/20">
-                      <ShieldCheck className="h-10 w-10 text-white" />
+                 <div className="flex flex-col items-center text-center space-y-4">
+                   <div className="h-20 w-20 rounded-[28px] bg-gradient-to-br from-[#1F2937] to-[#111827] flex items-center justify-center shadow-xl shadow-primary/5 border border-primary/20">
+                      <ShieldCheck className="h-10 w-10 text-primary" />
                    </div>
                    <div>
-                      <h4 className="text-lg font-black text-slate-900 dark:text-white">LegalFinanceAI</h4>
-                      <p className="text-xs font-bold text-blue-500 uppercase tracking-widest">Version 1.0.4-Stable</p>
+                      <h4 className="text-lg font-black text-foreground">LegalFinanceAI</h4>
+                      <p className="text-xs font-bold text-primary uppercase tracking-widest">Version 1.0.4-Stable</p>
                    </div>
                 </div>
 
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <div className="divide-y divide-border">
                    <div className="py-3 flex justify-between items-center text-xs">
-                      <span className="text-slate-500 font-medium">System Status</span>
-                      <span className="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-500/10 text-green-600 font-bold uppercase tracking-tight">Healthy</span>
+                      <span className="text-muted font-medium">System Status</span>
+                      <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 font-bold uppercase tracking-tight">Healthy</span>
                    </div>
                    <div className="py-3 flex justify-between items-center text-xs">
-                      <span className="text-slate-500 font-medium">Provider</span>
-                      <span className="text-slate-900 dark:text-white font-bold">Nikil-R / Legal_Finance_RAG</span>
+                      <span className="text-muted font-medium">Provider</span>
+                      <span className="text-foreground font-bold">Nikil-R / Legal_Finance_RAG</span>
                    </div>
                    <div className="py-3 flex justify-between items-center text-xs">
-                      <span className="text-slate-500 font-medium">Legal Disclaimer</span>
-                      <span className="text-blue-500 font-bold hover:underline cursor-pointer">View Terms</span>
+                      <span className="text-muted font-medium">Legal Disclaimer</span>
+                      <span className="text-primary font-bold hover:underline cursor-pointer">View Terms</span>
                    </div>
                 </div>
              </div>
            )}
         </div>
-      </div>
-    </div>
+        </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
@@ -185,8 +194,8 @@ function TabButton({ active, onClick, icon, label }: any) {
       className={cn(
         "flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all",
         active 
-          ? "bg-white dark:bg-slate-800 text-blue-500 shadow-sm shadow-slate-200 dark:shadow-none" 
-          : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-slate-700 dark:hover:text-slate-300"
+          ? "bg-[#1F2937] text-primary" 
+          : "text-muted hover:bg-[#1F2937]/50 hover:text-foreground"
       )}
     >
       {icon}

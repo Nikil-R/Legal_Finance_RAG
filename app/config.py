@@ -60,8 +60,8 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP: int = 200
 
     # --- Retrieval ---
-    TOP_K_RETRIEVAL: int = 10
-    TOP_K_RERANK: int = 3
+    TOP_K_RETRIEVAL: int = 20
+    TOP_K_RERANK: int = 15
 
     # --- Generation ---
     TEMPERATURE: float = 0.0
@@ -101,7 +101,7 @@ class Settings(BaseSettings):
     INGESTION_JOB_TTL_SECONDS: int = 24 * 60 * 60
 
     # --- Cache ---
-    ENABLE_QUERY_CACHE: bool = True
+    ENABLE_QUERY_CACHE: bool = False
     QUERY_CACHE_TTL_SECONDS: int = 300
 
     # --- Vector DB ---

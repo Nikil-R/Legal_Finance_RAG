@@ -10,14 +10,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#0a0a0b',
-        foreground: '#f8fafc',
-        border: '#1e293b',
-        primary: '#3b82f6',
-        'accent-gold': '#d4af37',
-        'accent-teal': '#0d9488',
+        background: '#0A0A0A',
+        foreground: '#F9FAFB',
+        border: '#1F2937',
+        primary: '#D4AF37',
+        'primary-dark': '#B49126',
+        card: '#111827',
+        muted: '#9CA3AF',
         slate: {
-          50: '#f8fafc',
+          50: '#F9FAFB',
           100: '#f1f5f9',
           200: '#e2e8f0',
           300: '#cbd5e1',

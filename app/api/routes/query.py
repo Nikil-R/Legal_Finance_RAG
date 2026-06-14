@@ -117,66 +117,95 @@ async def stream_query(
                 yield f"data: {json.dumps({'type': 'error', 'error': 'Session does not belong to current user'})}\n\n"
                 return
             
-            # Get retrieval results
-            yield f"data: {json.dumps({'type': 'status', 'message': 'Searching documents...'})}\n\n"
+            # Check Cache First
+            is_cache_hit = False
+            cache_key = ""
+            result = None
             
-            retrieval_result = await asyncio.wait_for(
-                run_in_threadpool(
-                    pipeline.retrieval_pipeline.run,
-                    query=processed_question,
-                    domain=domain,
-                    session_id=session_id,
-                    owner_id=user.id,
-                ),
-                timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
-            )
-            
-            if not retrieval_result.get("success"):
-                yield f"data: {json.dumps({'type': 'error', 'error': retrieval_result.get('error', 'Retrieval failed')})}\n\n"
-                return
-            
-            sources = retrieval_result.get("sources", [])
-            yield f"data: {json.dumps({'type': 'status', 'message': f'Found {len(sources)} relevant sources. Generating answer...'})}\n\n"
-            
-            # Generate answer with tool calling if enabled
-            if settings.ENABLE_TOOL_CALLING:
-                result = await asyncio.wait_for(
-                    orchestrator.process_with_tools(
-                        question=processed_question,
-                        system_prompt=pipeline.generator.system_prompt,
-                        context_chunks=sources if sources else None,
-                    ),
-                    timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
-                )
-            else:
-                # Traditional RAG flow
-                result = await asyncio.wait_for(
+            if settings.ENABLE_QUERY_CACHE:
+                cache_key = pipeline._cache_key(processed_question, domain, session_id, user.id)
+                cached = pipeline._cache.get(cache_key)
+                if cached is not None:
+                    is_cache_hit = True
+                    result = cached
+                    if "metadata" not in result:
+                        result["metadata"] = {}
+                    result["metadata"]["cache_hit"] = True
+                    yield f"data: {json.dumps({'type': 'status', 'message': 'Found answer in cache!'})}\n\n"
+
+            if not is_cache_hit:
+                # Get retrieval results
+                yield f"data: {json.dumps({'type': 'status', 'message': 'Searching documents...'})}\n\n"
+                
+                retrieval_result = await asyncio.wait_for(
                     run_in_threadpool(
-                        pipeline.run,
-                        question=processed_question,
+                        pipeline.retrieval_pipeline.run,
+                        query=processed_question,
                         domain=domain,
                         session_id=session_id,
                         owner_id=user.id,
                     ),
                     timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
                 )
-            
+                
+                if not retrieval_result.get("success"):
+                    yield f"data: {json.dumps({'type': 'error', 'error': retrieval_result.get('error', 'Retrieval failed')})}\n\n"
+                    return
+                
+                sources = retrieval_result.get("sources", [])
+                yield f"data: {json.dumps({'type': 'status', 'message': f'Found {len(sources)} relevant sources. Generating answer...'})}\n\n"
+                
+                # Generate answer with tool calling if enabled
+                if settings.ENABLE_TOOL_CALLING:
+                    result = await asyncio.wait_for(
+                        orchestrator.process_with_tools(
+                            question=processed_question,
+                            system_prompt=pipeline.generator.system_prompt,
+                            context_chunks=sources if sources else None,
+                        ),
+                        timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
+                    )
+                    # Add sources to the result manually since orchestrator doesn't format them fully for caching
+                    if result.get("success"):
+                        result["sources"] = sources
+                        # Cache the tool calling result!
+                        if settings.ENABLE_QUERY_CACHE:
+                            import copy
+                            pipeline._cache.set(cache_key, copy.deepcopy(result))
+                else:
+                    # Traditional RAG flow (this handles its own caching internally)
+                    result = await asyncio.wait_for(
+                        run_in_threadpool(
+                            pipeline.run,
+                            question=processed_question,
+                            domain=domain,
+                            session_id=session_id,
+                            owner_id=user.id,
+                        ),
+                        timeout=float(settings.REQUEST_TIMEOUT_SECONDS),
+                    )
+                
             if not result.get("success"):
                 yield f"data: {json.dumps({'type': 'error', 'error': result.get('error', 'Generation failed')})}\n\n"
                 return
             
             # Stream the answer in chunks
             answer_text = str(result.get("answer", ""))
-            chunk_size = 30  # Characters per chunk
             
-            for i in range(0, len(answer_text), chunk_size):
-                chunk = answer_text[i:i + chunk_size]
-                yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
-                await asyncio.sleep(0.03)  # Delay for typing effect
+            if is_cache_hit:
+                # Instant delivery for cached results
+                yield f"data: {json.dumps({'type': 'chunk', 'content': answer_text})}\n\n"
+            else:
+                chunk_size = 80  # Characters per chunk
+                for i in range(0, len(answer_text), chunk_size):
+                    chunk = answer_text[i:i + chunk_size]
+                    yield f"data: {json.dumps({'type': 'chunk', 'content': chunk})}\n\n"
+                    await asyncio.sleep(0.01)  # Faster typing effect
             
             # Send sources
             formatted_sources = []
-            for src in sources[:5]:  # Top 5 sources
+            final_sources = result.get("sources", [])
+            for src in final_sources[:5]:  # Top 5 sources
                 if isinstance(src, dict):
                     formatted_sources.append({
                         "reference_id": src.get("reference_id", 0),

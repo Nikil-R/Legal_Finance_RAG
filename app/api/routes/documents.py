@@ -2,7 +2,7 @@
 Document management endpoints.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, Form
 
 from app.api.dependencies import clear_pipeline_cache, get_retriever
 from app.api.models import (
@@ -127,6 +127,62 @@ async def ingest_documents(
     except Exception as e:
         logger.error("Failed to enqueue ingestion job: %s", str(e), exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to enqueue ingestion job.") from e
+
+
+@router.post(
+    "/upload",
+    response_model=IngestJobResponse,
+    status_code=202,
+    summary="Upload a PDF and trigger ingestion",
+    description="Upload a document to a specific domain and trigger immediate ingestion.",
+)
+@limiter.limit("20/hour")
+async def upload_document(
+    request: Request,
+    file: UploadFile = File(...),
+    domain: str = Form(...),
+    user: AuthenticatedUser = Depends(require_role(Role.INGEST, Role.ADMIN))
+) -> IngestJobResponse:
+    """Upload a PDF and ingest it."""
+    import os
+    import aiofiles
+    from app.config import settings
+
+    if not file.filename or not file.filename.endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+        
+    if domain not in ["tax", "legal", "finance", "general"]:
+        raise HTTPException(status_code=400, detail="Invalid domain.")
+
+    # Save file to data/raw/{domain}
+    target_dir = os.path.join(settings.DATA_DIR, "raw", domain)
+    os.makedirs(target_dir, exist_ok=True)
+    
+    file_path = os.path.join(target_dir, file.filename)
+    
+    try:
+        async with aiofiles.open(file_path, 'wb') as out_file:
+            while content := await file.read(1024 * 1024):  # 1MB chunks
+                await out_file.write(content)
+    except Exception as e:
+        logger.error("Failed to save uploaded file: %s", str(e))
+        raise HTTPException(status_code=500, detail="Failed to save file.") from e
+
+    # Trigger ingestion
+    try:
+        from app.ingestion.system_async_jobs import enqueue_system_ingestion_job
+        result = enqueue_system_ingestion_job(clear_existing=False)
+        return IngestJobResponse(
+            success=True,
+            job_id=result["job_id"],
+            status=result.get("status", "queued"),
+            clear_existing=False,
+            backend=result.get("backend"),
+            message="File uploaded and ingestion accepted.",
+        )
+    except Exception as e:
+        logger.error("Failed to enqueue ingestion job for uploaded file: %s", str(e), exc_info=True)
+        raise HTTPException(status_code=500, detail="File saved but failed to trigger ingestion.") from e
 
 
 @router.get("/ingest/jobs/{job_id}", response_model=IngestJobStatusResponse)

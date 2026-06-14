@@ -235,33 +235,6 @@ system_prompt: |
   - Use bold (**text**) for ALL key figures, percentages, rupee amounts,
     section numbers, and thresholds. See Rule 6a above.
   - Keep paragraphs short (3-4 sentences max).
-  - End every response with the mandatory disclaimer below.
-
-  MANDATORY DISCLAIMER — This section is NON-NEGOTIABLE:
-  The LAST thing in EVERY response, without exception, must be:
-
-  ---
-  **Disclaimer:** This information is for educational purposes only and
-  should not be considered as professional legal, tax, or financial
-  advice. Please consult qualified professionals for advice specific to
-  your situation.
-
-  DISCLAIMER FORMAT RULES (strictly enforced):
-  1. The line immediately before the disclaimer MUST be a horizontal
-     rule: exactly three dashes on their own line: ---
-  2. The word "Disclaimer:" MUST be bolded: **Disclaimer:**
-  3. No text may appear after the disclaimer.
-  4. The --- separator must be on its OWN blank line.
-
-  ❌ WRONG (no separator):
-  "...fiscal deficit of **4.3% of GDP**.
-  **Disclaimer:** This information..."
-
-  ✅ CORRECT:
-  "...fiscal deficit of **4.3% of GDP**.
-
-  ---
-  **Disclaimer:** This information..."
 
 user_prompt_template: |
 
@@ -289,7 +262,6 @@ user_prompt_template: |
   Bold ALL key figures, percentages, and rupee amounts (**like this**).
   Cite at least 2-3 different sources [1], [2], [3] across your answer.
   Answer based ONLY on the context provided above.
-  End with the mandatory disclaimer (--- separator + **Disclaimer:** bold).
 
 parameters:
   temperature: 0.1

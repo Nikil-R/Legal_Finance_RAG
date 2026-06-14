@@ -60,7 +60,8 @@ class ToolOrchestrator:
             # Call LLM with tools
             response = await self.llm_client.generate_with_tools(
                 messages=messages,
-                tools=tool_definitions
+                tools=tool_definitions,
+                max_tokens=4000
             )
             
             if not response.get("success", True):

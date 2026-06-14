@@ -37,30 +37,30 @@ export function ChatMessage({ message, onCitationClick }: ChatMessageProps) {
   return (
     <div className={cn(
       "group flex gap-4 w-full animate-message",
-      isUser ? "flex-row-reverse" : "flex-row"
+      isUser ? "justify-end" : "flex-row"
     )}>
-      {/* Avatar */}
-      <div className={cn(
-        "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg transition-transform group-hover:scale-105",
-        isUser 
-          ? "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400" 
-          : "bg-gradient-to-br from-blue-500 to-blue-700 text-white"
-      )}>
-        {isUser ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
-      </div>
+      {/* Avatar (AI Only) */}
+      {!isUser && (
+        <div className={cn(
+          "flex h-8 w-8 shrink-0 mt-1 items-center justify-center rounded-full shadow-lg",
+          "bg-gradient-to-br from-primary to-primary-dark text-[#0A0A0A] shadow-primary/20"
+        )}>
+          <Bot className="h-5 w-5" />
+        </div>
+      )}
 
-      {/* Message Bubble */}
+      {/* Message Bubble/Content */}
       <div className={cn(
-        "flex flex-col max-w-[85%] sm:max-w-[70%]",
-        isUser ? "items-end" : "items-start"
+        "flex flex-col min-w-0",
+        isUser ? "w-full items-end" : "w-full items-start"
       )}>
         <div className={cn(
-          "relative p-4 rounded-2xl shadow-sm transition-all",
+          "relative transition-all",
           isUser 
-            ? "user-bubble-gradient text-white rounded-tr-none" 
-            : "bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white rounded-tl-none",
-          isSafetyBlock && "border-amber-500/50 bg-amber-500/5 dark:bg-amber-500/5 border-l-4",
-          isError && !isSafetyBlock && "border-red-500/50 bg-red-500/5 border-l-4"
+            ? "bg-card border border-border text-foreground rounded-3xl px-5 py-3 shadow-sm inline-block max-w-[85%] sm:max-w-[70%]" 
+            : "text-foreground w-full py-1",
+          isSafetyBlock && "border-amber-500/50 bg-amber-500/5 border-l-4 p-4 rounded-xl",
+          isError && !isSafetyBlock && "border-red-500/50 bg-red-500/5 border-l-4 p-4 rounded-xl"
         )}>
           {/* Safety/Error Header */}
           {(isError || isSafetyBlock) && (
@@ -81,13 +81,13 @@ export function ChatMessage({ message, onCitationClick }: ChatMessageProps) {
 
           {/* Tool Calls Indicator */}
           {!isUser && message.metadata?.tool_calls && message.metadata.tool_calls.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-indigo-500/20">
-              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-tight">
+            <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-primary/20">
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary uppercase tracking-tight">
                 <Wrench className="h-2.5 w-2.5" />
                 Tools Used
               </div>
               {message.metadata.tool_calls.map((tc, idx) => (
-                 <div key={idx} className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                 <div key={idx} className="px-2 py-0.5 rounded-full bg-background border border-border text-[10px] font-medium text-muted">
                    {tc.tool.replace(/_/g, ' ')}
                  </div>
               ))}
@@ -104,43 +104,46 @@ export function ChatMessage({ message, onCitationClick }: ChatMessageProps) {
               />
             )}
           </div>
-
-          {/* Hover Actions (Copy / Share / Download) */}
-          {!isUser && !isError && (
-             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                <button 
-                  onClick={() => {
-                    import('@/lib/api-client').then(({ exportQuery }) => {
-                      exportQuery(
-                        message.metadata?.question || '',
-                        message.content,
-                        message.sources || [],
-                        localStorage.getItem('chat_session_id') || ''
-                      ).catch(err => console.error('Export failed', err));
-                    });
-                  }}
-                  className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
-                  title="Download PDF"
-                >
-                  <Download className="h-3 w-3 text-slate-400" />
-                </button>
-                <button 
-                  onClick={copyToClipboard}
-                  className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
-                  title="Copy response"
-                >
-                  {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3 text-slate-400" />}
-                </button>
-             </div>
-          )}
         </div>
 
-        {/* Timestamp / Info Footer */}
-        <div className="mt-1.5 flex items-center gap-2 px-1">
-           <span className="text-[10px] font-medium text-slate-400 uppercase">
-             {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-           </span>
-           {isUser && <span className="text-[10px] font-bold text-blue-500/50 uppercase">Sent</span>}
+        {/* Hover Actions (Copy / Share / Download) & Footer */}
+        <div className="mt-2 flex items-center justify-between w-full">
+           <div className="flex items-center gap-2">
+             {!isUser && !isError && (
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                   <button 
+                     onClick={copyToClipboard}
+                     className="p-1.5 hover:bg-card rounded-md transition-colors"
+                     title="Copy response"
+                   >
+                     {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5 text-muted" />}
+                   </button>
+                   <button 
+                     onClick={() => {
+                       import('@/lib/api-client').then(({ exportQuery }) => {
+                         exportQuery(
+                           message.metadata?.question || '',
+                           message.content,
+                           message.sources || [],
+                           localStorage.getItem('chat_session_id') || ''
+                         ).catch(err => console.error('Export failed', err));
+                       });
+                     }}
+                     className="p-1.5 hover:bg-card rounded-md transition-colors"
+                     title="Download PDF"
+                   >
+                     <Download className="h-3.5 w-3.5 text-muted" />
+                   </button>
+                </div>
+             )}
+           </div>
+           
+           <div className="flex items-center gap-2 px-1">
+             <span className="text-[10px] font-medium text-muted uppercase">
+               {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+             </span>
+             {isUser && <span className="text-[10px] font-bold text-primary/50 uppercase">Sent</span>}
+           </div>
         </div>
       </div>
     </div>

@@ -115,7 +115,7 @@ class ToolRegistry:
                 "num_results": {
                     "type": "integer",
                     "description": "Number of relevant document chunks to return",
-                    "default": 5
+                    "default": 15
                 }
             },
             required=["query"],

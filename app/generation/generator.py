@@ -83,17 +83,9 @@ class RAGGenerator:
         response_text = llm_result["content"]
         validation = self.validator.validate_response(response_text, len(sources))
 
-        # 4. Post-process: Auto-add disclaimer if missing
+        # 4. Post-process: Warn if missing, but rely on API layer to append the official disclaimer
         if not validation["disclaimer"]["valid"]:
-            logger.warning("Disclaimer missing in LLM response, auto-appending.")
-            disclaimer_text = (
-                "\n\n---\n**Disclaimer:** This information is for educational purposes only "
-                "and should not be considered as professional legal, tax, or financial advice. "
-                "Please consult qualified professionals for advice specific to your situation."
-            )
-            response_text += disclaimer_text
-            # Re-validate after fixing
-            validation = self.validator.validate_response(response_text, len(sources))
+            logger.warning("Disclaimer missing in LLM response, but allowing API layer to handle it.")
 
         return {
             "success": True,

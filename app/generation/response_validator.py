@@ -134,43 +134,31 @@ class ResponseValidator:
 
     def validate_response(self, response: str, num_sources: int, used_tools: bool = False) -> dict:
         """Runs all validations and returns a summary result."""
+        # 1. Validate Citations
         citations = self.validate_citations(response, num_sources)
-        disclaimer = self.validate_disclaimer(response)
-        refusal = self.validate_refusal(response)
 
-        # If it's a refusal or tools were used, we don't strictly require citations.
-        # But we ALWAYS require disclaimer.
-        if refusal["is_refusal"] or (used_tools and not citations["has_citations"]):
-            overall_valid = disclaimer["valid"]
-        else:
-            overall_valid = citations["valid"] and disclaimer["valid"]
-
-        issues = []
-        if not disclaimer["valid"]:
-            issues.append("Missing mandatory disclaimer")
-            
-        # Requirement for citations only if it's not a refusal AND (no tools used OR tool used but search was part of it)
-        if not refusal["is_refusal"] and not used_tools and not citations["valid"]:
-            issues.append("Missing citations")
+        # 2. Check for Refusal Patterns
+        refusals = self.validate_refusal(response)
         
-        if citations["invalid_citations"]:
-            issues.append(f"Invalid citations: {citations['invalid_citations']}")
+        # 3. Overall validation (Disclaimer validation is now removed as it's handled at API layer)
+        issues = []
+        if not citations["valid"]:
+            issues.append(citations.get("message", "Missing or invalid citations"))
+            
+        overall_valid = citations["valid"]
 
         if not overall_valid:
-            logger.error(
-                "Validation FAILED | citations_valid=%s | disclaimer_valid=%s | "
-                "is_refusal=%s | issues=%s | response_preview=%.200s",
+            logger.warning(
+                "Validation FAILED | citations_valid=%s | issues=%s",
                 citations["valid"],
-                disclaimer["valid"],
-                refusal["is_refusal"],
                 issues,
                 response,
             )
 
         return {
-            "overall_valid": overall_valid,
+            "valid": overall_valid,
             "citations": citations,
-            "disclaimer": disclaimer,
-            "refusal": refusal,
+            "disclaimer": {"valid": True},
+            "refusals": refusals,
             "issues": issues,
         }

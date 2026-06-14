@@ -81,6 +81,11 @@ class GeminiClient:
             
             usage_metadata = result.get("usageMetadata", {})
             
+            finish_reason = candidates[0].get("finishReason", "")
+            if finish_reason in ["MAX_TOKENS", "length", "max_tokens"]:
+                logger.warning("Gemini hit max_tokens limit in generate()")
+                return {"success": False, "error": "max_tokens_reached", "finish_reason": finish_reason}
+                
             return {
                 "success": True,
                 "content": text_content,
@@ -212,6 +217,11 @@ class GeminiClient:
                 ]
 
             usage_metadata = result.get("usageMetadata", {})
+            
+            finish_reason = candidates[0].get("finishReason", "")
+            if finish_reason in ["MAX_TOKENS", "length", "max_tokens"]:
+                logger.warning("Gemini hit max_tokens limit in generate_with_tools()")
+                return {"success": False, "error": "max_tokens_reached", "finish_reason": finish_reason}
             
             logger.info(f"✅ Gemini response: {len(text_content)} chars, {len(tool_calls)} tool calls")
             

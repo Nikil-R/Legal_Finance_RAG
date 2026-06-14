@@ -105,6 +105,11 @@ export function MarkdownRenderer({ content, onCitationClick }: MarkdownRendererP
       />
     ),
 
+    // Blockquote (Used for Disclaimer)
+    blockquote: ({ ...props }) => (
+      <blockquote className="border-l-4 border-amber-500 bg-amber-500/10 text-amber-500/90 px-4 py-3 my-4 rounded-r-lg text-xs leading-relaxed font-medium" {...props} />
+    ),
+
     // Horizontal Rule
     hr: ({ ...props }) => <hr className="my-6 border-slate-200 dark:border-slate-800" {...props} />,
   };

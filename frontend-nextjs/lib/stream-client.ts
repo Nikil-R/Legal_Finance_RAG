@@ -81,8 +81,9 @@ export function streamQuery(
                   // Optionally handle metadata if onSources wasn't enough
                   break;
                 case 'disclaimer':
-                  // Add disclaimer when it arrives
-                  callbacks.onToken?.('\n\n---\n*' + data.content + '*');
+                  // Add disclaimer when it arrives as a blockquote
+                  const blockquoteContent = data.content.trim().split('\n').map((line: string) => '> ' + line).join('\n');
+                  callbacks.onToken?.('\n\n' + blockquoteContent);
                   break;
                 case 'done':
                   callbacks.onDone?.(0);

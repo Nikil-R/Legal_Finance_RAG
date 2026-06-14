@@ -12,37 +12,8 @@ class LegalDisclaimers:
     """Generate context-appropriate disclaimers"""
     
     GENERAL_DISCLAIMER = """
-📚 PROJECT INFORMATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  Project:      Legal Finance RAG System \n
-  Developer:    Nikil R \n 
-  Institution:  Sambhram Institute of Technology\n
-  Last Updated: {current_date}\n
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⚠️  IMPORTANT NOTICES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ✓  This is a STUDENT-BUILT educational demonstration project\n
-  ✓  NOT professional legal, tax, or financial advice\n
-  ✓  Information may NOT be current or accurate for real decisions\n
-  ✓  Results are AI-generated and should be independently verified\n
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🔍 FOR ACTUAL LEGAL, TAX, OR COMPLIANCE MATTERS, CONSULT:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  👨‍⚖️  Qualified Lawyers / Legal Professionals\n
-  💼 Chartered Accountants / Tax Advisors\n
-  📋 Registered Compliance Officers\n
-  🏛️  Official Government Portals\n
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-💡 ABOUT THIS SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-This is a demonstration of Retrieval-Augmented Generation (RAG) technology
-using modern AI/ML techniques. It showcases document retrieval, semantic
-search, and natural language generation capabilities.
-
-⚠️  Use at your own risk. Always verify results with qualified professionals.
+⚠️ **IMPORTANT DISCLAIMER**
+This system provides information for educational and reference purposes only. It is **NOT** a substitute for professional legal, tax, or financial advice. All results are AI-generated and may not be fully accurate or current for your specific situation. Always consult qualified professionals (Lawyers, CAs, Compliance Officers) and verify with official government portals before making any real decisions.
 """
 
     TAX_CALCULATION_DISCLAIMER = """
@@ -186,18 +157,16 @@ class TermsOfService:
 
 ## 1. Purpose & Scope
 
-This system is a **student educational project** demonstrating Retrieval Augmented Generation (RAG) technology applied to legal and financial information.
+This system demonstrates Retrieval Augmented Generation (RAG) technology applied to legal and financial information.
 
 **What This Is:**
-- An AI demonstration project
+- An AI demonstration product
 - Educational tool for learning purposes
 - Proof of concept for RAG systems
-- Portfolio project by [Student Name]
 
 **What This Is NOT:**
 - Professional legal advice
 - Professional tax/financial advice
-- A business service
 - Guaranteed accurate or current information
 - A replacement for qualified professionals
 
@@ -288,11 +257,10 @@ By using this system, you acknowledge:
 For questions about this project:
 - Email: [Your Email]
 - GitHub: [Your Repo]
-- Institution: [Your College]
 
 ---
 
-**This is a student project. Use responsibly and verify independently before any real-world application.**
+**This is a demonstration system. Use responsibly and verify independently before any real-world application.**
 """
     
     @staticmethod
@@ -307,7 +275,7 @@ class AttributionsPage:
     ATTRIBUTIONS_CONTENT = """
 # Attributions & Data Sources
 
-This student project uses data from official Indian government sources.
+This system uses data from official Indian government sources.
 
 ## Primary Data Sources
 
@@ -352,8 +320,7 @@ This student project uses data from official Indian government sources.
 
 ## Project Credits
 
-**Student Developer:** [Your Name]
-**Institution:** [Your College/University]
+**Developer:** Nikil R
 **Project:** Legal Finance RAG System
 **Created:** March 12, 2026
 **GitHub:** [Your Repository Link]
@@ -382,7 +349,7 @@ Users are advised to:
 
 ---
 
-**This is an educational student project. Data is from official government sources for demonstration purposes only.**
+**This is an educational system. Data is from official government sources for demonstration purposes only.**
 
 Thank you to all the open source projects and government agencies that made this possible!
 """

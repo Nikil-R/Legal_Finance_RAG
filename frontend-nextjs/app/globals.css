@@ -1,5 +1,14 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
+
+@theme {
+  --color-background: #0A0A0A;
+  --color-foreground: #F9FAFB;
+  --color-border: #262626;
+  --color-primary: #D4AF37;
+  --color-primary-dark: #B49126;
+  --color-card: #171717;
+  --color-muted: #A3A3A3;
+}
 
 /* Accessibility: Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
@@ -29,30 +38,30 @@
 
 /* Glassmorphism Classes */
 .glass-header {
-  @apply border-b border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-sm;
+  @apply border-b border-primary/20 bg-[#0A0A0A]/80 backdrop-blur-md shadow-sm shadow-primary/5;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
   .glass-header {
-    @apply bg-white dark:bg-slate-900;
+    @apply bg-[#0A0A0A];
   }
   
   .backdrop-blur-md {
-    @apply bg-white/95 dark:bg-slate-900/95;
+    @apply bg-[#0A0A0A]/95;
   }
 }
 
 /* Custom Gradents */
 .brand-gradient {
-  @apply bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-primary to-yellow-200 bg-clip-text text-transparent;
 }
 
 .user-bubble-gradient {
-  @apply bg-gradient-to-br from-blue-500 to-blue-700;
+  @apply bg-card border border-primary/20 shadow-md shadow-primary/5;
 }
 
 .send-button-gradient {
-  @apply bg-gradient-to-r from-blue-500 to-blue-600;
+  @apply bg-gradient-to-r from-primary to-primary-dark text-[#0A0A0A] font-medium shadow-md shadow-primary/20;
 }
 
 /* Animations */
@@ -101,10 +110,11 @@
 
   @keyframes borderPulse {
     0%, 100% {
-      border-color: rgba(59, 130, 246, 0.5);
+      border-color: rgba(212, 175, 55, 0.3);
     }
     50% {
-      border-color: rgba(59, 130, 246, 1);
+      border-color: rgba(212, 175, 55, 0.8);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
   }
 
@@ -132,24 +142,32 @@
 
 /* Typing Indicator Animation */
 .typing-dot {
-  @apply h-1.5 w-1.5 rounded-full bg-blue-500/50;
+  @apply h-1.5 w-1.5 rounded-full bg-primary/70;
   animation: typingBounce 1s infinite alternate;
 }
 
 @keyframes typingBounce {
   from {
     transform: translateY(0);
-    background-color: rgba(59, 130, 246, 0.5);
+    background-color: rgba(212, 175, 55, 0.5);
   }
   to {
     transform: translateY(-4px);
-    background-color: rgb(59, 130, 246);
+    background-color: rgb(212, 175, 55);
   }
 }
 
 /* Scrollbar styling */
 .scrollbar-thin {
   scrollbar-width: thin;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 ::-webkit-scrollbar {
@@ -162,11 +180,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  @apply bg-card rounded-full border border-border;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400 dark:bg-slate-600;
+  @apply bg-border;
 }
 
 /* Markdown Specific Overrides */
@@ -175,29 +193,29 @@
 }
 
 .prose-legal h1, .prose-legal h2 {
-  @apply text-lg font-semibold mt-4 mb-2 text-slate-900 dark:text-slate-100;
+  @apply text-lg font-semibold mt-4 mb-2 text-foreground;
 }
 
 .prose-legal strong {
-  @apply font-bold text-blue-700 dark:text-blue-300;
+  @apply font-bold text-primary;
 }
 
 .prose-legal blockquote {
-  @apply border-l-4 border-blue-500 pl-4 italic text-slate-600 dark:text-slate-400;
+  @apply border-l-4 border-primary pl-4 italic text-muted;
 }
 
 .prose-legal table {
-  @apply w-full border-collapse border border-slate-200 dark:border-slate-800 my-4;
+  @apply w-full border-collapse border border-border my-4 bg-card rounded-lg overflow-hidden;
 }
 
 .prose-legal th, .prose-legal td {
-  @apply border border-slate-200 dark:border-slate-800 p-2 text-sm;
+  @apply border border-border p-2 text-sm text-foreground;
 }
 
 .prose-legal th {
-  @apply bg-slate-50 dark:bg-slate-900/50 font-semibold;
+  @apply bg-background font-semibold text-primary;
 }
 
 .prose-legal tr:nth-child(even) {
-  @apply bg-slate-50/50 dark:bg-slate-900/20;
+  @apply bg-background/50;
 }

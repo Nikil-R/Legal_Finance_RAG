@@ -48,7 +48,7 @@ class RetrievalPipeline:
         domain: str = "all",
         retrieval_top_k: int | None = None,
         rerank_top_k: int | None = None,
-        min_relevance_score: float = -5.0,
+        min_relevance_score: float = -100.0,
         session_id: str | None = None,
         owner_id: str | None = None,
     ) -> dict:

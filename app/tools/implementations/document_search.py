@@ -4,7 +4,7 @@ from app.config import settings
 
 def search_legal_documents(
     query: str,
-    num_results: int = 5,
+    num_results: int = 15,
     domain: str = "all"
 ) -> Dict[str, Any]:
     """

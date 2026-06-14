@@ -25,7 +25,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
         <meta name="theme-color" content="#020617" />
       </head>
-      <body className={`${inter.className} bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-hidden h-screen`}>
+      <body className={`${inter.className} bg-background text-foreground antialiased overflow-hidden h-screen`}>
         <ToastProvider>
            {children}
         </ToastProvider>

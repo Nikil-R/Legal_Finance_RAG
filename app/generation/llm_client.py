@@ -82,6 +82,15 @@ class GroqClient:
                     attempts,
                 )
 
+                finish_reason = response.choices[0].finish_reason
+                if finish_reason in ["length", "max_tokens"]:
+                    logger.warning("Groq hit max_tokens limit in generate()")
+                    return {
+                        "success": False,
+                        "error": "max_tokens_reached",
+                        "finish_reason": finish_reason
+                    }
+
                 return {
                     "success": True,
                     "content": response.choices[0].message.content,
@@ -91,7 +100,7 @@ class GroqClient:
                         "completion_tokens": usage.completion_tokens,
                         "total_tokens": usage.total_tokens,
                     },
-                    "finish_reason": response.choices[0].finish_reason,
+                    "finish_reason": finish_reason,
                     "duration_ms": duration_ms,
                 }
             except FutureTimeoutError:
@@ -174,6 +183,15 @@ class GroqClient:
                     }
                     for tc in message.tool_calls
                 ]
+
+            finish_reason = response.choices[0].finish_reason
+            if finish_reason in ["length", "max_tokens"]:
+                logger.warning("Groq hit max_tokens limit in generate_with_tools()")
+                return {
+                    "success": False,
+                    "error": "max_tokens_reached",
+                    "finish_reason": finish_reason
+                }
 
             return {
                 "success": True,
