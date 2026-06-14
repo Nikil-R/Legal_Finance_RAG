@@ -1,8 +1,18 @@
 # LegalFinance AI 🏛️📈
 
-![Version](https://img.shields.io/badge/version-1.0.4--Stable-blue)
-![Python](https://img.shields.io/badge/python-3.10%2B-green)
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
+<div align="center">
+  
+![Version](https://img.shields.io/badge/version-1.0.4--Stable-blue?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat-square&logo=next.js&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat-square&logo=fastapi&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=flat-square&logo=chainlink&logoColor=white)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-FF6600?style=flat-square)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-FFD21E?style=flat-square&logo=huggingface&logoColor=black)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![RAG](https://img.shields.io/badge/Architecture-RAG-8A2BE2?style=flat-square)
+
+</div>
 
 **Live Demo:** [legal-finance-rag.vercel.app](https://legal-finance-rag.vercel.app)
 
