@@ -76,14 +76,13 @@ docker-compose up --build -d
 ```
 The FastAPI backend will run on `http://localhost:8000` and the Next.js frontend on `http://localhost:3000`.
 
-## 9. AWS Deployment Overview
+## 9. Deployment Overview (Vercel & Render)
 
-For production deployments, the architecture seamlessly scales on AWS:
-*   **Frontend:** Deployed to Vercel or AWS Amplify.
-*   **Backend:** Containerized in Docker and orchestrated via AWS ECS (Fargate).
-*   **Vector DB:** Hosted ChromaDB instance or migrated to AWS OpenSearch Serverless.
-*   **Caching:** Amazon ElastiCache for Redis.
-*   **Storage:** Amazon S3 for durable storage of user-uploaded PDFs prior to ingestion.
+For production deployments, the architecture is designed to be hosted on Vercel and Render:
+*   **Frontend:** Deployed natively on **Vercel** for optimal edge-caching, serverless execution, and seamless CI/CD integration with the GitHub repository.
+*   **Backend:** Hosted on **Render** using Docker containers, providing a scalable and reliable environment for the FastAPI application.
+*   **Vector DB:** Configured to run persistently within the Render backend environment or via a managed vector database provider.
+*   **Caching:** Redis instance provisioned via Render or Upstash for high-speed response caching.
 
 ## 10. Future Improvements
 
